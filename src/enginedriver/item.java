@@ -3,6 +3,11 @@ package enginedriver;
 import java.awt.*;
 
 public class item implements IItem{
+  private int maxUses;
+  private int remainingUses;
+  private int value;
+  private int weight;
+  private IdentifiableEntity identifiableItem;
   @Override
   public void use() {
 

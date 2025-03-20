@@ -9,7 +9,7 @@ import java.io.StringReader;
 import java.util.Scanner;
 
 public class GameEngineApp {
-  private GameEngine gameEngine;
+  private GameController gameController;
   private Readable source;
 
   public GameEngineApp(String gameFileName, Readable source, Appendable output) {
@@ -19,7 +19,7 @@ public class GameEngineApp {
     // 提示用户输入名字
     String playerName = getPlayerName();
     Player player = new Player(playerName, 100, 13); // 提示玩家输入名字
-    gameEngine = new GameEngine(gameWorld, player);
+    gameController = new GameController(gameWorld, player);
   }
 
   public void start() throws IOException {
@@ -31,7 +31,7 @@ public class GameEngineApp {
         System.out.println("Exiting game.");
         break;
       }
-      gameEngine.processCommand(command);
+      gameController.processCommand(command);
     }
   }
 

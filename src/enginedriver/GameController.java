@@ -3,10 +3,10 @@ package enginedriver;
 /**
  * GameEngine class to handle game logic and player commands.
  */
-public class GameEngine {
+public class GameController {
   private Player player;
   private GameWorld gameWorld;
-  public GameEngine( GameWorld gameWorld, Player player) {
+  public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
     this.player = player;
   }
