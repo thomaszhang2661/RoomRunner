@@ -1,0 +1,6 @@
+场景1
+// 玩家初始出生在Dungeon Entrance，根据Room介绍，玩家可以向北进入First Layer，向东进入Guild。并且在这个房间中有一个Biliboard，玩家可以查看Biliboard的描述。
+// 玩家在查看Biliboard的描述后，认为进入Dungeon是一个很危险的行为，于是尝试向东进入Guild。但是由于Nobleman's Commission这一Puzzle的存在，玩家没有Necklace这一道具，无法进入Guild。
+场景2
+// 玩家向北返回Second Layer，向东返回First Layer，之后使用Repair Tool解决了Broken Staircase这一Puzzle。
+// 玩家向南返回Dungeon Entrance，然后使用Necklace解决了Nobleman's Commission这一Puzzle，随后向东进入Guild，根据指示获得了奖励Gold Coin，游戏结束！
