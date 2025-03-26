@@ -38,12 +38,12 @@ public class Puzzle implements IProblem{
 
   // ?
   @Override
-  public void solve(String solution) {
+  public boolean solve(String solution) {
 
   }
 
   @Override
-  public void solve(IItem item) {
+  public boolean solve(IItem item) {
 
   }
 
