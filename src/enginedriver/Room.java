@@ -11,22 +11,20 @@ public class Room  extends  IdentifiableEntity
   private Map<String, Integer> exits;
   private List<String> itemNames;
   private List<String> fixtureNames;
-  private String monsterName;
-  private String puzzleName;
+  private String problem;
 
   /**
    * Constructor for a room.
    */
   public Room(String id, String name, String description,
               Map<String, Integer> exits, List<String>itemNames,
-              List<String> fixtureNames, String monsterName,
-              String puzzleName) {
+              List<String> fixtureNames, String problem,
+              String problem) {
     super(id, name, description);
     this.exits = exits;
     this.itemNames = itemNames;
     this.fixtureNames = fixtureNames;
-    this.monsterName = monsterName;
-    this.puzzleName = puzzleName;
+    this.problem = problem;
   }
 
   /**
@@ -68,5 +66,8 @@ public class Room  extends  IdentifiableEntity
     return false;
   }
 
+  public String getProblem() {
+    // return the puzzle or monster in the room
+  }
 
 }
