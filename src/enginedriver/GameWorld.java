@@ -65,11 +65,11 @@ public class GameWorld {
     return fixtures.get(name);
   }
 
-  public Monster getMonsters(String name) {
+  public Monster getMonster(String name) {
     return monsters.get(name);
   }
 
-  public Puzzle getPuzzles(String name) {
+  public Puzzle getPuzzle(String name) {
     return puzzles.get(name);
   }
 
