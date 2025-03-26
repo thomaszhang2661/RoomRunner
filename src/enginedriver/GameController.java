@@ -107,7 +107,9 @@ public class GameController {
    * Print message based on the result.
    * @param item the item needs to be taken.
    */
-  private void takeItem(Item item) {
+  private void takeItem(String itemName) {
+    Item item = gameWorld.findItemByName(itemName);
+    // Check if item in the room
     if (currentRoom.getItems().contains(item)
             && player.addItem(item)) {
       // todo
@@ -122,12 +124,13 @@ public class GameController {
    * Controller method to call the player's delete method.
    * @param item the item needs to be dropped.
    */
-  private void dropItem(Item item) {
+  private void dropItem(String itemName) {
+    Item item = gameWorld.findItemByName(itemName);
     if (player.deleteItem(item)) {
-      // todo
+      //todo
       System.out.println();
     } else {
-      // todo
+      //todo
       System.out.println();
     }
   }

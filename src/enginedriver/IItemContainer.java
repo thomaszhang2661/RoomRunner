@@ -22,5 +22,9 @@ public interface IItemContainer {
    * @return
    */
   boolean deleteItem(IItem item);
+
+  boolean addItem(Item item);
+
+  boolean deleteItem(Item item);
 }
 

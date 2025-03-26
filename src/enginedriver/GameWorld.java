@@ -1,6 +1,7 @@
 package enginedriver;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,6 +17,7 @@ public class GameWorld {
   private List<Monster> monsters;
   private List<Puzzle> puzzles;
   private Player player; //记录生命值、item、位置等
+  private Map<String, Item> itemMap;
 
   public GameWorld(String name, String version, List<Room> rooms,
                    List<IItem> items, List<Fixture> fixtures,
@@ -98,4 +100,10 @@ public class GameWorld {
             '}';
   }
 
+  public Item findItemByName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Name cannot be null.");
+    }
+    return itemMap.get(name);
+    }
 }
