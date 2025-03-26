@@ -1,6 +1,10 @@
 package enginedriver;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -31,46 +35,87 @@ public class GameController {
   /**
    * Process the command entered by the player.
    */
-  private String standarlizeCommand(String command) {
-    //TODO
-    return command.trim().toUpperCase();
+  private String[] standardizeCommand(String command) {
+    // Remove leading and trailing white spaces
+    command = command.trim();
+
+    // Split by space
+    String[] commandParts = command.split("\\s+");
+
+
+    // Action abbreviations map
+    // TODO：这里应该设计为一个配置文件直接读进来
+    Map<String, String> actionMap = new HashMap<>();
+    actionMap.put("NORTH", "N");
+    actionMap.put("SOUTH", "S");
+    actionMap.put("EAST", "E");
+    actionMap.put("WEST", "W");
+    actionMap.put("TAKE", "T");
+    actionMap.put("DROP", "D");
+    actionMap.put("EXAMINE", "X");
+    actionMap.put("LOOK", "L");
+    actionMap.put("USE", "U");
+    actionMap.put("INVENTORY", "I");
+    actionMap.put("ANSWER", "A");
+
+    // Default action is the first part of the command (converted to uppercase)
+    String action = commandParts[0].toUpperCase();
+
+    // Prepare the object name by joining the rest of the command parts
+    String objectName = (commandParts.length > 1)
+            ? String.join(" ", Arrays.copyOfRange(commandParts, 1, commandParts.length))
+            : "";
+
+    // If the action exists in the map, use its abbreviation, otherwise leave as is
+    action = actionMap.getOrDefault(action, action);
+
+    return new String[]{action, objectName};
   }
+
 
   /**
    * Process the command entered by the player.
    */
   public void processCommand(String command) {
-    command = standarlizeCommand(command);
+    // Standardize the command
+    String[] commandParts = standardizeCommand(command);
+
+    //take out action 和 objectName
+    command = commandParts[0];
+    String objectName = commandParts[1];
+
     switch (command.toUpperCase()) {
       case "N": move("N");
-      break;
+        break;
       case "S": move("S");
-      break;
+        break;
       case "E": move("E");
-      break;
+        break;
       case "W": move("W");
-      break;
-      case "T": takeItem();
-      break;
-      case "D": dropItem();
-      break;
+        break;
+      case "T": takeItem(objectName);
+        break;
+      case "D": dropItem(objectName);
+        break;
       case "L": lookAround();
-      break;
+        break;
       case "U": useItem();
-      break;
+        break;
       case "I": checkInventory();
-      break;
-      case "X": examineItem();
-      break;
+        break;
+      case "X": examine(objectName);
+        break;
       case "A": answerPuzzle();
-      break;
+        break;
       case "Q": quit();
-      break;
+        break;
       case "SAVE": save();
-      break;
+        break;
       case "RESTORE": restore();
-      break;
-      default: System.out.println("Invalid command.");
+        break;
+      default:
+        viewer.showText("Invalid command.");
+        break;
     }
   }
 
@@ -105,17 +150,26 @@ public class GameController {
         viewer.showText("You are moving to the derection "
                 + direction + ",enterred " + enteredRoom.getName()
                 + ", room number" + attempRoomNum);
+
+        // room description
+        viewer.showText(enteredRoom.getDescription());
       }
+
+    } else {
+      viewer.showText("Invalid direction.");
     }
   }
 
   /**
    * Controller method to call the player's addItem method.
    * Print message based on the result.
-   * @param item the item needs to be taken.
+   * @param itemName the item needs to be taken.
    */
-  private void takeItem(Item item) {
-    if (currentRoom.getItems().contains(item)
+  private void takeItem(String itemName) {
+    int currentRoom = player.getRoomNumber();
+    IItem item = gameWorld.getItems().get(gameWorld.getItems().indexOf(itemName));
+
+    if (gameWorld.getItems().contains(item)
             && player.addItem(item)) {
       // todo
       System.out.println();
@@ -127,9 +181,11 @@ public class GameController {
 
   /**
    * Controller method to call the player's delete method.
-   * @param item the item needs to be dropped.
+   * @param itemName the item needs to be dropped.
    */
-  private void dropItem(Item item) {
+  private void dropItem(String itemName) {
+    IItem item = gameWorld.getItems().get(gameWorld.getItems().indexOf(itemName));
+
     if (player.deleteItem(item)) {
       // todo
       System.out.println();
@@ -163,9 +219,44 @@ public class GameController {
   /**
    * Examine an item.
    */
-  private void examineItem() {
+  private void examine(String objectName) {
     // Logic to examine item
+    // get current room number
+    int roomNumber = player.getRoomNumber();
+    // get room
+    Room room = gameWorld.getRoom(roomNumber);
+
     //TODO
+//    // get items from the room
+//    // check if the objectName is in the items
+//    if (itemNames.contains(objectName)) {
+//      // get the item
+//      gameWorld.getItem(objectName);
+//    } else if (fixtureNames.contains(objectName)) {
+//      // get the fixture
+//      //TODO
+//    } else {
+//      // objectName is not in the items or fixtures
+//      viewer.showText(objectName + " is not in the room.");
+//    }
+    // get fixtures from the room
+  }
+
+  /**
+   * Diminish the player's health
+   */
+  private void attackPlayer() {
+    //TODO
+
+  }
+
+  /**
+   * Block the description of the room the puzzle's in, keep the player from
+   * entering said room.
+   */
+  private void blockRoom() {
+    //TODO
+
   }
 
   /**

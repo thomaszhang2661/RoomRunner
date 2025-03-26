@@ -24,6 +24,7 @@ public class GameDataLoader {
 
   public static void saveGameWorld(GameWorld gameWorld, String fileName) {
     try {
+
       // 将 GameWorld 对象写入 JSON 文件
       mapper.writeValue(new File(fileName), gameWorld);
     } catch (IOException e) {

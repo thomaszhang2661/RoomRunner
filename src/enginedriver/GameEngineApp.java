@@ -20,6 +20,7 @@ public class GameEngineApp {
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
     // 创建玩家
     // 提示用户输入名字
+    // TODO： 检测是否存在同名文件，有重名要提示不能用
     String playerName = getPlayerName();
     Player player = new Player(playerName, 100, 13); // 提示玩家输入名字
 
