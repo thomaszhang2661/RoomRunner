@@ -8,6 +8,12 @@ import java.awt.Image;
 public class IdentifiableEntity implements IIdentifiableEntity{
 
   /**
+   * Constructor for an identifiable entity.
+   */
+  public IdentifiableEntity(String id, String name, String description) {
+  }
+
+  /**
    * Returns the unique identifier of the entity.
    * @return String for id
    */

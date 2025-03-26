@@ -11,17 +11,20 @@ import java.util.Map;
 public class GameWorld {
   private String name;
   private String version;
-  private List<Room> rooms;
-  private List<IItem> items;
-  private List<Fixture> fixtures;
-  private List<Monster> monsters;
-  private List<Puzzle> puzzles;
-  private Player player; //记录生命值、item、位置等
-  private Map<String, Item> itemMap;
+  private Map<Integer, Room> rooms;
+  private Map<String, Item> items;
+  private Map<String, Fixture> fixtures;
+  private Map<String, Monster> monsters;
+  private Map<String, Puzzle> puzzles;
 
-  public GameWorld(String name, String version, List<Room> rooms,
-                   List<IItem> items, List<Fixture> fixtures,
-                   List<Monster> monsters, List<Puzzle> puzzles,
+  private Player player; //记录生命值、item、位置等
+
+  public GameWorld(String name, String version,
+                   Map<Integer, Room> rooms,
+                   Map<String, Item> items,
+                   Map<String, Fixture> fixtures,
+                   Map<String, Monster> monsters,
+                   Map<String, Puzzle> puzzles,
                    Player player) {
     this.name = name;
     this.version = version;
@@ -30,6 +33,7 @@ public class GameWorld {
     this.fixtures = fixtures;
     this.monsters = monsters;
     this.puzzles = puzzles;
+    //TODO: from data to Maps ??
     this.player = player;
   }
 
@@ -37,24 +41,35 @@ public class GameWorld {
   public String getName() {
     return name;
   }
+
   public String getVersion() {
     return version;
   }
-  public List<Room> getRooms() {
+
+  public Map<String,Room> getRooms() {
     return rooms;
   }
-  public List<IItem> getItems() {
-    return items;
+
+
+  public Room getRoom(int id) {
+    //id starts from 1 but index st
+    return rooms.get(id);
   }
-  public List<Fixture> getFixtures() {
-    return fixtures;
+
+
+
+  public Fixture getFixture(String name) {
+    return fixtures.get(name);
   }
-  public List<Monster> getMonsters() {
-    return monsters;
+
+  public Monster getMonsters(String name) {
+    return monsters.get(name);
   }
-  public List<Puzzle> getPuzzles() {
-    return puzzles;
+
+  public Puzzle getPuzzles(String name) {
+    return puzzles.get(name);
   }
+
   public Player getPlayer() {
     return player;
   }
@@ -104,6 +119,6 @@ public class GameWorld {
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null.");
     }
-    return itemMap.get(name);
+    return items.get(name);
     }
 }

@@ -15,8 +15,6 @@ public class Player implements IIdentifiableEntity,
   private IdentifiableEntity identifiablePlayer;
   private int roomNumber; //the room that player is in
 
-
-
   public Player(String name, int health, int maxWeight) {
     this.name = name;
     this.health = health;
@@ -85,6 +83,10 @@ public class Player implements IIdentifiableEntity,
   @Override
   public boolean deleteItem(String item) {
     inventory.remove(item);
+  }
+
+  public void setRoomNumber(int roomNumber) {
+    this.roomNumber = roomNumber;
   }
 
 }

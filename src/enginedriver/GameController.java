@@ -1,11 +1,18 @@
 package enginedriver;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * GameEngine class to handle game logic and player commands.
  */
 public class GameController {
   private Player player;
   private GameWorld gameWorld;
+  private Viewer viewer;
 
   /**
    * Constructor for GameController.
@@ -14,6 +21,7 @@ public class GameController {
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
     this.player = player;
+    this.viewer = Viewer.getInstance();
   }
 
   /*
@@ -27,28 +35,67 @@ public class GameController {
   /**
    * Process the command entered by the player.
    */
-  private String standarlizeCommand(String command) {
-    //TODO
-    return command.trim().toUpperCase();
+  private String[] standardizeCommand(String command) {
+    // Remove leading and trailing white spaces
+    command = command.trim();
+
+    // Split by space
+    String[] commandParts = command.split("\\s+");
+
+
+    // Action abbreviations map
+    // TODO：这里应该设计为一个配置文件直接读进来
+    Map<String, String> actionMap = new HashMap<>();
+    actionMap.put("NORTH", "N");
+    actionMap.put("SOUTH", "S");
+    actionMap.put("EAST", "E");
+    actionMap.put("WEST", "W");
+    actionMap.put("TAKE", "T");
+    actionMap.put("DROP", "D");
+    actionMap.put("EXAMINE", "X");
+    actionMap.put("LOOK", "L");
+    actionMap.put("USE", "U");
+    actionMap.put("INVENTORY", "I");
+    actionMap.put("ANSWER", "A");
+
+    // Default action is the first part of the command (converted to uppercase)
+    String action = commandParts[0].toUpperCase();
+
+    // Prepare the object name by joining the rest of the command parts
+    String objectName = (commandParts.length > 1)
+            ? String.join(" ", Arrays.copyOfRange(commandParts, 1, commandParts.length))
+            : "";
+
+    // If the action exists in the map, use its abbreviation, otherwise leave as is
+    action = actionMap.getOrDefault(action, action);
+
+    return new String[]{action, objectName};
   }
+
 
   /**
    * Process the command entered by the player.
    */
   public void processCommand(String command) {
-    command = standarlizeCommand(command);
+    // Standardize the command
+    String[] commandParts = standardizeCommand(command);
+
+    //take out action 和 objectName
+    command = commandParts[0];
+    String objectName = commandParts[1];
+
     switch (command.toUpperCase()) {
-      case "N": moveNorth();
+      case "N": move("N");
       break;
-      case "S": moveSouth();
+      case "S": move("S");
       break;
-      case "E": moveEast();
+      case "E": move("E");
       break;
-      case "W": moveWest();
+      case "W": move("W");
       break;
-      case "T": takeItem();
+      case "T": takeItem(objectName);
       break;
-      case "D": dropItem();
+      case "D": dropItem(objectName);
       break;
       case "L": lookAround();
       break;
@@ -56,7 +103,7 @@ public class GameController {
       break;
       case "I": checkInventory();
       break;
-      case "X": examineItem();
+      case "X": examine(objectName);
       break;
       case "A": answerPuzzle();
       break;
@@ -66,40 +113,51 @@ public class GameController {
       break;
       case "RESTORE": restore();
       break;
-      default: System.out.println("Invalid command.");
+      default:
+        viewer.showText("Invalid command.");
+        break;
     }
   }
+
+
 
   /**
    * Move the player north.
    */
-  private void moveNorth() {
-    //TODO
-    // Logic to move player north
-  }
+  private void move(String direction) {
+    //check player's current room
+    int currentRoom = player.getRoomNumber();
 
-  /**
-   * Move the player south.
-   */
-  private void moveSouth() {
-    // Logic to move player south
-    //TODO
-  }
+    //get room's exists
+    Map<String, Integer> exits = gameWorld.getRoom(currentRoom).getExits();
 
-  /**
-   * Move the player east.
-   */
-  private void moveEast() {
-    // Logic to move player east
-    //TODO
-  }
+    //check if the direction is valid
+    if (exits.containsKey(direction)) {
+      int attempRoomNum = exits.get(direction);
+      if (attempRoomNum < 0) {
+        viewer.showText("The direction is blocked.");
+        return;
+      } else if (attempRoomNum == 0) {
+        viewer.showText("Invalid direction, there is no more room in this direction.");
+      } else {
 
-  /**
-   * Move the player west.
-   */
-  private void moveWest() {
-    // Logic to move player west
-    //TODO
+        //get the room that player is going to enter
+        Room enteredRoom = gameWorld.getRoom(attempRoomNum);
+        //move player to the new room
+        player.setRoomNumber(attempRoomNum);
+
+        //show the enter discription
+        viewer.showText("You are moving to the derection "
+                + direction + ",enterred " + enteredRoom.getName()
+                + ", room number" + attempRoomNum);
+
+        // room description
+        viewer.showText(enteredRoom.getDescription());
+      }
+
+    } else {
+      viewer.showText("Invalid direction.");
+    }
   }
 
   /**
@@ -159,9 +217,44 @@ public class GameController {
   /**
    * Examine an item.
    */
-  private void examineItem() {
+  private void examine(String objectName) {
     // Logic to examine item
+    // get current room number
+    int roomNumber = player.getRoomNumber();
+    // get room
+    Room room = gameWorld.getRoom(roomNumber);
+
     //TODO
+//    // get items from the room
+//    // check if the objectName is in the items
+//    if (itemNames.contains(objectName)) {
+//      // get the item
+//      gameWorld.getItem(objectName);
+//    } else if (fixtureNames.contains(objectName)) {
+//      // get the fixture
+//      //TODO
+//    } else {
+//      // objectName is not in the items or fixtures
+//      viewer.showText(objectName + " is not in the room.");
+//    }
+    // get fixtures from the room
+  }
+
+  /**
+   * Diminish the player's health
+   */
+  private void attackPlayer() {
+    //TODO
+
+  }
+
+  /**
+   * Block the description of the room the puzzle's in, keep the player from
+   * entering said room.
+   */
+  private void blockRoom() {
+    //TODO
+
   }
 
   /**
