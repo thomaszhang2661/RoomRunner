@@ -1,30 +1,34 @@
 package enginedriver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class GameEngineApp {
   private GameController gameController;
   private Readable source;
+  private Appendable output;
 
-  public GameEngineApp(String gameFileName, Readable source, Appendable output) {
+  public GameEngineApp(String gameFileName, Readable source, Appendable output) throws IOException {
+    this.source = Objects.requireNonNull(source);
+    this.output = Objects.requireNonNull(output);
+
     // 解析游戏文件（JSON），加载游戏世界和玩家
-    GameWorld gameWorld = parseGameFile(gameFileName);
+    GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
     // 创建玩家
     // 提示用户输入名字
     String playerName = getPlayerName();
     Player player = new Player(playerName, 100, 13); // 提示玩家输入名字
-    gameController = new GameController(gameWorld, player);
+
+    this.gameController = new GameController(gameWorld, player);
   }
 
   public void start() throws IOException {
-
     BufferedReader reader = new BufferedReader((Reader) source);
+
     String command;
     while ((command = reader.readLine()) != null) {
       if (command.equalsIgnoreCase("Q")) {
@@ -35,22 +39,14 @@ public class GameEngineApp {
     }
   }
 
-  private GameWorld parseGameFile(String fileName) {
-    ObjectMapper objectMapper = new ObjectMapper();  // Jackson ObjectMapper
-    GameWorld gameWorld = null;
-    try {
-      // 解析 JSON 文件并将其映射为 GameWorld 类
-      gameWorld = objectMapper.readValue(new File(fileName), GameWorld.class);
-    } catch (IOException e) {
-      System.err.println("Error reading the game file: " + e.getMessage());
-    }
-    return gameWorld;
-  }
-
   public static void main(String[] args) throws IOException {
     String s = "Sir Mix-A-Lot\nT NOTEBOOK\nN\nT HAIR CLIPPERS\nT KEY\nD NOTEBOOK\nQuit";
     BufferedReader stringReader = new BufferedReader(new StringReader(s));
-    GameEngineApp gameEngineApp = new GameEngineApp("./resources/align_quest_game_elements.json", stringReader, System.out);
+    GameEngineApp gameEngineApp = new GameEngineApp(
+            "./resources/align_quest_game_elements.json",
+            stringReader,
+            System.out);
+
     gameEngineApp.start();
   }
 
