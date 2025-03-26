@@ -213,6 +213,23 @@ public class GameController {
   }
 
   /**
+   * Diminish the player's health
+   */
+  private void attackPlayer() {
+    //TODO
+
+  }
+
+  /**
+   * Block the description of the room the puzzle's in, keep the player from
+   * entering said room.
+   */
+  private void blockRoom() {
+    //TODO
+
+  }
+
+  /**
    * Answer a puzzle.
    */
   private void answerPuzzle() {
