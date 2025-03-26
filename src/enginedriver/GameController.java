@@ -2,6 +2,7 @@ package enginedriver;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -102,7 +103,7 @@ public class GameController {
       break;
       case "I": checkInventory();
       break;
-      case "X": examineItem();
+      case "X": examine(objectName);
       break;
       case "A": answerPuzzle();
       break;
@@ -149,7 +150,13 @@ public class GameController {
         viewer.showText("You are moving to the derection "
                 + direction + ",enterred " + enteredRoom.getName()
                 + ", room number" + attempRoomNum);
+
+        // room description
+        viewer.showText(enteredRoom.getDescription());
       }
+
+    } else {
+      viewer.showText("Invalid direction.");
     }
   }
 
@@ -207,9 +214,27 @@ public class GameController {
   /**
    * Examine an item.
    */
-  private void examineItem() {
+  private void examine(String objectName) {
     // Logic to examine item
+    // get current room number
+    int roomNumber = player.getRoomNumber();
+    // get room
+    Room room = gameWorld.getRoom(roomNumber);
+
     //TODO
+//    // get items from the room
+//    // check if the objectName is in the items
+//    if (itemNames.contains(objectName)) {
+//      // get the item
+//      gameWorld.getItem(objectName);
+//    } else if (fixtureNames.contains(objectName)) {
+//      // get the fixture
+//      //TODO
+//    } else {
+//      // objectName is not in the items or fixtures
+//      viewer.showText(objectName + " is not in the room.");
+//    }
+    // get fixtures from the room
   }
 
   /**
