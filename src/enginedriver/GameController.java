@@ -1,11 +1,14 @@
 package enginedriver;
 
+import java.util.Map;
+
 /**
  * GameEngine class to handle game logic and player commands.
  */
 public class GameController {
   private Player player;
   private GameWorld gameWorld;
+  private Viewer viewer;
 
   /**
    * Constructor for GameController.
@@ -14,6 +17,7 @@ public class GameController {
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
     this.player = player;
+    this.viewer = Viewer.getInstance();
   }
 
   /*
@@ -38,13 +42,13 @@ public class GameController {
   public void processCommand(String command) {
     command = standarlizeCommand(command);
     switch (command.toUpperCase()) {
-      case "N": moveNorth();
+      case "N": move("N");
       break;
-      case "S": moveSouth();
+      case "S": move("S");
       break;
-      case "E": moveEast();
+      case "E": move("E");
       break;
-      case "W": moveWest();
+      case "W": move("W");
       break;
       case "T": takeItem();
       break;
@@ -70,36 +74,39 @@ public class GameController {
     }
   }
 
+
+
   /**
    * Move the player north.
    */
-  private void moveNorth() {
-    //TODO
-    // Logic to move player north
-  }
+  private void move(String direction) {
+    //check player's current room
+    int currentRoom = player.getRoomNumber();
 
-  /**
-   * Move the player south.
-   */
-  private void moveSouth() {
-    // Logic to move player south
-    //TODO
-  }
+    //get room's exists
+    Map<String, Integer> exits = gameWorld.getRoom(currentRoom).getExits();
 
-  /**
-   * Move the player east.
-   */
-  private void moveEast() {
-    // Logic to move player east
-    //TODO
-  }
+    //check if the direction is valid
+    if (exits.containsKey(direction)) {
+      int attempRoomNum = exits.get(direction);
+      if (attempRoomNum < 0) {
+        viewer.showText("The direction is blocked.");
+        return;
+      } else if (attempRoomNum == 0) {
+        viewer.showText("Invalid direction, there is no more room in this direction.");
+      } else {
 
-  /**
-   * Move the player west.
-   */
-  private void moveWest() {
-    // Logic to move player west
-    //TODO
+        //get the room that player is going to enter
+        Room enteredRoom = gameWorld.getRoom(attempRoomNum);
+        //move player to the new room
+        player.setRoomNumber(attempRoomNum);
+
+        //show the enter discription
+        viewer.showText("You are moving to the derection "
+                + direction + ",enterred " + enteredRoom.getName()
+                + ", room number" + attempRoomNum);
+      }
+    }
   }
 
   /**

@@ -5,19 +5,19 @@ package enginedriver;
  * This part will support pictures in hw9.
  *  Use singleton pattern.
  */
-public class viewer {
+public class Viewer {
 
-  private static viewer instance = null;
+  private static Viewer instance = null;
 
-  private viewer() {
+  private Viewer() {
   }
 
   /**
    * Returns the instance of the viewer.
    */
-  public static viewer getInstance() {
+  public static Viewer getInstance() {
     if (instance == null) {
-      instance = new viewer();
+      instance = new Viewer();
     }
     return instance;
   }
@@ -25,7 +25,7 @@ public class viewer {
   /**
    * Shows the text.
    */
-  public void show(String text) {
+  public void showText(String text) {
     System.out.println(text);
   }
 

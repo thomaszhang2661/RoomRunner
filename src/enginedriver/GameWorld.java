@@ -35,24 +35,41 @@ public class GameWorld {
   public String getName() {
     return name;
   }
+
   public String getVersion() {
     return version;
   }
+
   public List<Room> getRooms() {
     return rooms;
   }
+
+
+  public Room getRoom(int id) {
+    //id starts from 1 but index starts from 0
+    if(id > rooms.size() || id < 1) {
+      return null;
+    }
+    return rooms.get(id - 1);
+
+  }
+
   public List<IItem> getItems() {
     return items;
   }
+
   public List<Fixture> getFixtures() {
     return fixtures;
   }
+
   public List<Monster> getMonsters() {
     return monsters;
   }
+
   public List<Puzzle> getPuzzles() {
     return puzzles;
   }
+
   public Player getPlayer() {
     return player;
   }
@@ -97,5 +114,6 @@ public class GameWorld {
             ", player=" + player +
             '}';
   }
+
 
 }

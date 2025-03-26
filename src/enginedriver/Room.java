@@ -6,40 +6,71 @@ import java.util.Map;
 /**
  * class for a room in the game.
  */
-public class Room implements IItemContainer{
+public class Room  extends  IdentifiableEntity
+        implements IItemContainer {
+  private Map<String, Integer> exits;
+  private List<String> itemNames;
+  private List<String> fixtureNames;
+  private String monsterName;
+  private String puzzleName;
+
+  /**
+   * Constructor for a room.
+   */
+  public Room(String id, String name, String description,
+              Map<String, String> exits, List<String> itemNames,
+              List<String> fixtureNames, String monsterName,
+              String puzzleName) {
+    super(id, name, description);
+    this.exits = exits;
+    this.itemNames = itemNames;
+    this.fixtureNames = fixtureNames;
+    this.monsterName = monsterName;
+    this.puzzleName = puzzleName;
+  }
 
   /**
    * Returns a map of exits from the room.
    * @return Map of exits rooms from data.
    */
-  Map<String, Room> getExits();
+  Map<String, Integer> getExits() {
+    return exits;
+  }
 
   /**
    * Returns the items in the room.
    * @return List of items in the room.
    */
-  List<IItem> getItems();
+  List<String> getItems()  {
+    return itemNames;
+  }
 
 
   /**
    * Returns the fixtures in the room.
    * @return List of fixtures in the room.
    */
-  List<String> getFixtures();
+  List<String> getFixtures() {
+    return fixtureNames;
+  }
 
   /**
    * Returns the monster in the room (if any).
    * @return the monster in the room (if any),
    *      return null if no monster
    */
-  IMonster getMonster();
+  String getMonster() {
+    return monsterName;
+  }
 
   /**
    * Returns the puzzle in the room (if any).
    * @return the puzzle in the room (if any),
    *                return null if no puzzle
    */
-  IProblem getPuzzle();
+  String getPuzzle() {
+    return puzzleName;
+  }
 
   @Override
   public void addItem(IItem item) {
@@ -50,4 +81,6 @@ public class Room implements IItemContainer{
   public void deleteItem(IItem item) {
 
   }
+
+
 }
