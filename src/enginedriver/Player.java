@@ -65,14 +65,33 @@ public class Player implements IIdentifiableEntity,
     return null;
   }
 
+  public int getRoomNumber() {
+    return roomNumber;
+  }
+  /**
+   * Add an item into player's inventory if it is within the maxWeight.
+   *
+   * @param item the item to be added
+   * @return true if the item is within the maxWeight and successfully added, false otherwise
+   */
   @Override
-  public void addItem(IItem item) {
-
+  public boolean addItem(IItem item) {
+    if (item.getWeight() <= maxWeight) {
+      maxWeight -= item.getWeight();
+      inventory.add(item);
+      return true;
+    }
+    return false;
   }
 
   @Override
-  public void deleteItem(IItem item) {
-
+  public boolean deleteItem(IItem item) {
+    if (inventory.contains(item)) {
+      inventory.remove(item);
+      maxWeight += item.getWeight();
+      return true;
+    }
+    return false;
   }
 
   public void setRoomNumber(int roomNumber) {

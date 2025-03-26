@@ -73,13 +73,15 @@ public class Room  extends  IdentifiableEntity
   }
 
   @Override
-  public void addItem(IItem item) {
+  public boolean addItem(IItem item) {
 
+    return false;
   }
 
   @Override
-  public void deleteItem(IItem item) {
+  public boolean deleteItem(IItem item) {
 
+    return false;
   }
 
 

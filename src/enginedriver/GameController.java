@@ -110,20 +110,33 @@ public class GameController {
   }
 
   /**
-   * Take an item.
+   * Controller method to call the player's addItem method.
+   * Print message based on the result.
+   * @param item the item needs to be taken.
    */
-  private void takeItem() {
-    // Logic to take item
-    //TODO
+  private void takeItem(Item item) {
+    if (currentRoom.getItems().contains(item)
+            && player.addItem(item)) {
+      // todo
+      System.out.println();
+    } else {
+      // todo
+      System.out.println();
+    }
   }
 
-
   /**
-   * Drop an item.
+   * Controller method to call the player's delete method.
+   * @param item the item needs to be dropped.
    */
-  private void dropItem() {
-    // Logic to drop item
-    //TODO
+  private void dropItem(Item item) {
+    if (player.deleteItem(item)) {
+      // todo
+      System.out.println();
+    } else {
+      // todo
+      System.out.println();
+    }
   }
 
   private void lookAround() {
