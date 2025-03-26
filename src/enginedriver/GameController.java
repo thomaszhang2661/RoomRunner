@@ -86,33 +86,33 @@ public class GameController {
 
     switch (command.toUpperCase()) {
       case "N": move("N");
-        break;
+      break;
       case "S": move("S");
-        break;
+      break;
       case "E": move("E");
-        break;
+      break;
       case "W": move("W");
-        break;
+      break;
       case "T": takeItem(objectName);
-        break;
+      break;
       case "D": dropItem(objectName);
-        break;
+      break;
       case "L": lookAround();
-        break;
+      break;
       case "U": useItem();
-        break;
+      break;
       case "I": checkInventory();
-        break;
+      break;
       case "X": examine(objectName);
-        break;
+      break;
       case "A": answerPuzzle();
-        break;
+      break;
       case "Q": quit();
-        break;
+      break;
       case "SAVE": save();
-        break;
+      break;
       case "RESTORE": restore();
-        break;
+      break;
       default:
         viewer.showText("Invalid command.");
         break;
@@ -163,13 +163,10 @@ public class GameController {
   /**
    * Controller method to call the player's addItem method.
    * Print message based on the result.
-   * @param itemName the item needs to be taken.
+   * @param item the item needs to be taken.
    */
-  private void takeItem(String itemName) {
-    int currentRoom = player.getRoomNumber();
-    IItem item = gameWorld.getItems().get(gameWorld.getItems().indexOf(itemName));
-
-    if (gameWorld.getItems().contains(item)
+  private void takeItem(String item) {
+    if (currentRoom.getItems().contains(item)
             && player.addItem(item)) {
       // todo
       System.out.println();
@@ -181,11 +178,9 @@ public class GameController {
 
   /**
    * Controller method to call the player's delete method.
-   * @param itemName the item needs to be dropped.
+   * @param item the item needs to be dropped.
    */
-  private void dropItem(String itemName) {
-    IItem item = gameWorld.getItems().get(gameWorld.getItems().indexOf(itemName));
-
+  private void dropItem(String item) {
     if (player.deleteItem(item)) {
       // todo
       System.out.println();

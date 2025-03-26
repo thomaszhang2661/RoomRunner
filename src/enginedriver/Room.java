@@ -18,7 +18,7 @@ public class Room  extends  IdentifiableEntity
    * Constructor for a room.
    */
   public Room(String id, String name, String description,
-              Map<String, Integer> exits, List<String> itemNames,
+              Map<String, Integer> exits, List<String>itemNames,
               List<String> fixtureNames, String monsterName,
               String puzzleName) {
     super(id, name, description);
@@ -37,22 +37,6 @@ public class Room  extends  IdentifiableEntity
     return exits;
   }
 
-  /**
-   * Returns the items in the room.
-   * @return List of items in the room.
-   */
-  List<String> getItems()  {
-    return itemNames;
-  }
-
-
-  /**
-   * Returns the fixtures in the room.
-   * @return List of fixtures in the room.
-   */
-  List<String> getFixtures() {
-    return fixtureNames;
-  }
 
   /**
    * Returns the monster in the room (if any).
