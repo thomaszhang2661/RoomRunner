@@ -6,6 +6,8 @@ package enginedriver;
 public class GameController {
   private Player player;
   private GameWorld gameWorld;
+  private Room currentRoom;
+
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
     this.player = player;
@@ -44,13 +46,34 @@ public class GameController {
     // Logic to move player west
   }
 
-  private void takeItem() {
-    // Logic to take item
+  /**
+   * Controller method to call the player's addItem method.
+   * Print message based on the result.
+   * @param item the item needs to be taken.
+   */
+  private void takeItem(Item item) {
+    if (currentRoom.getItems().contains(item)
+            && player.addItem(item)) {
+      // todo
+      System.out.println();
+    } else {
+      // todo
+      System.out.println();
+    }
   }
 
-
-  private void dropItem() {
-    // Logic to drop item
+  /**
+   * Controller method to call the player's delete method.
+   * @param item the item needs to be dropped.
+   */
+  private void dropItem(Item item) {
+    if (player.deleteItem(item)) {
+      // todo
+      System.out.println();
+    } else {
+      // todo
+      System.out.println();
+    }
   }
 
   private void lookAround() {

@@ -42,12 +42,14 @@ public class Room implements IItemContainer{
   IProblem getPuzzle();
 
   @Override
-  public void addItem(IItem item) {
+  public boolean addItem(IItem item) {
 
+    return false;
   }
 
   @Override
-  public void deleteItem(IItem item) {
+  public boolean deleteItem(IItem item) {
 
+    return false;
   }
 }

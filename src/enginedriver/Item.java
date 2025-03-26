@@ -2,12 +2,24 @@ package enginedriver;
 
 import java.awt.*;
 
-public class item implements IItem{
+public class Item implements IItem{
   private int maxUses;
   private int remainingUses;
   private int value;
   private int weight;
+  private String whenUsed;
   private IdentifiableEntity identifiableItem;
+
+  public Item(int maxUses, int remainingUses, int value, int weight,
+              String whenUsed, IdentifiableEntity identifiableItem) {
+    this.maxUses = maxUses;
+    this.remainingUses = remainingUses;
+    this.value = value;
+    this.weight = weight;
+    this.whenUsed = whenUsed;
+    this.identifiableItem = identifiableItem;
+  }
+
   @Override
   public void use() {
 
