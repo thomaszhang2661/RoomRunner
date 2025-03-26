@@ -1,6 +1,9 @@
 package enginedriver;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -31,16 +34,55 @@ public class GameController {
   /**
    * Process the command entered by the player.
    */
-  private String standarlizeCommand(String command) {
-    //TODO
-    return command.trim().toUpperCase();
+  private String[] standardizeCommand(String command) {
+    // Remove leading and trailing white spaces
+    command = command.trim();
+
+    // Split by space
+    String[] commandParts = command.split("\\s+");
+
+
+    // Action abbreviations map
+    // TODO：这里应该设计为一个配置文件直接读进来
+    Map<String, String> actionMap = new HashMap<>();
+    actionMap.put("NORTH", "N");
+    actionMap.put("SOUTH", "S");
+    actionMap.put("EAST", "E");
+    actionMap.put("WEST", "W");
+    actionMap.put("TAKE", "T");
+    actionMap.put("DROP", "D");
+    actionMap.put("EXAMINE", "X");
+    actionMap.put("LOOK", "L");
+    actionMap.put("USE", "U");
+    actionMap.put("INVENTORY", "I");
+    actionMap.put("ANSWER", "A");
+
+    // Default action is the first part of the command (converted to uppercase)
+    String action = commandParts[0].toUpperCase();
+
+    // Prepare the object name by joining the rest of the command parts
+    String objectName = (commandParts.length > 1)
+            ? String.join(" ", Arrays.copyOfRange(commandParts, 1, commandParts.length))
+            : "";
+
+    // If the action exists in the map, use its abbreviation, otherwise leave as is
+    action = actionMap.getOrDefault(action, action);
+
+    return new String[]{action, objectName};
   }
+
 
   /**
    * Process the command entered by the player.
    */
   public void processCommand(String command) {
-    command = standarlizeCommand(command);
+    // Standardize the command
+    String[] commandParts = standardizeCommand(command);
+
+    //take out action 和 objectName
+    command = commandParts[0];
+    String objectName = commandParts[1];
+
     switch (command.toUpperCase()) {
       case "N": move("N");
       break;
@@ -50,9 +92,9 @@ public class GameController {
       break;
       case "W": move("W");
       break;
-      case "T": takeItem();
+      case "T": takeItem(objectName);
       break;
-      case "D": dropItem();
+      case "D": dropItem(objectName);
       break;
       case "L": lookAround();
       break;
@@ -70,7 +112,9 @@ public class GameController {
       break;
       case "RESTORE": restore();
       break;
-      default: System.out.println("Invalid command.");
+      default:
+        viewer.showText("Invalid command.");
+        break;
     }
   }
 
@@ -114,7 +158,7 @@ public class GameController {
    * Print message based on the result.
    * @param item the item needs to be taken.
    */
-  private void takeItem(Item item) {
+  private void takeItem(String item) {
     if (currentRoom.getItems().contains(item)
             && player.addItem(item)) {
       // todo
@@ -129,7 +173,7 @@ public class GameController {
    * Controller method to call the player's delete method.
    * @param item the item needs to be dropped.
    */
-  private void dropItem(Item item) {
+  private void dropItem(String item) {
     if (player.deleteItem(item)) {
       // todo
       System.out.println();
