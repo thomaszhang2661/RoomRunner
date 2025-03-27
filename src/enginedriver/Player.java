@@ -14,18 +14,27 @@ public class Player implements IIdentifiableEntity,
   private int maxWeight;
   private IdentifiableEntity identifiablePlayer;
   private int roomNumber; //the room that player is in
+  private int score;
 
   public Player(String name, int health, int maxWeight) {
     this.name = name;
     this.health = health;
     this.maxWeight = maxWeight;
+    score = 0;
   }
   /**
    * get current total weight of inventory.
    */
-  private int getCurrentWeight() {
-    //TODO
-    return 0;
+  public int getCurrentWeight() {
+    return maxWeight;
+  }
+
+  public void gainOrLoseWeight(int w) {
+    maxWeight += w;
+  }
+
+  public void gainOrLoseScore(int s) {
+    score += s;
   }
 
 
@@ -69,6 +78,10 @@ public class Player implements IIdentifiableEntity,
     return roomNumber;
   }
 
+  public List<String> getItems() {
+    return inventory;
+  }
+
   /**
    * Add an item into player's inventory if it is within the maxWeight.
    *
@@ -76,12 +89,12 @@ public class Player implements IIdentifiableEntity,
    * @return true if the item is within the maxWeight and successfully added, false otherwise
    */
   @Override
-  public boolean addItem(String item) {
+  public void addItem(String item) {
     inventory.add(item);
   }
 
   @Override
-  public boolean deleteItem(String item) {
+  public void deleteItem(String item) {
     inventory.remove(item);
   }
 

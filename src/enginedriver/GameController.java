@@ -119,8 +119,6 @@ public class GameController {
     }
   }
 
-
-
   /**
    * Move the player north.
    */
@@ -163,39 +161,55 @@ public class GameController {
   /**
    * Controller method to call the player's addItem method.
    * Print message based on the result.
-   * @param item the item needs to be taken.
+   * @param itemName the name of the item that needs to be taken.
    */
   private void takeItem(String itemName) {
     Item item = gameWorld.findItemByName(itemName);
-    // Check if item in the room
-    if (currentRoom.getItems().contains(item)
-            && player.addItem(item)) {
-      // todo
-      System.out.println();
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+
+    // Check if item in the room and player still have enough weight
+    if (currentRoom.getItemNames().contains(itemName)
+            && player.getCurrentWeight() < item.getWeight()) {
+      player.addItem(itemName);
+      player.gainOrLoseWeight(-(item.getWeight()));
+      player.gainOrLoseScore(item.getValue());
+
+      currentRoom.deleteItem(itemName);
+      viewer.showText("You have successfully add " + itemName + " to your bag!");
+
     } else {
-      // todo
-      System.out.println();
+      viewer.showText("Sorry, you can not add " + itemName + " to your bag. It's either because"
+                      + " the item is not in the room or your bag is full.");
     }
   }
 
   /**
    * Controller method to call the player's delete method.
-   * @param item the item needs to be dropped.
+   * @param itemName the name of the item that needs to be dropped.
    */
   private void dropItem(String itemName) {
     Item item = gameWorld.findItemByName(itemName);
-    if (player.deleteItem(item)) {
-      //todo
-      System.out.println();
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+
+    // Check if player has this item
+    if (player.getItems().contains(itemName)) {
+      player.deleteItem(itemName);
+      player.gainOrLoseWeight(item.getWeight());
+      player.gainOrLoseScore(-(item.getValue()));
+
+      currentRoom.addItem(itemName);
+      viewer.showText("You have successfully drop " + itemName + "!");
+
     } else {
-      //todo
-      System.out.println();
+      viewer.showText("Sorry, you can not drop " + itemName + ". It's mostly because"
+              + " you don't have this item in your bag.");
     }
   }
 
   private void lookAround() {
     // Logic to look around
-    //TODO
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    viewer.showText(currentRoom.getDescription());
   }
 
   /**
@@ -211,7 +225,13 @@ public class GameController {
    */
   private void checkInventory() {
     // Logic to check inventory
-    //TODO
+    if (player.getItems().isEmpty()) {
+      viewer.showText("There is nothing in your inventory.");
+    } else {
+      viewer.showText("You currently have ");
+      String itemList = String.join(", ", player.getItems());
+      viewer.showText(itemList + " in your bag");
+    }
   }
 
   /**
