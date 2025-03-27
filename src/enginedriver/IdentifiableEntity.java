@@ -6,11 +6,27 @@ import java.awt.Image;
  * Class for entities that have an ID, name, and description.
  */
 public class IdentifiableEntity implements IIdentifiableEntity{
+  private int id;
+  private String name;
+  private String description;
 
   /**
    * Constructor for an identifiable entity.
+   * Room can use field of id.
    */
-  public IdentifiableEntity(String id, String name, String description) {
+  public IdentifiableEntity(int id, String name, String description) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
+
+  /**
+   * Constructor for an identifiable entity, with out ID.
+   */
+  public IdentifiableEntity( String name, String description) {
+    this.id = -1;
+    this.name = name;
+    this.description = description;
   }
 
   /**

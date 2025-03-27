@@ -227,8 +227,10 @@ public class GameController {
     int roomNumber = player.getRoomNumber();
     // get room
     Room room = gameWorld.getRoom(roomNumber);
+    // get items and fixtures from the room
+    room.isFixturein(objectName);
+    room.isItemIn(objectName);
 
-    //TODO
 //    // get items from the room
 //    // check if the objectName is in the items
 //    if (itemNames.contains(objectName)) {

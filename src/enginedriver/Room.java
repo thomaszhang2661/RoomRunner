@@ -70,4 +70,12 @@ public class Room  extends  IdentifiableEntity
     // return the puzzle or monster in the room
   }
 
+  public Boolean isItemIn(String itemName) {
+    return itemNames.contains(itemName);
+  }
+
+  public Boolean isFixturein(String fixtureName) {
+    return fixtureNames.contains(fixtureName);
+  }
+
 }

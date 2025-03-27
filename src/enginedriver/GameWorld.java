@@ -36,6 +36,19 @@ public class GameWorld {
     //TODO: from data to Maps ??
     this.player = player;
   }
+// controller: save
+// controller: restore
+//  public GameWorld(jsonObject) {
+//    this.name = name;
+//    this.version = version;
+//    this.rooms = rooms;
+//    this.items = items;
+//    this.fixtures = fixtures;
+//    this.monsters = monsters;
+//    this.puzzles = puzzles;
+//    //TODO: from data to Maps ??
+//    this.player = player;
+//  }
 
   // Getters and Setters
   public String getName() {
