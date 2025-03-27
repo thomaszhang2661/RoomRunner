@@ -11,16 +11,14 @@ public interface IItemContainer {
    * Adds an item to the container.
    *
    * @param item the item to be added
-   * @return
    */
-  boolean addItem(IItem item);
+  void addItem(String item);
 
   /**
    * Removes an item from the container.
    *
    * @param item the item to be removed
-   * @return
    */
-  boolean deleteItem(IItem item);
+  void deleteItem(String item);
 }
 

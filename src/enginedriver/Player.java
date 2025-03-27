@@ -10,22 +10,31 @@ public class Player implements IIdentifiableEntity,
         Iattackable, IItemContainer {
   private String name;
   private int health;
-  private List<IItem> inventory;
+  private List<String> inventory;
   private int maxWeight;
   private IdentifiableEntity identifiablePlayer;
   private int roomNumber; //the room that player is in
+  private int score;
 
   public Player(String name, int health, int maxWeight) {
     this.name = name;
     this.health = health;
     this.maxWeight = maxWeight;
+    score = 0;
   }
   /**
    * get current total weight of inventory.
    */
-  private int getCurrentWeight() {
-    //TODO
-    return 0;
+  public int getCurrentWeight() {
+    return maxWeight;
+  }
+
+  public void gainOrLoseWeight(int w) {
+    maxWeight += w;
+  }
+
+  public void gainOrLoseScore(int s) {
+    score += s;
   }
 
 
@@ -68,30 +77,25 @@ public class Player implements IIdentifiableEntity,
   public int getRoomNumber() {
     return roomNumber;
   }
+
+  public List<String> getItems() {
+    return inventory;
+  }
+
   /**
    * Add an item into player's inventory if it is within the maxWeight.
    *
-   * @param item the item to be added
+   * @param item the name of the item to be added
    * @return true if the item is within the maxWeight and successfully added, false otherwise
    */
   @Override
-  public boolean addItem(IItem item) {
-    if (item.getWeight() <= maxWeight) {
-      maxWeight -= item.getWeight();
-      inventory.add(item);
-      return true;
-    }
-    return false;
+  public void addItem(String item) {
+    inventory.add(item);
   }
 
   @Override
-  public boolean deleteItem(IItem item) {
-    if (inventory.contains(item)) {
-      inventory.remove(item);
-      maxWeight += item.getWeight();
-      return true;
-    }
-    return false;
+  public void deleteItem(String item) {
+    inventory.remove(item);
   }
 
   public void setRoomNumber(int roomNumber) {

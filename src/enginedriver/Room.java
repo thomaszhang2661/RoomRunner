@@ -35,7 +35,9 @@ public class Room  extends  IdentifiableEntity
     return exits;
   }
 
-
+  List<String> getItemNames() {
+    return itemNames;
+  }
   /**
    * Returns the monster in the room (if any).
    * @return the monster in the room (if any),
@@ -54,16 +56,30 @@ public class Room  extends  IdentifiableEntity
     return puzzleName;
   }
 
+  /**
+   * Adds an item to the container.
+   *
+   * @param item the item to be added
+   */
   @Override
-  public boolean addItem(IItem item) {
-
-    return false;
+  public void addItem(String item) {
+    if (item == null) {
+      throw new IllegalArgumentException("Item name cannot be null");
+    }
+    itemNames.add(item);
   }
 
+  /**
+   * Removes an item from the container.
+   *
+   * @param item the item to be removed
+   */
   @Override
-  public boolean deleteItem(IItem item) {
-
-    return false;
+  public void deleteItem(String item) {
+    if (item == null) {
+      throw new IllegalArgumentException("Item name cannot be null");
+    }
+    itemNames.remove(item);
   }
 
   public String getProblem() {

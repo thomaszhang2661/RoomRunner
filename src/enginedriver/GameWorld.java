@@ -56,9 +56,6 @@ public class GameWorld {
     return rooms.get(id);
   }
 
-  public Item getItem(String name) {
-    return items.get(name);
-  }
 
 
   public Fixture getFixture(String name) {
@@ -118,5 +115,10 @@ public class GameWorld {
             '}';
   }
 
-
+  public Item findItemByName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Name cannot be null.");
+    }
+    return items.get(name);
+    }
 }
