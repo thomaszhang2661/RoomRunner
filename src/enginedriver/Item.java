@@ -2,7 +2,7 @@ package enginedriver;
 
 import java.awt.*;
 
-public class Item implements IItem{
+public class Item  extends IdentifiableEntity implements IItem{
   private int maxUses;
   private int remainingUses;
   private int value;
@@ -10,14 +10,18 @@ public class Item implements IItem{
   private String whenUsed;
   private IdentifiableEntity identifiableItem;
 
-  public Item(int maxUses, int remainingUses, int value, int weight,
-              String whenUsed, IdentifiableEntity identifiableItem) {
+  public Item(String name, String description,int maxUses,
+                                         int remainingUses,
+                                         int value,
+                                         int weight,
+              String whenUsed) {
+    super(name, description);
     this.maxUses = maxUses;
     this.remainingUses = remainingUses;
     this.value = value;
     this.weight = weight;
     this.whenUsed = whenUsed;
-    this.identifiableItem = identifiableItem;
+
   }
 
   @Override
@@ -27,37 +31,37 @@ public class Item implements IItem{
 
   @Override
   public int getUseRemain() {
-    return 0;
+    return remainingUses;
   }
 
   @Override
   public int getUseMax() {
-    return 0;
+    return maxUses;
   }
 
   @Override
   public int getValue() {
-    return 0;
+    return value;
   }
 
   @Override
   public int getWeight() {
-    return 0;
+    return weight;
   }
 
   @Override
   public String getId() {
-    return "";
+    return super.getId();
   }
 
   @Override
   public String getName() {
-    return "";
+    return super.getName();
   }
 
   @Override
   public String getDescription() {
-    return "";
+    return super.getDescription();
   }
 
   @Override
