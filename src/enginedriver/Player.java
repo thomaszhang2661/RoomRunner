@@ -6,17 +6,14 @@ import java.util.List;
 /**
  * Class for player in the game.
  */
-public class Player implements IIdentifiableEntity,
-        Iattackable, IItemContainer {
-  private String name;
+public class Player extends EntityContainer
+        implements Iattackable {
   private int health;
-  private List<IItem> inventory;
   private int maxWeight;
-  private IdentifiableEntity identifiablePlayer;
   private int roomNumber; //the room that player is in
 
   public Player(String name, int health, int maxWeight) {
-    this.name = name;
+    super(-1, name, "Player");
     this.health = health;
     this.maxWeight = maxWeight;
   }
@@ -24,14 +21,14 @@ public class Player implements IIdentifiableEntity,
    * get current total weight of inventory.
    */
   private int getCurrentWeight() {
-    //TODO
+
     return 0;
   }
 
 
   @Override
   public void takeDamage(int damage) {
-
+    health -= damage;
   }
 
   @Override
@@ -41,7 +38,8 @@ public class Player implements IIdentifiableEntity,
 
   @Override
   public int getHealth() {
-    return 0;
+
+    return health;
   }
 
 
