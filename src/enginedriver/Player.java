@@ -98,7 +98,4 @@ public class Player implements IIdentifiableEntity,
     this.roomNumber = roomNumber;
   }
 
-  public int getRoomNumber() {
-    return roomNumber;
-  }
 }

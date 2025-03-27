@@ -181,13 +181,7 @@ public class GameController {
    * @param item the item needs to be dropped.
    */
   private void dropItem(String item) {
-    if (player.deleteItem(item)) {
-      // todo
-      System.out.println();
-    } else {
-      // todo
-      System.out.println();
-    }
+  // TODO
   }
 
   private void lookAround() {
@@ -214,7 +208,7 @@ public class GameController {
     }
 
 
-  }
+
 
   /**
    * Check the player's inventory.
