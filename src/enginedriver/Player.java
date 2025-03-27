@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Class for player in the game.
  */
-public class Player extends EntityContainer<Item>{
+public class Player extends EntityContainer<Item> {
   private int health;
   private int maxWeight;
   private int currentWeight;
@@ -58,17 +58,19 @@ public class Player extends EntityContainer<Item>{
   public int getMaxWeight() {
     return maxWeight;
   }
-//  public int getCurrentWeight() {
-//    int currentWeight = 0;
-//    Map<String,IdentifiableEntity> playerEntities = super.getEntities();
-//    for (Map.Entry<String, IdentifiableEntity>  item : playerEntities.entrySet()) {
-//      currentWeight += item.getWeight();
-//    }
-//    for (IItem item : inventory) {
-//      currentWeight += item.getWeight();
-//    }
-//  }
+  //  public int getCurrentWeight() {
+  //    int currentWeight = 0;
+  //    Map<String,IdentifiableEntity> playerEntities = super.getEntities();
+  //    for (Map.Entry<String, IdentifiableEntity>  item : playerEntities.entrySet()) {
+  //      currentWeight += item.getWeight();
+  //    }
+  //    for (IItem item : inventory) {
+  //      currentWeight += item.getWeight();
+  //    }
+  //  }
 
+
+  //TODO 还需要吗？直接updateCurrentWeight()就可以了？
   private void gainOrLoseWeight(int w) {
     maxWeight += w;
   }
@@ -80,6 +82,9 @@ public class Player extends EntityContainer<Item>{
 
   public void gainOrLoseHealth(int h) {
     health += h;
+    if (health < 0) {
+      health = 0;
+    }
   }
 
 
@@ -107,17 +112,14 @@ public class Player extends EntityContainer<Item>{
     return super.getId();
   }
 
-  @Override
   public String getName() {
     return super.getName();
   }
 
-  @Override
   public String getDescription() {
     return super.getDescription();
   }
 
-  @Override
   public Image getPicture() {
     return null;
   }
@@ -127,6 +129,10 @@ public class Player extends EntityContainer<Item>{
   }
 
 
+  @Override
+  public Map<String, Item> getEntities() {
+    return super.getEntities();
+  }
 
   /**
    * Add an item into player's inventory if it is within the maxWeight.
@@ -134,6 +140,7 @@ public class Player extends EntityContainer<Item>{
    * @param item the name of the item to be added
    * @return true if the item is within the maxWeight and successfully added, false otherwise
    */
+
 
   public boolean addItem(Item item) {
     if (item.getWeight() + getCurrentWeight() <= maxWeight) {
@@ -146,10 +153,8 @@ public class Player extends EntityContainer<Item>{
 
   /**
    * Delete an item from player's inventory.
-   * @param item
-   * @return
    */
-  public boolean deleteItem(Item item) {
+  public boolean removeItem(Item item) {
     if (super.removeEntity(item)) {
       updateCurrentWeight();
       return true;
@@ -159,6 +164,17 @@ public class Player extends EntityContainer<Item>{
 
   public void setRoomNumber(int roomNumber) {
     this.roomNumber = roomNumber;
+  }
+
+  public Map<String, Item> getItems() {
+    return super.getEntities();
+  }
+
+  /**
+   * Get an item from player's inventory.
+   */
+  public <U> U getEntity(String entityName, Class<U> clazz) {
+    return super.getEntity(entityName, clazz);  // 直接调用父类的泛型方法
   }
 
 }

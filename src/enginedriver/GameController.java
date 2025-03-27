@@ -166,22 +166,22 @@ public class GameController {
    * @param itemName the name of the item that needs to be taken.
    */
   private void takeItem(String itemName) {
-    Item item = gameWorld.findItemByName(itemName);
+    //get room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    //get item
+    Item itemAttempt = currentRoom.getEntity(String itemName, Item.class);
 
-    // Check if item in the room and player still have enough weight
-    if (currentRoom.getItemNames().contains(itemName)
-            && player.getCurrentWeight() < item.getWeight()) {
-      player.addItem(itemName);
-      player.gainOrLoseWeight(-(item.getWeight()));
-      player.gainOrLoseScore(item.getValue());
-
-      currentRoom.deleteItem(itemName);
-      viewer.showText("You have successfully add " + itemName + " to your bag!");
-
+    if (itemAttempt != null) {
+      if(player.addItem(itemAttempt)) {
+        currentRoom.removeEntity(itemAttempt);
+        viewer.showText("You have successfully add " + itemName + " to your bag!");
+      }else {
+        viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
+                + "  your bag is full.");
+      }
     } else {
-      viewer.showText("Sorry, you can not add " + itemName + " to your bag. It's either because"
-                      + " the item is not in the room or your bag is full.");
+      viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
+              + " the item is not in the room .");
     }
   }
 
@@ -190,47 +190,61 @@ public class GameController {
    * @param itemName the name of the item that needs to be dropped.
    */
   private void dropItem(String itemName) {
-    Item item = gameWorld.findItemByName(itemName);
+    Item item = player.getEntity(itemName, Item.class);
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
-
     // Check if player has this item
-    if (player.getItems().contains(itemName)) {
-      player.deleteItem(itemName);
-      player.gainOrLoseWeight(item.getWeight());
-      player.gainOrLoseScore(-(item.getValue()));
-
-      currentRoom.addItem(itemName);
+    if (item != null) {
+      player.removeItem(item);
+      currentRoom.addEntity(item);
       viewer.showText("You have successfully drop " + itemName + "!");
-
     } else {
       viewer.showText("Sorry, you can not drop " + itemName + ". It's mostly because"
               + " you don't have this item in your bag.");
     }
+
   }
 
   private void lookAround() {
     // Logic to look around
+    //TODO check if need to show what is inside the room, print names?
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     viewer.showText(currentRoom.getDescription());
+    //get items keys from the room
+    List<String> itemNames = currentRoom.getEntities().keySet().stream()
+            .toList();
+    //get fixtures keys from the room
+    List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
+            .toList();
+    //get problem from the room
+    String problemDescription = currentRoom.getProblem().getDescription();
+
+    // show the items, fixtures, problem in the room
+    viewer.showText("You see the following items: ");
+    viewer.showText(String.join(", ", itemNames));
+    viewer.showText("You see the following fixtures: ");
+    viewer.showText(String.join(", ", fixtureNames));
+    viewer.showText("You see the following problem: ");
+    viewer.showText(problemDescription);
   }
+
+
+
 
   /**
    * Use an item.
    */
-  private void useItem() {
-    // Logic to use item
-    // get player room
-    int roomNumber = player.getRoomNumber();
-    // get puzzle or moster in the room
-    String problemName = gameWorld.getRoom(roomNumber).getProblem();
-    // get problem from gameworld
-    IProblem problem;
-    // check if the problem is a puzzle or a monster
-    //IProblem problem = gameWorld.getMonster(problemName);
-    // 处理解问题的逻辑
-    //TODO
-
+  private void useItem(String itemName) {
+    Item itemAttempt = player.getEntity(itemName, Item.class);
+    if (itemAttempt == null) {
+      viewer.showText("You don't have " + itemName + " in your bag.");
+      return;
     }
+    // solve problem
+    IProblem problem = gameWorld.getRoom(player.getRoomNumber()).getProblem();
+    problem.solve(itemAttempt);
+
+  }
+
 
 
 
@@ -240,11 +254,12 @@ public class GameController {
    */
   private void checkInventory() {
     // Logic to check inventory
-    if (player.getItems().isEmpty()) {
+    Map<String, Item> items = player.getItems();
+    if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
       viewer.showText("You currently have ");
-      String itemList = String.join(", ", player.getItems());
+      String itemList = String.join(", ", items.keySet());
       viewer.showText(itemList + " in your bag");
     }
   }

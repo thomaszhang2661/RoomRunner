@@ -2,7 +2,7 @@ package enginedriver;
 
 import java.awt.*;
 
-public class Item  extends IdentifiableEntity implements IItem{
+public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
   private int maxUses;
   private int remainingUses;
   private int value;
@@ -24,17 +24,14 @@ public class Item  extends IdentifiableEntity implements IItem{
 
   }
 
-  @Override
   public void use() {
 
   }
 
-  @Override
   public int getUseRemain() {
     return remainingUses;
   }
 
-  @Override
   public int getUseMax() {
     return maxUses;
   }
