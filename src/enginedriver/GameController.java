@@ -119,6 +119,8 @@ public class GameController {
     }
   }
 
+
+
   /**
    * Move the player north.
    */
@@ -217,8 +219,21 @@ public class GameController {
    */
   private void useItem() {
     // Logic to use item
+    // get player room
+    int roomNumber = player.getRoomNumber();
+    // get puzzle or moster in the room
+    String problemName = gameWorld.getRoom(roomNumber).getProblem();
+    // get problem from gameworld
+    IProblem problem;
+    // check if the problem is a puzzle or a monster
+    //IProblem problem = gameWorld.getMonster(problemName);
+    // 处理解问题的逻辑
     //TODO
-  }
+
+    }
+
+
+
 
   /**
    * Check the player's inventory.

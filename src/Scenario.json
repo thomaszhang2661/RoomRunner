@@ -51,14 +51,3 @@
       "target" : "5:Guild", "picture": "nobleman.png" }
   ]
 }
-
-// 玩家初始出生在Dungeon Entrance，根据Room介绍，玩家可以向北进入First Layer，向东进入Guild。并且在这个房间中有一个Biliboard，玩家可以查看Biliboard的描述。
-// 玩家在查看Biliboard的描述后，认为进入Dungeon是一个很危险的行为，于是尝试向东进入Guild。但是由于Nobleman's Commission这一Puzzle的存在，玩家没有Necklace这一道具，无法进入Guild。
-// 于是玩家向北进入First Layer，在进入后根据描述，进入时的楼梯断裂，无法返回。玩家尝试向南返回，但是由于Broken Staircase这一Puzzle的存在，玩家无法返回Dungeon Entrance，必须取得Repair Tool才能解决这个问题。
-// 根据描述，First Layer中有一个Iron Sword，但玩家并没有拾取，而是直接向西进入Second Layer。
-// Second Layer中有一个名为Goblin的Monster，玩家尝试向南进入Treasure Room，但是由于Goblin的存在，无法进入，并且受到了攻击损失了15点血量。
-// 玩家试图solve这个Goblin，但是由于没有Iron Sword，无法解决掉Goblin。
-// 玩家向东返回First Layer，拾取了Iron Sword，然后向西进入Second Layer，利用它解决掉了Goblin。
-// 解决掉Goblin后，向南的路径打开，玩家向南进入Treasure Room，拾取了Necklace和Repair Tool。
-// 玩家向北返回Second Layer，向东返回First Layer，之后使用Repair Tool解决了Broken Staircase这一Puzzle。
-// 玩家向南返回Dungeon Entrance，然后使用Necklace解决了Nobleman's Commission这一Puzzle，随后向东进入Guild，根据指示获得了奖励Gold Coin，游戏结束！
