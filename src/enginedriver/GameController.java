@@ -298,6 +298,56 @@ public class GameController {
   private void answerPuzzle() {
     // Logic to answer puzzle
     //TODO
+    // Logic to answer puzzle
+    // get player room
+    int roomNumber = player.getRoomNumber();
+    // get puzzle or moster in the room
+    String problemName = gameWorld.getRoom(roomNumber).getProblem();
+    // get problem from gameworld
+    IProblem problem = gameWorld.getPuzzle(problemName);
+    // check if the problem is a puzzle or a monster
+    //IProblem problem = gameWorld.getMonster(problemName);
+    // check if the problem is solved
+    if (problem.isSolved()) {
+      viewer.showText("The problem is already solved.");
+      return;
+    }
+    
+
+    // Logic to answer puzzle
+    // check if the problem is a puzzle
+    if (problem instanceof Puzzle) {
+      // check if the answer is correct
+      if (problem.solve(objectName)) {
+        viewer.showText("You have successfully solved the puzzle!");
+        // remove the puzzle from the room
+        gameWorld.getRoom(roomNumber).setProblem(null);
+        // add the effect to the player
+        player.gainOrLoseScore(problem.getValue());
+      } else {
+        viewer.showText("Sorry, your answer is incorrect.");
+      }
+    } else if (problem instanceof Monster) {
+      // check if the monster is dead
+      if (problem.isSolved()) {
+        viewer.showText("The monster is already dead.");
+        return;
+      }
+      // check if the answer is correct
+      if (problem.solve(objectName)) {
+        viewer.showText("You have successfully killed the monster!");
+        // remove the monster from the room
+        gameWorld.getRoom(roomNumber).setProblem(null);
+        // add the effect to the player
+        player.gainOrLoseScore(problem.getValue());
+      } else {
+        viewer.showText("Sorry, your answer is incorrect.");
+      }
+    } else {
+      viewer.showText("The problem is not a puzzle or a monster.");
+    }
+    //TODO
+
   }
 
   /**

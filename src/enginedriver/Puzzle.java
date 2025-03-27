@@ -33,7 +33,7 @@ public class Puzzle implements IProblem{
 
   @Override
   public boolean isSolved() {
-    return active;
+    return !active;
   }
 
   // ?
