@@ -174,8 +174,8 @@ public class GameController {
     if (itemAttempt != null) {
       if(player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
-        viewer.showText("You have successfully add " + itemName + " to your bag!");
-      }else {
+        viewer.showText(itemName + "added to your inventory!");
+      } else {
         viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
                 + "  your bag is full.");
       }
@@ -196,10 +196,9 @@ public class GameController {
     if (item != null) {
       player.removeItem(item);
       currentRoom.addEntity(item);
-      viewer.showText("You have successfully drop " + itemName + "!");
+      viewer.showText(itemName + "dropped here in " + currentRoom.getName());
     } else {
-      viewer.showText("Sorry, you can not drop " + itemName + ". It's mostly because"
-              + " you don't have this item in your bag.");
+      viewer.showText("Sorry, you don't have " + itemName + " in your bag");
     }
 
   }
@@ -208,6 +207,7 @@ public class GameController {
     // Logic to look around
     //TODO check if need to show what is inside the room, print names?
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    viewer.showText("You are currently standing in the" + currentRoom.getName());
     viewer.showText(currentRoom.getDescription());
     //get items keys from the room
     List<String> itemNames = currentRoom.getEntities().keySet().stream()
@@ -258,9 +258,9 @@ public class GameController {
     if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
-      viewer.showText("You currently have ");
+      viewer.showText("Items in your inventory: ");
       String itemList = String.join(", ", items.keySet());
-      viewer.showText(itemList + " in your bag");
+      viewer.showText(itemList);
     }
   }
 
