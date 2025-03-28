@@ -99,7 +99,7 @@ public class GameController {
       break;
       case "L": lookAround();
       break;
-      case "U": useItem();
+      case "U": useItem(objectName);
       break;
       case "I": checkInventory();
       break;
@@ -145,6 +145,9 @@ public class GameController {
         Room enteredRoom = gameWorld.getRoom(attempRoomNum);
         //move player to the new room
         player.setRoomNumber(attempRoomNum);
+        // deal with monster attack
+        IProblem<?> problem  =  enteredRoom.getProblem();
+        handleMonsterAttack(problem);
 
         //show the enter discription
         viewer.showText("You are moving to the derection "
@@ -166,22 +169,22 @@ public class GameController {
    * @param itemName the name of the item that needs to be taken.
    */
   private void takeItem(String itemName) {
-    Item item = gameWorld.findItemByName(itemName);
+    //get room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    //get item
+    Item itemAttempt = currentRoom.getEntity(itemName, Item.class);
 
-    // Check if item in the room and player still have enough weight
-    if (currentRoom.getItemNames().contains(itemName)
-            && player.getCurrentWeight() < item.getWeight()) {
-      player.addItem(itemName);
-      player.gainOrLoseWeight(-(item.getWeight()));
-      player.gainOrLoseScore(item.getValue());
-
-      currentRoom.deleteItem(itemName);
-      viewer.showText("You have successfully add " + itemName + " to your bag!");
-
+    if (itemAttempt != null) {
+      if(player.addItem(itemAttempt)) {
+        currentRoom.removeEntity(itemAttempt);
+        viewer.showText("You have successfully add " + itemName + " to your bag!");
+      }else {
+        viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
+                + "  your bag is full.");
+      }
     } else {
-      viewer.showText("Sorry, you can not add " + itemName + " to your bag. It's either because"
-                      + " the item is not in the room or your bag is full.");
+      viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
+              + " the item is not in the room .");
     }
   }
 
@@ -190,47 +193,88 @@ public class GameController {
    * @param itemName the name of the item that needs to be dropped.
    */
   private void dropItem(String itemName) {
-    Item item = gameWorld.findItemByName(itemName);
+    Item item = player.getEntity(itemName, Item.class);
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
-
     // Check if player has this item
-    if (player.getItems().contains(itemName)) {
-      player.deleteItem(itemName);
-      player.gainOrLoseWeight(item.getWeight());
-      player.gainOrLoseScore(-(item.getValue()));
-
-      currentRoom.addItem(itemName);
+    if (item != null) {
+      player.removeItem(item);
+      currentRoom.addEntity(item);
       viewer.showText("You have successfully drop " + itemName + "!");
-
     } else {
       viewer.showText("Sorry, you can not drop " + itemName + ". It's mostly because"
               + " you don't have this item in your bag.");
     }
+
   }
 
-  private void lookAround() {
+  private void lookAround(){
     // Logic to look around
+    //TODO check if need to show what is inside the room, print names?
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    // deal with monster attack
+    IProblem<?> problem  =  currentRoom.getProblem();
+    handleMonsterAttack(problem);
+
+    // check if room has
     viewer.showText(currentRoom.getDescription());
+    //get items keys from the room
+    List<String> itemNames = currentRoom.getEntities().keySet().stream()
+            .toList();
+    //get fixtures keys from the room
+    List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
+            .toList();
+    //get problem from the room
+    String problemDescription = currentRoom.getProblem().getDescription();
+
+    // show the items, fixtures, problem in the room
+    viewer.showText("You see the following items: ");
+    viewer.showText(String.join(", ", itemNames));
+    viewer.showText("You see the following fixtures: ");
+    viewer.showText(String.join(", ", fixtureNames));
+    viewer.showText("You see the following problem: ");
+    viewer.showText(problemDescription);
   }
+
+
+
 
   /**
    * Use an item.
    */
-  private void useItem() {
-    // Logic to use item
-    // get player room
-    int roomNumber = player.getRoomNumber();
-    // get puzzle or moster in the room
-    String problemName = gameWorld.getRoom(roomNumber).getProblem();
-    // get problem from gameworld
-    IProblem problem;
-    // check if the problem is a puzzle or a monster
-    //IProblem problem = gameWorld.getMonster(problemName);
-    // 处理解问题的逻辑
-    //TODO
+  private void useItem(String itemName) {
+    // get room
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    Item itemAttempt = player.getEntity(itemName, Item.class);
+    IProblem<?> problem  =  currentRoom.getProblem();
+
+    if (itemAttempt == null) {
+      viewer.showText("You don't have " + itemName + " in your bag.");
+      // deal with monster attack
+      handleMonsterAttack(problem);
+      return;
+    }
+
+    //check solution type
+    Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
+    if(solutionClass== Item.class) {
+      IProblem<Item> itemproblem = (IProblem<Item>) problem;
+      boolean flag = itemproblem.solve(itemAttempt);
+      if (flag) {
+        viewer.showText("You have successfully solved the problem with " + itemName);
+        //TODO update room exits
+        //TODO update score
+        return;
+      } else {
+        viewer.showText("You have failed to solve the problem with " + itemName);
+        // deal with monster attack
+        handleMonsterAttack(problem);
+      }
 
     }
+
+
+  }
+
 
 
 
@@ -240,11 +284,12 @@ public class GameController {
    */
   private void checkInventory() {
     // Logic to check inventory
-    if (player.getItems().isEmpty()) {
+    Map<String, Item> items = player.getItems();
+    if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
       viewer.showText("You currently have ");
-      String itemList = String.join(", ", player.getItems());
+      String itemList = String.join(", ", items.keySet());
       viewer.showText(itemList + " in your bag");
     }
   }
@@ -252,45 +297,24 @@ public class GameController {
   /**
    * Examine an item.
    */
-  private void examine(String objectName) {
+  private void examine(String entityName) {
     // Logic to examine item
-    // get current room number
-    int roomNumber = player.getRoomNumber();
-    // get room
-    Room room = gameWorld.getRoom(roomNumber);
-
-    //TODO
-//    // get items from the room
-//    // check if the objectName is in the items
-//    if (itemNames.contains(objectName)) {
-//      // get the item
-//      gameWorld.getItem(objectName);
-//    } else if (fixtureNames.contains(objectName)) {
-//      // get the fixture
-//      //TODO
-//    } else {
-//      // objectName is not in the items or fixtures
-//      viewer.showText(objectName + " is not in the room.");
-//    }
-    // get fixtures from the room
+    // get current room
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    IIdentifiableEntity entity= currentRoom.getEntity(entityName, Item.class);
+    if (entity == null) {
+      entity = currentRoom.getEntity(entityName, Fixture.class);
+    }
+    if (entity == null) {
+      viewer.showText(entityName +" is not in the room.");
+    } else {
+      viewer.showText(entity.getDescription());
+    }
   }
 
-  /**
-   * Diminish the player's health
-   */
-  private void attackPlayer() {
-    //TODO
 
-  }
 
-  /**
-   * Block the description of the room the puzzle's in, keep the player from
-   * entering said room.
-   */
-  private void blockRoom() {
-    //TODO
 
-  }
 
   /**
    * Answer a puzzle.
@@ -360,5 +384,15 @@ public class GameController {
     // 区分用户操作是否对gameworld造成了影响，
     //  如果有影响，记录操作和变化
     //TODO
+  }
+
+
+
+  private void handleMonsterAttack(IProblem<?> problem) {
+    if (problem instanceof Monster && problem.getActive()) {
+      Monster monster = (Monster) problem;
+      monster.attack(player);
+      //TODO 这里好像要说话，需要完善
+    }
   }
 }

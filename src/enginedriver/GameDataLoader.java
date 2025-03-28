@@ -19,6 +19,9 @@ public class GameDataLoader {
       System.err.println("Error reading the game file: " + e.getMessage());
     }
 
+    //jsonobject
+    //gameWorld.get("rooms")[0]
+
     return gameWorld;
   }
 

@@ -6,24 +6,40 @@ import java.util.Map;
 /**
  * class for a room in the game.
  */
-public class Room  extends  IdentifiableEntity
-        implements IItemContainer {
+public class Room  extends  EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
-  private List<String> itemNames;
-  private List<String> fixtureNames;
-  private String problem;
+  private IProblem problem;
 
   /**
-   * Constructor for a room.
+   * Simple Constructor for a room
    */
-  public Room(String id, String name, String description,
-              Map<String, Integer> exits, List<String>itemNames,
-              List<String> fixtureNames, String problem,
-              String problem) {
+  public Room(int id, String name, String description,
+              Map<String, Integer> exits) {
     super(id, name, description);
     this.exits = exits;
-    this.itemNames = itemNames;
-    this.fixtureNames = fixtureNames;
+    this.problem = null;
+  }
+
+  /**
+   * Constructor for a room with Map of Entities.
+   */
+  public Room(int id, String name, String description,
+              Map<String, Integer> exits,
+              Map<String,IdentifiableEntity> entityNames) {
+    super(id, name, description, entityNames);
+    this.exits = exits;
+    this.problem = null;
+  }
+
+  /**
+   * Constructor for a room with Map of Entities.
+   */
+  public Room(int id, String name, String description,
+              Map<String, Integer> exits,
+              Map<String,IdentifiableEntity> entityNames,
+              IProblem problem) {
+    super(id, name, description, entityNames);
+    this.exits = exits;
     this.problem = problem;
   }
 
@@ -35,55 +51,45 @@ public class Room  extends  IdentifiableEntity
     return exits;
   }
 
-  List<String> getItemNames() {
-    return itemNames;
-  }
   /**
-   * Returns the monster in the room (if any).
-   * @return the monster in the room (if any),
-   *      return null if no monster
+   * unlocks an exit from the room.
    */
-  String getMonster() {
-    return monsterName;
+  void unlockExit(String key) {
+    exits.put(key, Math.abs(exits.get(key)));
   }
 
   /**
-   * Returns the puzzle in the room (if any).
-   * @return the puzzle in the room (if any),
-   *                return null if no puzzle
+   * adds an entity to the room.
    */
-  String getPuzzle() {
-    return puzzleName;
+  public boolean addEntity(IdentifiableEntity entity) {
+    return super.addEntity(entity);
   }
 
   /**
-   * Adds an item to the container.
-   *
-   * @param item the item to be added
+   * removes an entity from the room.
    */
-  @Override
-  public void addItem(String item) {
-    if (item == null) {
-      throw new IllegalArgumentException("Item name cannot be null");
-    }
-    itemNames.add(item);
+  public boolean removeEntity(IdentifiableEntity entity) {
+    return super.removeEntity(entity);
   }
 
   /**
-   * Removes an item from the container.
-   *
-   * @param item the item to be removed
+   *  Check if the room has an entity.
    */
-  @Override
-  public void deleteItem(String item) {
-    if (item == null) {
-      throw new IllegalArgumentException("Item name cannot be null");
-    }
-    itemNames.remove(item);
+  public Boolean  hasEntity(IdentifiableEntity entity) {
+    return super.hasEntity(entity);
   }
 
-  public String getProblem() {
-    // return the puzzle or monster in the room
+  /**
+   *  get an Entity from the room.
+   */
+  public <U> U getEntity(String entityName, Class<U> clazz) {
+    return super.getEntity(entityName, clazz);
   }
 
+  /**
+   * get the problem in the room.
+   */
+  public IProblem getProblem() {
+    return problem;
+  }
 }
