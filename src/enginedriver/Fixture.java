@@ -5,8 +5,7 @@ import java.awt.*;
 public class Fixture extends IdentifiableEntity implements IWeightable {
   private int weight;
   private Puzzle puzzle;
-  // ?
-  private boolean state;
+  private Object states;
   private Image picture;
 
   /**
@@ -21,8 +20,8 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
     super(id, name, description);
   }
 
-  public boolean isState() {
-    return state;
+  public Object getStates() {
+    return null;
   }
 
   public Puzzle getPuzzle() {
@@ -35,17 +34,12 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   }
 
   @Override
-  public Image getPicture() {
-    return null;
-  }
-
-  @Override
   public String toString() {
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
             "\"weight\":\"" + getWeight() + "\"," +
             "\"puzzle\":\"" + getPuzzle() + "\"," +
-            "\"state\":\"" + isState() + "\"," +
+            "\"state\":\"" + getStates() + "\"," +
             "\"description\":\"" + getDescription() + "\"," +
             "\"picture\":\"" + getPicture() + "\"" +
             " }";
