@@ -312,7 +312,7 @@ public class GameController {
       viewer.showText("The problem is already solved.");
       return;
     }
-    
+
 
     // Logic to answer puzzle
     // check if the problem is a puzzle
