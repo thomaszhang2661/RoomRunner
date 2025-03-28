@@ -46,8 +46,8 @@ public class Puzzle<T> extends Problem<T>{
   }
 
   @Override
-  public boolean isSolved() {
-    return super.isSolved();
+  public boolean getActive() {
+    return super.getActive();
   }
 
   @Override

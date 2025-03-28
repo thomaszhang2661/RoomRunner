@@ -312,42 +312,79 @@ public class GameController {
     }
   }
 
+  /**
+   * Helper method to unlock exits of a room.
+   */
+  private void unlockExits(Room room) {
+    for (String key : room.getExits().keySet()) {
+      int value = room.getExits().get(key);
+      if (value < 0) {
+        room.unlockExit(key);  // Unlock exit if value is negative
+      }
+    }
+  }
 
-
-
+  /**
+   * Helper method to handle common logic for solving the puzzle
+   */
+  private void handlePuzzleSolution(boolean isCorrect, Room room, IProblem<?> problem) {
+    if (isCorrect) {
+      viewer.showText("You have successfully solved the puzzle!");
+      // Unlock the exit of the room
+      unlockExits(room);
+      // Add the score to the player
+      gameWorld.addScore(problem.getValue());
+    } else {
+      viewer.showText("Sorry, your answer is incorrect.");
+      // Puzzle affects the player
+      if (((Puzzle<?>) problem).getAffect_player()) {
+        player.gainOrLoseHealth(-5);
+        viewer.showText("Player takes -5 damage!");
+      }
+    }
+  }
 
   /**
    * Answer a puzzle.
    */
-  private void answerPuzzle(String answer) {
-    // Logic to answer puzzle
-    //TODO
-    // Logic to answer puzzle
-    // get player room
-    int roomNumber = player.getRoomNumber();
+  private void answerPuzzle() {
+
+    // get the current room
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     // get puzzle or moster in the room
-    String problemName = gameWorld.getRoom(roomNumber).getProblem();
-    if(problemName == null) {
+    IProblem problem = currentRoom.getProblem();
+    if (problem == null) {
       viewer.showText("There is no puzzle or monster in this room.");
       return;
     }
-    // get problem from gameworld
-    IProblem curentPuzzle = gameWorld.getPuzzle(problemName);
     // check if the problem is a puzzle
-    if(curentPuzzle == null) {
+    if (problem.getClass() != Puzzle.class) {
       viewer.showText("There is no puzzle in this room.");
       return;
     }
-    // try to solve the puzzle
-    curentPuzzle.solve(answer);
-    if (curentPuzzle.isSolved()) {
-      viewer.showText("You have successfully solved the puzzle!");
-      // remove the puzzle from the room
-      gameWorld.getRoom(roomNumber).setProblem(null);
-      // add the effect to the player
-      player.gainOrLoseScore(curentPuzzle.getValue());
+
+    // check if the puzzle is solved
+    if (!problem.getActive()) {
+      viewer.showText("The puzzle is already solved.");
+      return;
+    }
+
+    // get the solution of the puzzle
+    String solution = problem.getSolution().toString();
+    // check if the solution is a string
+    if (solution.startsWith("'") && solution.endsWith("'")) {
+      String answer = solution.substring(1, solution.length() - 1);
+      handlePuzzleSolution(problem.solve(answer), currentRoom, problem);
     } else {
-      viewer.showText("Sorry, your answer is incorrect.");
+      // the solution is an item
+      Item itemAttempt = player.getEntity(solution, Item.class);
+      if (itemAttempt == null) {
+        viewer.showText("You don't have " + solution + " in your bag.");
+        // deal with monster attack
+        handleMonsterAttack(problem);
+        return;
+      }
+      handlePuzzleSolution(problem.solve(itemAttempt), currentRoom, problem);
     }
   }
 

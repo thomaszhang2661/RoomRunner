@@ -64,6 +64,10 @@ public class GameWorld {
     this.score = score;
   }
 
+  public void addScore(int inputValue) {
+    this.score += inputValue;
+  }
+
   public int getScore() {
     return score;
   }
