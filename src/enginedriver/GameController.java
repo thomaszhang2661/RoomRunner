@@ -404,14 +404,8 @@ public class GameController {
     } else {
       // the solution is an item
       input = capitalizeWords(input);
-      Item itemAttempt = player.getEntity(input, Item.class);
-      if (itemAttempt == null) {
-        viewer.showText("You don't have " + input + " in your bag.");
-        // try to solve the puzzle with the input
-        handlePuzzleSolution(problem.solve(itemAttempt), currentRoom, problem);
-        return;
+      useItem(input);
       }
-
     }
   }
 
