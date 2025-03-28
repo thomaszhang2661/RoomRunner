@@ -57,9 +57,9 @@ public class Monster implements IMonster{
   public String toString() {
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
-            "\"active\":\"" + isActive() + "\"," +
-            "\"affects_target\":\"" + affectsTarget() + "\"," +
-            "\"affects_player\":\"" + affectsPlayer() + "\"," +
+            "\"active\":\"" + isSolved() + "\"," +
+            "\"affects_target\":\"" + isAffectTarget() + "\"," +
+            "\"affects_player\":\"" + isAffectPlayer() + "\"," +
             "\"solution\":\"" + getSolution() + "\"," +
             "\"value\":\"" + getValue() + "\"," +
             "\"description\":\"" + getDescription() + "\"," +

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import enginedriver.GameWorld;
@@ -22,8 +23,8 @@ public class GameDataLoader {
   }
 
   public static void saveGameWorld(GameWorld gameWorld, String fileName) {
-    try {
-      mapper.writeValue(new File(fileName), gameWorld);
+    try (FileWriter fileWriter = new FileWriter(fileName)) {
+      fileWriter.write(gameWorld.toString());
     } catch (IOException e) {
       System.err.println("Error saving the game file: " + e.getMessage());
     }

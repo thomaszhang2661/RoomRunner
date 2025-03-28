@@ -42,18 +42,18 @@ public class Room  extends  IdentifiableEntity
    * @return the monster in the room (if any),
    *      return null if no monster
    */
-//  String getMonster() {
-//    return monsterName;
-//  }
+  String getMonster() {
+    return monsterName;
+  }
 
   /**
    * Returns the puzzle in the room (if any).
    * @return the puzzle in the room (if any),
    *                return null if no puzzle
    */
-//  String getPuzzle() {
-//    return puzzleName;
-//  }
+  String getPuzzle() {
+    return puzzleName;
+  }
 
   /**
    * Adds an item to the container.
@@ -98,8 +98,8 @@ public class Room  extends  IdentifiableEntity
             "\"W\":\"" + getExits().get("W") + "\"," +
             "\"puzzle\":\"" + getPuzzle() + "\"," +
             "\"monster\":\"" + getMonster() + "\"," +
-            "\"items\":\"" + getItems() + "\"," +
-            "\"fixtures\":\"" + getFixtures() + "\"," +
+            "\"items\":\"" + getItemNames() + "\"," +
+            "\"fixtures\":\"" + getFixtureNames() + "\"," +
             "\"picture\":\"" + getPicture() + "\"" +
             " }";
   }
