@@ -9,7 +9,9 @@ public interface IProblem<T> extends IValuable{
    * check if the problem is solved.
    * @return true if solved, false otherwise
    */
-  boolean isSolved();
+  boolean getActive();
+
+  T getSolution();
 
   /**
    * Solve the problem by using a String.

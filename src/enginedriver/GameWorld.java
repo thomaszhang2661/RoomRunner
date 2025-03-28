@@ -12,43 +12,25 @@ public class GameWorld {
   private String name;
   private String version;
   private Map<Integer, Room> rooms;
-  private Map<String, Item> items;
-  private Map<String, Fixture> fixtures;
-  private Map<String, Monster> monsters;
-  private Map<String, Puzzle> puzzles;
-
+//  private Map<String, Item> items;
+//  private Map<String, Fixture> fixtures;
+//  private Map<String, Monster> monsters;
+//  private Map<String, Puzzle> puzzles;
+  private int score;
   private Player player; //记录生命值、item、位置等
 
   public GameWorld(String name, String version,
                    Map<Integer, Room> rooms,
-                   Map<String, Item> items,
-                   Map<String, Fixture> fixtures,
-                   Map<String, Monster> monsters,
-                   Map<String, Puzzle> puzzles,
-                   Player player) {
-    this.name = name;
+                   Player player,
+                   int score) {
+    this.name = name; // ？？？need name TODO
     this.version = version;
     this.rooms = rooms;
-    this.items = items;
-    this.fixtures = fixtures;
-    this.monsters = monsters;
-    this.puzzles = puzzles;
-    //TODO: from data to Maps ??
     this.player = player;
+    this.score = score;
+
   }
-// controller: save
-// controller: restore
-//  public GameWorld(jsonObject) {
-//    this.name = name;
-//    this.version = version;
-//    this.rooms = rooms;
-//    this.items = items;
-//    this.fixtures = fixtures;
-//    this.monsters = monsters;
-//    this.puzzles = puzzles;
-//    //TODO: from data to Maps ??
-//    this.player = player;
-//  }
+
 
   // Getters and Setters
   public String getName() {
@@ -59,7 +41,7 @@ public class GameWorld {
     return version;
   }
 
-  public Map<String,Room> getRooms() {
+  public Map<Integer,Room> getRooms() {
     return rooms;
   }
 
@@ -69,45 +51,23 @@ public class GameWorld {
     return rooms.get(id);
   }
 
-
-
-  public Fixture getFixture(String name) {
-    return fixtures.get(name);
-  }
-
-  public Monster getMonster(String name) {
-    return monsters.get(name);
-  }
-
-  public Puzzle getPuzzle(String name) {
-    return puzzles.get(name);
-  }
-
-  public Player getPlayer() {
-    return player;
-  }
-
   public void setName(String name) {
     this.name = name;
   }
   public void setVersion(String version) {
     this.version = version;
   }
-  public void setRooms(List<Room> rooms) {
+  public void setRooms(Map<Integer, Room>  rooms) {
     this.rooms = rooms;
   }
-  public void setItems(List<IItem> items) {
-    this.items = items;
+  public void setScore(int score) {
+    this.score = score;
   }
-  public void setFixtures(List<Fixture> fixtures) {
-    this.fixtures = fixtures;
+
+  public int getScore() {
+    return score;
   }
-  public void setMonsters(List<Monster> monsters) {
-    this.monsters = monsters;
-  }
-  public void setPuzzles(List<Puzzle> puzzles) {
-    this.puzzles = puzzles;
-  }
+
   public void setPlayer(String name, int health, int maxWeight) {
     this.player = new Player(name, health, maxWeight);
   }
@@ -116,22 +76,23 @@ public class GameWorld {
   }
   @Override
   public String toString() {
+    //TODO update toString
     return "GameWorld{" +
             "name='" + name + '\'' +
             ", version='" + version + '\'' +
             ", rooms=" + rooms +
-            ", items=" + items +
-            ", fixtures=" + fixtures +
-            ", monsters=" + monsters +
-            ", puzzles=" + puzzles +
+//            ", items=" + items +
+//            ", fixtures=" + fixtures +
+//            ", monsters=" + monsters +
+//            ", puzzles=" + puzzles +
             ", player=" + player +
             '}';
   }
 
-  public Item findItemByName(String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null.");
-    }
-    return items.get(name);
-    }
+//  public Item findItemByName(String name) {
+//    if (name == null) {
+//      throw new IllegalArgumentException("Name cannot be null.");
+//    }
+//    return items.get(name);
+//    }
 }

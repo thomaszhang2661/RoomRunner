@@ -1,5 +1,7 @@
 package enginedriver;
 
+import com.sun.source.tree.PackageTree;
+
 import java.awt.*;
 
 public class Monster<T> extends Problem<T>{
@@ -44,8 +46,8 @@ public class Monster<T> extends Problem<T>{
   }
 
   @Override
-  public boolean isSolved() {
-    return super.isSolved();
+  public boolean getActive() {
+    return super.getActive();
   }
 
   @Override
@@ -65,6 +67,8 @@ public class Monster<T> extends Problem<T>{
 
   public void attack(Player player) {
     // Attack the player
-    player.gainOrLoseHealth(damage);
+    if (super.getActive() && super.getAffect_player()) {
+      player.gainOrLoseHealth(damage);
+    }
   }
 }

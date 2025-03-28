@@ -28,20 +28,38 @@ abstract public class Problem<T> extends IdentifiableEntity
     this.target = target;
     this.pictureName = pictureName;
     this.solution = solution;
+
   }
 
 
-
+public boolean getAffect_player() {
+    return affects_player;
+  }
   @Override
-  public boolean isSolved() {
+  public boolean getActive() {
     return active;
   }
 
   @Override
+  public T getSolution() {
+    return solution;
+  }
+
+  @Override
   public boolean solve(T input) {
-    if (input.equals(solution)) {
-      active = false;
-      return true;
+    // if input is String
+    if (input instanceof String) {
+      if (input.equals(solution)) {
+        active = false;
+        return true;
+      }
+    }
+    // if input is Item
+    if (input instanceof Item) {
+      if (((Item) input).getName().equals(solution)) {
+        active = false;
+        return true;
+      }
     }
     return false;
   }
