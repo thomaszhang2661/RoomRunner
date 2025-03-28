@@ -70,11 +70,6 @@ public class Player extends EntityContainer<Item> {
   //  }
 
 
-  //TODO 还需要吗？直接updateCurrentWeight()就可以了？
-  private void gainOrLoseWeight(int w) {
-    maxWeight += w;
-  }
-
   // move to gameWorld
 //  public void gainOrLoseScore(int s) {
 //    score += s;
