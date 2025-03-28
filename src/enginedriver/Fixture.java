@@ -3,17 +3,23 @@ package enginedriver;
 import java.awt.*;
 
 public class Fixture implements IWeightable{
-  private String ID;
-  private String name;
-  private String description;
-  private int weight;
+  private final String ID;
+  private final String name;
+  private final String description;
+  private final int weight;
   private Puzzle puzzle;
-  // ?
-  private boolean state;
-  private Image picture;
+  private Object states;
+  private final Image picture;
 
-  public boolean isState() {
-    return state;
+  public Fixture(String ID, String name, String description,
+                 int weight, Image picture) {
+    this.ID = ID;
+    this.name = name;
+    this.description = description;
+    this.weight = weight;
+    this.puzzle = null;
+    this.states = null;
+    this.picture = picture;
   }
 
   public Puzzle getPuzzle() {
@@ -22,26 +28,31 @@ public class Fixture implements IWeightable{
 
   @Override
   public int getWeight() {
-    return 0;
+    return weight;
   }
 
   @Override
   public String getId() {
-    return "";
+    return ID;
   }
 
   @Override
   public String getName() {
-    return "";
+    return name;
   }
 
   @Override
   public String getDescription() {
-    return "";
+    return description;
   }
 
   @Override
   public Image getPicture() {
-    return null;
+    return picture;
   }
+
+  public Object getStates() {
+    return states;
+  }
+
 }
