@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -345,6 +346,17 @@ public class GameController {
   }
 
   /**
+   * Helper function to capitalize the first letter of each word in a string.
+   * @param input the input string
+   * @return the string with each word's first letter capitalized
+   */
+  private String capitalizeWords(String input) {
+    return Arrays.stream(input.split("\\s+"))
+            .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+            .collect(Collectors.joining(" "));
+  }
+
+  /**
    * Answer a puzzle.
    */
   private void answerPuzzle() {
@@ -369,22 +381,37 @@ public class GameController {
       return;
     }
 
+    // get player's input
+    String input;
+    while (true) {
+      viewer.showText("Please enter your answer: ");
+      Scanner scanner = new Scanner(System.in);
+      input = scanner.nextLine();
+      if (!input.isEmpty()) {
+        break;
+      }
+      viewer.showText("You must enter an answer.");
+    }
+    input = input.trim().replaceAll("\\s+", " ").toLowerCase();
+
     // get the solution of the puzzle
-    String solution = problem.getSolution().toString();
+    String correctSolution = problem.getSolution().toString();
     // check if the solution is a string
-    if (solution.startsWith("'") && solution.endsWith("'")) {
-      String answer = solution.substring(1, solution.length() - 1);
-      handlePuzzleSolution(problem.solve(answer), currentRoom, problem);
+    if (correctSolution.startsWith("'") && correctSolution.endsWith("'")) {
+      input = "'" + capitalizeWords(input) + "'";
+      // try to solve the puzzle with the input
+      handlePuzzleSolution(problem.solve(input), currentRoom, problem);
     } else {
       // the solution is an item
-      Item itemAttempt = player.getEntity(solution, Item.class);
+      input = capitalizeWords(input);
+      Item itemAttempt = player.getEntity(input, Item.class);
       if (itemAttempt == null) {
-        viewer.showText("You don't have " + solution + " in your bag.");
-        // deal with monster attack
-        handleMonsterAttack(problem);
+        viewer.showText("You don't have " + input + " in your bag.");
+        // try to solve the puzzle with the input
+        handlePuzzleSolution(problem.solve(itemAttempt), currentRoom, problem);
         return;
       }
-      handlePuzzleSolution(problem.solve(itemAttempt), currentRoom, problem);
+
     }
   }
 
