@@ -84,6 +84,27 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
    */
   public <U> U getEntity(String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);
+  public String getProblem() {
+    // return the puzzle or monster in the room
+  return problem;
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"room_name\":\"" + getRoomName() + "\"," +
+            "\"room_number\":\"" + getRoomNumber() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"N\":\"" + getExits().get("N") + "\"," +
+            "\"S\":\"" + getExits().get("S") + "\"," +
+            "\"E\":\"" + getExits().get("E") + "\"," +
+            "\"W\":\"" + getExits().get("W") + "\"," +
+            "\"puzzle\":\"" + getPuzzle() + "\"," +
+            "\"monster\":\"" + getMonster() + "\"," +
+            "\"items\":\"" + getItemNames() + "\"," +
+            "\"fixtures\":\"" + getFixtureNames() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
   }
 
   /**

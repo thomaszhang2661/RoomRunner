@@ -46,6 +46,8 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
     return weight;
   }
 
+  public String getWhenUsed() {return "";}
+
   @Override
   public String getId() {
     return super.getId();
@@ -64,5 +66,19 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
   @Override
   public Image getPicture() {
     return null;
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"weight\":\"" + getWeight() + "\"," +
+            "\"max_uses\":\"" + getUseMax() + "\"," +
+            "\"uses_remaining\":\"" + getUseRemain() + "\"," +
+            "\"value\":\"" + getValue() + "\"," +
+            "\"when_used\":\"" + getWhenUsed() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
   }
 }

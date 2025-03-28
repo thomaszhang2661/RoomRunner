@@ -65,10 +65,19 @@ public class Puzzle<T> extends Problem<T>{
     return super.getEffects();
   }
 
-
-
-
-
-
-
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"active\":\"" + isSolved() + "\"," +
+            "\"affects_target\":\"" + isAffectTarget() + "\"," +
+            "\"affects_player\":\"" + isAffectPlayer() + "\"," +
+            "\"solution\":\"" + getSolution() + "\"," +
+            "\"value\":\"" + getValue() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"effects\":\"" + getEffects() + "\"," +
+            "\"target\":\"" + getTarget() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
+  }
 }

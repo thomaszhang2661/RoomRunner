@@ -172,4 +172,16 @@ public class Player extends EntityContainer<Item> {
     return super.getEntity(entityName, clazz);  // 直接调用父类的泛型方法
   }
 
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"health\":\"" + getHealth() + "\"," +
+            "\"inventory\":\"" + getItems() + "\"," +
+            "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
+            "\"roomNumber\":\"" + getRoomNumber() + "\"," +
+            "\"score\":\"" + score + "\"" +
+            " }";
+  }
+
 }

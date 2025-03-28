@@ -74,19 +74,65 @@ public class GameWorld {
   public void setPlayer(Player player) {
     this.player = player;
   }
-  @Override
-  public String toString() {
-    //TODO update toString
-    return "GameWorld{" +
-            "name='" + name + '\'' +
-            ", version='" + version + '\'' +
-            ", rooms=" + rooms +
+//  @Override
+//  public String toString() {
+//    return "GameWorld{" +
+//            "name='" + name + '\'' +
+//            ", version='" + version + '\'' +
+//            ", rooms=" + rooms +
 //            ", items=" + items +
 //            ", fixtures=" + fixtures +
 //            ", monsters=" + monsters +
 //            ", puzzles=" + puzzles +
-            ", player=" + player +
-            '}';
+//            ", player=" + player +
+//            '}';
+//  }
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{ ");
+    sb.append("\"name\":\"").append(name).append("\",");
+    sb.append("\"version\":\"").append(version).append("\",");
+
+    sb.append("\"rooms\":{");
+    for (Map.Entry<Integer, Room> entry : rooms.entrySet()) {
+      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    }
+    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("},");
+
+    sb.append("\"items\":{");
+    for (Map.Entry<String, Item> entry : items.entrySet()) {
+      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    }
+    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("},");
+
+    sb.append("\"fixtures\":{");
+    for (Map.Entry<String, Fixture> entry : fixtures.entrySet()) {
+      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    }
+    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("},");
+
+    sb.append("\"monsters\":{");
+    for (Map.Entry<String, Monster> entry : monsters.entrySet()) {
+      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    }
+    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("},");
+
+    sb.append("\"puzzles\":{");
+    for (Map.Entry<String, Puzzle> entry : puzzles.entrySet()) {
+      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    }
+    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("},");
+
+    sb.append("\"player\":").append(player.toString());
+    sb.append(" }");
+
+    return sb.toString();
   }
 
 //  public Item findItemByName(String name) {

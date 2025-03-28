@@ -49,5 +49,8 @@
       "description" : "The nobleman was moving back and forth from side to side in the Guild with an anxious look, as if he had lost something very important. You can't come back to the Guild empty-handed!",
       "effects" : "You cannot go back to the guild until you find the nobleman's necklace.",
       "target" : "5:Guild", "picture": "nobleman.png" }
+  ],
+  "player": [
+    {"name": "Avatar", "health": "100", "inventory": "", "max_weight": "20", "roomNumber": "1", "score": "0" }
   ]
 }

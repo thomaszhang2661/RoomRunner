@@ -71,4 +71,23 @@ public class Monster<T> extends Problem<T>{
       player.gainOrLoseHealth(damage);
     }
   }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"active\":\"" + isSolved() + "\"," +
+            "\"affects_target\":\"" + isAffectTarget() + "\"," +
+            "\"affects_player\":\"" + isAffectPlayer() + "\"," +
+            "\"solution\":\"" + getSolution() + "\"," +
+            "\"value\":\"" + getValue() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"effects\":\"" + getEffects() + "\"," +
+            "\"damage\":\"" + getDamage() + "\"," +
+            "\"target\":\"" + getTarget() + "\"," +
+            "\"can_attack\":\"" + canAttack() + "\"," +
+            "\"attack\":\"" + getAttack() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
+  }
 }
