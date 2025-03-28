@@ -38,13 +38,19 @@ public class Puzzle implements IProblem{
 
   // ?
   @Override
-  public boolean solve(String solution) {
-
+  public void solve(String solution) {
+    // check if the solution is correct
+    if(solution == this.solution) {
+      active = false;
+    }
   }
 
   @Override
-  public boolean solve(IItem item) {
-
+  public void solve(IItem item) {
+    // check if the item is correct
+    if(item.getId() == this.solution) {
+      active = false;
+    }
   }
 
   // Return effects, whatever that type is.
