@@ -337,11 +337,6 @@ public class GameController {
       gameWorld.addScore(problem.getValue());
     } else {
       viewer.showText("Sorry, your answer is incorrect.");
-      // Puzzle affects the player
-      if (((Puzzle<?>) problem).getAffect_player()) {
-        player.gainOrLoseHealth(-5);
-        viewer.showText("Player takes -5 damage!");
-      }
     }
   }
 
