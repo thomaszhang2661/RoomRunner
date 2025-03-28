@@ -2,6 +2,7 @@ package enginedriver;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * class for a room in the game.
@@ -25,7 +26,7 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
-              Map<String,IdentifiableEntity> entityNames) {
+              Map<String, IdentifiableEntity> entityNames) {
     super(id, name, description, entityNames);
     this.exits = exits;
     this.problem = null;
@@ -84,27 +85,6 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
    */
   public <U> U getEntity(String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);
-  public String getProblem() {
-    // return the puzzle or monster in the room
-  return problem;
-  }
-
-  @Override
-  public String toString() {
-    return "{ " +
-            "\"room_name\":\"" + getRoomName() + "\"," +
-            "\"room_number\":\"" + getRoomNumber() + "\"," +
-            "\"description\":\"" + getDescription() + "\"," +
-            "\"N\":\"" + getExits().get("N") + "\"," +
-            "\"S\":\"" + getExits().get("S") + "\"," +
-            "\"E\":\"" + getExits().get("E") + "\"," +
-            "\"W\":\"" + getExits().get("W") + "\"," +
-            "\"puzzle\":\"" + getPuzzle() + "\"," +
-            "\"monster\":\"" + getMonster() + "\"," +
-            "\"items\":\"" + getItemNames() + "\"," +
-            "\"fixtures\":\"" + getFixtureNames() + "\"," +
-            "\"picture\":\"" + getPicture() + "\"" +
-            " }";
   }
 
   /**
@@ -113,4 +93,33 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
   public IProblem getProblem() {
     return problem;
   }
+
+  /**
+   * get the String list of items in the room.
+   */
+  public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
+    return String.join(", " + getEntitiesByType(clazz).stream()
+            .map(U::getName)
+            .toList());
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"room_name\":\"" + getName() + "\"," +
+            "\"room_number\":\"" + getId() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"N\":\"" + getExits().get("N") + "\"," +
+            "\"S\":\"" + getExits().get("S") + "\"," +
+            "\"E\":\"" + getExits().get("E") + "\"," +
+            "\"W\":\"" + getExits().get("W") + "\"," +
+            (getProblem() instanceof Monster
+                    ? "\"puzzle\":null,\"monster\":\"" + getProblem() + "\","
+                    : "\"puzzle\":\"" + getProblem() + "\",\"monster\":null," + "\",") +
+            "\"items\":\"" + getElementNames(Item.class) + "\"," +
+            "\"fixtures\":\"" + getElementNames(Fixture.class) + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
+  }
+
 }

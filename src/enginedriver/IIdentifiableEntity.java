@@ -8,9 +8,9 @@ import java.awt.Image;
 public interface IIdentifiableEntity {
 
   /**
-    * Returns the unique identifier of the entity.
+   * Returns the unique identifier of the entity.
    */
-  String getId();
+  int getId();
 
   /**
    * Returns the name of the entity.

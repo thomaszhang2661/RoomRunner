@@ -49,7 +49,7 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
   public String getWhenUsed() {return "";}
 
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 

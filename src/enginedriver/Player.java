@@ -1,7 +1,6 @@
 package enginedriver;
 
 import java.awt.Image;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -103,7 +102,7 @@ public class Player extends EntityContainer<Item> {
 
 
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 
@@ -180,7 +179,7 @@ public class Player extends EntityContainer<Item> {
             "\"inventory\":\"" + getItems() + "\"," +
             "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
             "\"roomNumber\":\"" + getRoomNumber() + "\"," +
-            "\"score\":\"" + score + "\"" +
+            "\"score\":\"" + score + "\"" + // can score be stored anywhere else? in gameWorld?
             " }";
   }
 

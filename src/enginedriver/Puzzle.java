@@ -26,7 +26,7 @@ public class Puzzle<T> extends Problem<T>{
 
 
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 
@@ -70,8 +70,8 @@ public class Puzzle<T> extends Problem<T>{
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
             "\"active\":\"" + isSolved() + "\"," +
-            "\"affects_target\":\"" + isAffectTarget() + "\"," +
-            "\"affects_player\":\"" + isAffectPlayer() + "\"," +
+            "\"affects_target\":\"" + getAffects_target() + "\"," +
+            "\"affects_player\":\"" + getAffect_player() + "\"," +
             "\"solution\":\"" + getSolution() + "\"," +
             "\"value\":\"" + getValue() + "\"," +
             "\"description\":\"" + getDescription() + "\"," +

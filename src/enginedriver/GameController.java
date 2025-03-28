@@ -178,6 +178,7 @@ public class GameController {
       if(player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
         viewer.showText(itemName + "added to your inventory!");
+        gameWorld.setScore(gameWorld.getScore() + itemAttempt.getValue());
       } else {
         viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
                 + "  your bag is full.");
@@ -200,6 +201,7 @@ public class GameController {
       player.removeItem(item);
       currentRoom.addEntity(item);
       viewer.showText(itemName + "dropped here in " + currentRoom.getName());
+      gameWorld.setScore(gameWorld.getScore() - item.getValue());
     } else {
       viewer.showText("Sorry, you don't have " + itemName + " in your bag");
     }
@@ -223,16 +225,12 @@ public class GameController {
     //get fixtures keys from the room
     List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
             .toList();
-    //get problem from the room
-    String problemDescription = currentRoom.getProblem().getDescription();
 
     // show the items, fixtures, problem in the room
-    viewer.showText("You see the following items: ");
+    viewer.showText("Items you see here: ");
     viewer.showText(String.join(", ", itemNames));
-    viewer.showText("You see the following fixtures: ");
+    viewer.showText("Fixtures you see here: ");
     viewer.showText(String.join(", ", fixtureNames));
-    viewer.showText("You see the following problem: ");
-    viewer.showText(problemDescription);
   }
 
 

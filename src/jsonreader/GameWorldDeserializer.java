@@ -33,7 +33,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
 //    parse rooms
     Map<Integer, Room> rooms = new HashMap<>();
     for (JsonNode roomNode : rootNode.get("rooms")) {
-      String id = roomNode.get("room_number").asText();
+      int id = roomNode.get("room_number").asInt();
       String roomName = roomNode.get("room_name").asText();
       String description = roomNode.get("description").asText();
 
@@ -46,7 +46,8 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       List<String> itemNames = List.of(roomNode.get("items").asText().split(", "));
       List<String> fixtureNames = List.of(roomNode.get("fixtures").asText().split(", "));
       String problem = roomNode.get("puzzle").asText(null);
-
+      // Room constructor do not accept List.
+      // Need to change it to Map<elementName, element>
       Room room = new Room(id, roomName, description, exits, itemNames, fixtureNames, problem);
       rooms.put(Integer.parseInt(id), room);
     }
