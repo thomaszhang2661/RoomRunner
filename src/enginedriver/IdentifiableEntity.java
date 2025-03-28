@@ -45,7 +45,7 @@ public class IdentifiableEntity implements IIdentifiableEntity{
    */
   @Override
   public String getName() {
-    return "";
+    return name;
   }
 
   /**
@@ -54,7 +54,7 @@ public class IdentifiableEntity implements IIdentifiableEntity{
    */
   @Override
   public String getDescription() {
-    return "";
+    return description;
   }
 
   /**
