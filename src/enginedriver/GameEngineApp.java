@@ -7,6 +7,8 @@ import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
+import jsonreader.GameDataLoader;
+
 public class GameEngineApp {
   private GameController gameController;
   private Readable source;
