@@ -44,4 +44,16 @@ public class Fixture implements IWeightable{
   public Image getPicture() {
     return null;
   }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"weight\":\"" + getWeight() + "\"," +
+            "\"puzzle\":\"" + getPuzzle() + "\"," +
+            "\"state\":\"" + isState() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
+  }
 }

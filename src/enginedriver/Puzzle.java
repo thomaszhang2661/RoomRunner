@@ -78,4 +78,20 @@ public class Puzzle implements IProblem{
   public Image getPicture() {
     return picture;
   }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"active\":\"" + isActive() + "\"," +
+            "\"affects_target\":\"" + affectsTarget() + "\"," +
+            "\"affects_player\":\"" + affectsPlayer() + "\"," +
+            "\"solution\":\"" + getSolution() + "\"," +
+            "\"value\":\"" + getValue() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"effects\":\"" + getEffects() + "\"," +
+            "\"target\":\"" + getTarget() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
+  }
 }

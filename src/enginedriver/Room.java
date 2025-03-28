@@ -18,8 +18,7 @@ public class Room  extends  IdentifiableEntity
    */
   public Room(String id, String name, String description,
               Map<String, Integer> exits, List<String>itemNames,
-              List<String> fixtureNames, String problem,
-              String problem) {
+              List<String> fixtureNames, String problem) {
     super(id, name, description);
     this.exits = exits;
     this.itemNames = itemNames;
@@ -43,18 +42,18 @@ public class Room  extends  IdentifiableEntity
    * @return the monster in the room (if any),
    *      return null if no monster
    */
-  String getMonster() {
-    return monsterName;
-  }
+//  String getMonster() {
+//    return monsterName;
+//  }
 
   /**
    * Returns the puzzle in the room (if any).
    * @return the puzzle in the room (if any),
    *                return null if no puzzle
    */
-  String getPuzzle() {
-    return puzzleName;
-  }
+//  String getPuzzle() {
+//    return puzzleName;
+//  }
 
   /**
    * Adds an item to the container.
@@ -84,6 +83,25 @@ public class Room  extends  IdentifiableEntity
 
   public String getProblem() {
     // return the puzzle or monster in the room
+  return problem;
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"room_name\":\"" + getRoomName() + "\"," +
+            "\"room_number\":\"" + getRoomNumber() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"N\":\"" + getExits().get("N") + "\"," +
+            "\"S\":\"" + getExits().get("S") + "\"," +
+            "\"E\":\"" + getExits().get("E") + "\"," +
+            "\"W\":\"" + getExits().get("W") + "\"," +
+            "\"puzzle\":\"" + getPuzzle() + "\"," +
+            "\"monster\":\"" + getMonster() + "\"," +
+            "\"items\":\"" + getItems() + "\"," +
+            "\"fixtures\":\"" + getFixtures() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
   }
 
 }

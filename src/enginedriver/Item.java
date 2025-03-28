@@ -45,6 +45,8 @@ public class Item implements IItem{
     return 0;
   }
 
+  public String getWhenUsed() {return "";}
+
   @Override
   public String getId() {
     return "";
@@ -63,5 +65,19 @@ public class Item implements IItem{
   @Override
   public Image getPicture() {
     return null;
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"weight\":\"" + getWeight() + "\"," +
+            "\"max_uses\":\"" + getUseMax() + "\"," +
+            "\"uses_remaining\":\"" + getUseRemain() + "\"," +
+            "\"value\":\"" + getValue() + "\"," +
+            "\"when_used\":\"" + getWhenUsed() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
   }
 }

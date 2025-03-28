@@ -102,4 +102,16 @@ public class Player implements IIdentifiableEntity,
     this.roomNumber = roomNumber;
   }
 
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"health\":\"" + getHealth() + "\"," +
+            "\"inventory\":\"" + getItems() + "\"," +
+            "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
+            "\"roomNumber\":\"" + getRoomNumber() + "\"," +
+            "\"score\":\"" + score + "\"" +
+            " }";
+  }
+
 }
