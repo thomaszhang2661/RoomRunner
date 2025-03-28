@@ -99,7 +99,7 @@ public class GameController {
       break;
       case "L": lookAround();
       break;
-      case "U": useItem();
+      case "U": useItem(objectName);
       break;
       case "I": checkInventory();
       break;
@@ -145,6 +145,9 @@ public class GameController {
         Room enteredRoom = gameWorld.getRoom(attempRoomNum);
         //move player to the new room
         player.setRoomNumber(attempRoomNum);
+        // deal with monster attack
+        IProblem<?> problem  =  enteredRoom.getProblem();
+        handleMonsterAttack(problem);
 
         //show the enter discription
         viewer.showText("You are moving to the derection "
@@ -169,7 +172,7 @@ public class GameController {
     //get room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     //get item
-    Item itemAttempt = currentRoom.getEntity(String itemName, Item.class);
+    Item itemAttempt = currentRoom.getEntity(itemName, Item.class);
 
     if (itemAttempt != null) {
       if(player.addItem(itemAttempt)) {
@@ -207,6 +210,11 @@ public class GameController {
     // Logic to look around
     //TODO check if need to show what is inside the room, print names?
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    // deal with monster attack
+    IProblem<?> problem  =  currentRoom.getProblem();
+    handleMonsterAttack(problem);
+
+    // check if room has
     viewer.showText("You are currently standing in the" + currentRoom.getName());
     viewer.showText(currentRoom.getDescription());
     //get items keys from the room
@@ -234,14 +242,36 @@ public class GameController {
    * Use an item.
    */
   private void useItem(String itemName) {
+    // get room
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     Item itemAttempt = player.getEntity(itemName, Item.class);
+    IProblem<?> problem  =  currentRoom.getProblem();
+
     if (itemAttempt == null) {
       viewer.showText("You don't have " + itemName + " in your bag.");
+      // deal with monster attack
+      handleMonsterAttack(problem);
       return;
     }
-    // solve problem
-    IProblem problem = gameWorld.getRoom(player.getRoomNumber()).getProblem();
-    problem.solve(itemAttempt);
+
+    //check solution type
+    Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
+    if(solutionClass== Item.class) {
+      IProblem<Item> itemproblem = (IProblem<Item>) problem;
+      boolean flag = itemproblem.solve(itemAttempt);
+      if (flag) {
+        viewer.showText("You have successfully solved the problem with " + itemName);
+        //TODO update room exits
+        //TODO update score
+        return;
+      } else {
+        viewer.showText("You have failed to solve the problem with " + itemName);
+        // deal with monster attack
+        handleMonsterAttack(problem);
+      }
+
+    }
+
 
   }
 
@@ -267,47 +297,24 @@ public class GameController {
   /**
    * Examine an item.
    */
-  private void examine(String objectName) {
+  private void examine(String entityName) {
     // Logic to examine item
-    // get current room number
-    int roomNumber = player.getRoomNumber();
-    // get room
-    Room room = gameWorld.getRoom(roomNumber);
-    // get items and fixtures from the room
-    room.isFixturein(objectName);
-    room.isItemIn(objectName);
-
-//    // get items from the room
-//    // check if the objectName is in the items
-//    if (itemNames.contains(objectName)) {
-//      // get the item
-//      gameWorld.getItem(objectName);
-//    } else if (fixtureNames.contains(objectName)) {
-//      // get the fixture
-//      //TODO
-//    } else {
-//      // objectName is not in the items or fixtures
-//      viewer.showText(objectName + " is not in the room.");
-//    }
-    // get fixtures from the room
+    // get current room
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    IIdentifiableEntity entity= currentRoom.getEntity(entityName, Item.class);
+    if (entity == null) {
+      entity = currentRoom.getEntity(entityName, Fixture.class);
+    }
+    if (entity == null) {
+      viewer.showText(entityName +" is not in the room.");
+    } else {
+      viewer.showText(entity.getDescription());
+    }
   }
 
-  /**
-   * Diminish the player's health
-   */
-  private void attackPlayer() {
-    //TODO
 
-  }
 
-  /**
-   * Block the description of the room the puzzle's in, keep the player from
-   * entering said room.
-   */
-  private void blockRoom() {
-    //TODO
 
-  }
 
   /**
    * Answer a puzzle.
@@ -350,5 +357,15 @@ public class GameController {
     // 区分用户操作是否对gameworld造成了影响，
     //  如果有影响，记录操作和变化
     //TODO
+  }
+
+
+
+  private void handleMonsterAttack(IProblem<?> problem) {
+    if (problem instanceof Monster && problem.getActive()) {
+      Monster monster = (Monster) problem;
+      monster.attack(player);
+      //TODO 这里好像要说话，需要完善
+    }
   }
 }
