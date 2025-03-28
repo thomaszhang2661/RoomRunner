@@ -1,7 +1,6 @@
 package enginedriver;
 
 import java.awt.Image;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,11 +69,6 @@ public class Player extends EntityContainer<Item> {
   //  }
 
 
-  //TODO 还需要吗？直接updateCurrentWeight()就可以了？
-  private void gainOrLoseWeight(int w) {
-    maxWeight += w;
-  }
-
   // move to gameWorld
 //  public void gainOrLoseScore(int s) {
 //    score += s;
@@ -108,7 +102,7 @@ public class Player extends EntityContainer<Item> {
 
 
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 
@@ -175,6 +169,18 @@ public class Player extends EntityContainer<Item> {
    */
   public <U> U getEntity(String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);  // 直接调用父类的泛型方法
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"health\":\"" + getHealth() + "\"," +
+            "\"inventory\":\"" + getItems() + "\"," +
+            "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
+            "\"roomNumber\":\"" + getRoomNumber() + "\"," +
+            "\"score\":\"" + score + "\"" + // can score be stored anywhere else? in gameWorld?
+            " }";
   }
 
 }

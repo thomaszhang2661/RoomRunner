@@ -1,11 +1,10 @@
 package enginedriver;
 
-import com.sun.source.tree.PackageTree;
-
 import java.awt.*;
 
 public class Monster<T> extends Problem<T>{
   private int damage;
+  private String attack;
   /**
    * Constructor for Puzzle.
    */
@@ -18,15 +17,16 @@ public class Monster<T> extends Problem<T>{
                 int value,
                 int damage,
                 String effects,
-                String target, String pictureName) {
+                String target, String pictureName, String attack) {
     super(name, description, active, affects_target,
             affects_player, solution, value, effects, target,
             pictureName);
+    this.attack = attack;
   }
 
 
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 
@@ -65,10 +65,41 @@ public class Monster<T> extends Problem<T>{
     return super.getEffects();
   }
 
+  public int getDamage() {
+    return damage;
+  }
+
   public void attack(Player player) {
     // Attack the player
     if (super.getActive() && super.getAffect_player()) {
       player.gainOrLoseHealth(damage);
     }
+  }
+
+  public boolean canAttack() {
+    return super.isSolved();
+  }
+
+  public String getAttack() {
+    return attack;
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"active\":\"" + isSolved() + "\"," +
+            "\"affects_target\":\"" + getAffects_target() + "\"," +
+            "\"affects_player\":\"" + getAffect_player() + "\"," +
+            "\"solution\":\"" + getSolution() + "\"," +
+            "\"value\":\"" + getValue() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"effects\":\"" + getEffects() + "\"," +
+            "\"damage\":\"" + getDamage() + "\"," +
+            "\"target\":\"" + getTarget() + "\"," +
+            "\"can_attack\":\"" + canAttack() + "\"," +
+            "\"attack\":\"" + getAttack() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
   }
 }

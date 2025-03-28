@@ -1,5 +1,5 @@
 import java.io.IOException;
-import enginedriver.GameDataLoader;
+import jsonreader.GameDataLoader;
 import enginedriver.GameWorld;
 
 public class GameDataLoaderTest {

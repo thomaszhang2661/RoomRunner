@@ -178,8 +178,9 @@ public class GameController {
     if (itemAttempt != null) {
       if(player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
-        viewer.showText("You have successfully add " + itemName + " to your bag!");
-      }else {
+        viewer.showText(itemName + "added to your inventory!");
+        gameWorld.setScore(gameWorld.getScore() + itemAttempt.getValue());
+      } else {
         viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
                 + "  your bag is full.");
       }
@@ -200,15 +201,15 @@ public class GameController {
     if (item != null) {
       player.removeItem(item);
       currentRoom.addEntity(item);
-      viewer.showText("You have successfully drop " + itemName + "!");
+      viewer.showText(itemName + "dropped here in " + currentRoom.getName());
+      gameWorld.setScore(gameWorld.getScore() - item.getValue());
     } else {
-      viewer.showText("Sorry, you can not drop " + itemName + ". It's mostly because"
-              + " you don't have this item in your bag.");
+      viewer.showText("Sorry, you don't have " + itemName + " in your bag");
     }
 
   }
 
-  private void lookAround(){
+  private void lookAround() {
     // Logic to look around
     //TODO check if need to show what is inside the room, print names?
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
@@ -217,6 +218,7 @@ public class GameController {
     handleMonsterAttack(problem);
 
     // check if room has
+    viewer.showText("You are currently standing in the" + currentRoom.getName());
     viewer.showText(currentRoom.getDescription());
     //get items keys from the room
     List<String> itemNames = currentRoom.getEntities().keySet().stream()
@@ -224,16 +226,12 @@ public class GameController {
     //get fixtures keys from the room
     List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
             .toList();
-    //get problem from the room
-    String problemDescription = currentRoom.getProblem().getDescription();
 
     // show the items, fixtures, problem in the room
-    viewer.showText("You see the following items: ");
+    viewer.showText("Items you see here: ");
     viewer.showText(String.join(", ", itemNames));
-    viewer.showText("You see the following fixtures: ");
+    viewer.showText("Fixtures you see here: ");
     viewer.showText(String.join(", ", fixtureNames));
-    viewer.showText("You see the following problem: ");
-    viewer.showText(problemDescription);
   }
 
 
@@ -289,9 +287,9 @@ public class GameController {
     if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
-      viewer.showText("You currently have ");
+      viewer.showText("Items in your inventory: ");
       String itemList = String.join(", ", items.keySet());
-      viewer.showText(itemList + " in your bag");
+      viewer.showText(itemList);
     }
   }
 
