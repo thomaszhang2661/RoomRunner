@@ -65,22 +65,6 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       exits.put("E", roomNode.get("E").asInt());
       exits.put("W", roomNode.get("W").asInt());
 
-      // parse items and fixtures
-      Map<String, IdentifiableEntity> itemEntities = new HashMap<>();
-      for (String itemName : roomNode.get("items").asText().split(", ")) {
-        itemEntities.put(itemName, items.get(itemName));
-      }
-
-      Map<String, IdentifiableEntity> fixtureEntities = new HashMap<>();
-      for (String fixtureName : roomNode.get("fixtures").asText().split(", ")) {
-        fixtureEntities.put(fixtureName, fixtures.get(fixtureName));
-      }
-
-      // combine itemEntities and fixtureEntities into one map
-      Map<String, IdentifiableEntity> entityNames = new HashMap<>();
-      entityNames.putAll(itemEntities);
-      entityNames.putAll(fixtureEntities);
-
       // parse problem (monster or puzzle)
       IProblem<?> problem = null;
       if (roomNode.has("monster") && !roomNode.get("monster").isNull()) {
@@ -89,15 +73,26 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         problem = mapper.treeToValue(roomNode.get("puzzle"), Puzzle.class);
       }
 
+      // parse items and fixtures
+      Map<String, IdentifiableEntity> itemEntities = new HashMap<>();
+      for (String itemName : roomNode.get("items").asText().split(", ")) {
+        itemEntities.put(itemName, items.get(itemName));
+      }
+      Map<String, IdentifiableEntity> fixtureEntities = new HashMap<>();
+      for (String fixtureName : roomNode.get("fixtures").asText().split(", ")) {
+        fixtureEntities.put(fixtureName, fixtures.get(fixtureName));
+      }
+      // combine itemEntities and fixtureEntities into one map
+      Map<String, IdentifiableEntity> entityNames = new HashMap<>();
+      entityNames.putAll(itemEntities);
+      entityNames.putAll(fixtureEntities);
+
+      // parse pricture (not used)
+      String picture = roomNode.get("picture").asText();
+
 
       Room room = new Room(id, roomName, description, exits, entityNames, problem);
       rooms.put(id, room);
-
-      // parse player if present
-      Player player = null;
-      if (rootNode.has("player")) {
-        player = mapper.treeToValue(roomNode.get("player"), Player.class);
-      }
     }
 
     return new GameWorld(name, version, rooms);
