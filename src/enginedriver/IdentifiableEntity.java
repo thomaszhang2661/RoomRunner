@@ -58,6 +58,8 @@ public abstract class IdentifiableEntity
     return description;
   }
 
+
+
   /**
    * Returns the picture of the entity.
    * @return  Image for picture
@@ -65,5 +67,33 @@ public abstract class IdentifiableEntity
   @Override
   public Image getPicture() {
     return null;
+  }
+
+  /**
+   *  equals method for IdentifiableEntity.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    IdentifiableEntity that = (IdentifiableEntity) obj;
+    return id == that.id &&
+            name.equals(that.name) &&
+            description.equals(that.description);
+  }
+
+  /**
+   *  hashCode method for IdentifiableEntity.
+   */
+  @Override
+  public int hashCode() {
+    int result = Integer.hashCode(id);
+    result = 31 * result + name.hashCode();
+    result = 31 * result + description.hashCode();
+    return result;
   }
 }
