@@ -1,8 +1,21 @@
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import enginedriver.Item;
 import enginedriver.Puzzle;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+/**
+ * Unit Test for Puzzle class.
+ */
 public class PuzzleTest {
 
+  /**
+   * Test the constructor of Puzzle.
+   */
   @Test
   public void testPuzzleCreation() {
     Puzzle<String> puzzle = new Puzzle<>("Darkness",
@@ -35,7 +48,7 @@ public class PuzzleTest {
   }
 
   /**
-   * Test solve method of Puzzle.
+   * Test solve method of Puzzle with solution of type String.
    */
   @Test
   public void testPuzzleSolve() {
@@ -48,6 +61,23 @@ public class PuzzleTest {
   }
 
   /**
+   * Test solve method of Puzzle with solution of type Item.
+   */
+  @Test
+  public void testPuzzleSolveItem() {
+    // create item
+    enginedriver.Item lamp = new enginedriver.Item("Lamp", "A lamp", 1, 1, 1, 1, "Bright light");
+
+    Puzzle<Item> puzzle = new Puzzle<>("Darkness",
+            "It's dark!", true, true,
+            true, lamp, 150, "You cannot see!",
+            "6:Kitchen", "darkness.png");
+
+    assertTrue(puzzle.solve(lamp));
+    assertFalse(puzzle.getActive());
+    assertTrue(puzzle.isSolved());
+  }
+  /**
    * Test solve method of Puzzle with wrong input.
    */
   @Test
@@ -58,6 +88,7 @@ public class PuzzleTest {
             "6:Kitchen", "darkness.png");
     assertFalse(puzzle.solve("WrongInput"));
     assertTrue(puzzle.getActive());
+    assertFalse(puzzle.isSolved());
   }
 
   /**
@@ -73,8 +104,7 @@ public class PuzzleTest {
             "\"affects_player\":\"true\",\"solution\":\"Lamp\",\"value\":\"150\"," +
             "\"description\":\"It's dark!\",\"effects\":\"You cannot see!\"," +
             "\"target\":\"6:Kitchen\",\"picture\":\"null\" }";
-    // print tostring
-    //System.out.println(puzzle.toString());
+
     assertEquals(expected, puzzle.toString());
   }
 }
