@@ -280,19 +280,6 @@ public class GameController {
   }
 
   /**
-   * Unlocks room
-   * @param room
-   */
-  private void unlockExits(Room room) {
-    for (String key : room.getExits().keySet()) {
-      int value = room.getExits().get(key);
-      if (value < 0) {
-        room.unlockExit(key);  // Unlock exit if value is negative
-      }
-    }
-  }
-
-  /**
    * Check the player's inventory.
    */
   private void checkInventory() {
