@@ -69,7 +69,7 @@ public class Puzzle<T> extends Problem<T>{
   public String toString() {
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
-            "\"active\":\"" + isSolved() + "\"," +
+            "\"active\":\"" + getActive() + "\"," +
             "\"affects_target\":\"" + getAffects_target() + "\"," +
             "\"affects_player\":\"" + getAffect_player() + "\"," +
             "\"solution\":\"" + getSolution() + "\"," +
