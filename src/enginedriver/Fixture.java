@@ -56,7 +56,7 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
             "\"name\":\"" + getName() + "\"," +
             "\"weight\":\"" + getWeight() + "\"," +
             "\"puzzle\":\"" + getPuzzle() + "\"," +
-            "\"state\":\"" + getStates() + "\"," +
+            "\"states\":\"" + getStates() + "\"," +
             "\"description\":\"" + getDescription() + "\"," +
             "\"picture\":\"" + getPicture() + "\"" +
             " }";

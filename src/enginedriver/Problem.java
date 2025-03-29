@@ -32,7 +32,7 @@ abstract public class Problem<T> extends IdentifiableEntity
   }
 
 
-  public boolean getAffect_player() {
+  public boolean getAffects_player() {
     return affects_player;
   }
 
@@ -106,6 +106,11 @@ abstract public class Problem<T> extends IdentifiableEntity
   @Override
   public Image getPicture() {
     return null;
+  }
+
+  @Override
+  public String getPictureName() {
+    return pictureName;
   }
 
   @Override

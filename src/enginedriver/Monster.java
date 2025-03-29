@@ -5,6 +5,7 @@ import java.awt.*;
 public class Monster<T> extends Problem<T>{
   private int damage;
   private String attack;
+  private boolean canAttack;
   /**
    * Constructor for Puzzle.
    */
@@ -12,6 +13,7 @@ public class Monster<T> extends Problem<T>{
                 String description,
                 Boolean active,
                 Boolean affects_target,
+                Boolean canAttack,
                 Boolean affects_player,
                 T solution,
                 int value,
@@ -23,6 +25,7 @@ public class Monster<T> extends Problem<T>{
             pictureName);
     this.attack = attack;
     this.damage = damage;
+    this.canAttack = canAttack;
   }
 
 
@@ -80,7 +83,7 @@ public class Monster<T> extends Problem<T>{
    */
   public void attack(Player player) {
     // Attack the player
-    if (super.getActive() && super.getAffect_player()) {
+    if (super.getActive() && super.getAffects_player()) {
       player.gainOrLoseHealth(-Math.abs(damage));
     }
   }
@@ -105,9 +108,9 @@ public class Monster<T> extends Problem<T>{
   public String toString() {
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
-            "\"active\":\"" + isSolved() + "\"," +
+            "\"active\":\"" + getActive() + "\"," +
             "\"affects_target\":\"" + getAffects_target() + "\"," +
-            "\"affects_player\":\"" + getAffect_player() + "\"," +
+            "\"affects_player\":\"" + getAffects_player() + "\"," +
             "\"solution\":\"" + getSolution() + "\"," +
             "\"value\":\"" + getValue() + "\"," +
             "\"description\":\"" + getDescription() + "\"," +
@@ -116,7 +119,7 @@ public class Monster<T> extends Problem<T>{
             "\"target\":\"" + getTarget() + "\"," +
             "\"can_attack\":\"" + canAttack() + "\"," +
             "\"attack\":\"" + getAttack() + "\"," +
-            "\"picture\":\"" + getPicture() + "\"" +
+            "\"picture\":\"" + getPictureName() + "\"" +
             " }";
   }
 }

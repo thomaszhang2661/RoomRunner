@@ -133,8 +133,13 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
             "\"E\":\"" + getExits().get("E") + "\"," +
             "\"W\":\"" + getExits().get("W") + "\"," +
             (getProblem() instanceof Monster
+                    // is a monster
                     ? "\"puzzle\":null,\"monster\":\"" + getProblem() + "\","
-                    : "\"puzzle\":\"" + getProblem() + "\",\"monster\":null," + "\",") +
+                    : (getProblem() != null
+                    // is a puzzle
+                    ? "\"puzzle\":\"" + getProblem() + "\",\"monster\":null,"
+                    // both is null
+                    : "\"puzzle\":null,\"monster\":null,")) +
             "\"items\":\"" + getElementNames(Item.class) + "\"," +
             "\"fixtures\":\"" + getElementNames(Fixture.class) + "\"," +
             "\"picture\":\"" + getPicture() + "\"" +
