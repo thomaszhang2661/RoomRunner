@@ -44,7 +44,7 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
    * Constructor for an item with no max uses.
    */
   public void setRemainingUses(int remainingUses) {
-    if (remainingUses > 0) {
+    if (remainingUses >= 0) {
       this.remainingUses = remainingUses;
     } else {
       throw new IllegalArgumentException(
