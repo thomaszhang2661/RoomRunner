@@ -3,7 +3,7 @@ package enginedriver;
 /**
   * Interface for problems that can be solved.
  */
-public interface IProblem<T> extends IValuable{
+public interface IProblem<T> extends IValuable {
 
   /**
    * check if the problem is solved.
@@ -11,6 +11,10 @@ public interface IProblem<T> extends IValuable{
    */
   boolean getActive();
 
+  /**
+   * Returns the target of the problem.
+   * @return String for target
+   */
   T getSolution();
 
   /**

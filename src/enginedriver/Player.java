@@ -11,7 +11,7 @@ public class Player extends EntityContainer<Item> {
   private int maxWeight;
   private int currentWeight;
   private int roomNumber; //the room that player is in
-  private GameWorld gameWorld;
+  private int score;
 
   /**
    * simple Constructor for a player.
@@ -22,6 +22,15 @@ public class Player extends EntityContainer<Item> {
     this.maxWeight = maxWeight;
   }
 
+  /**
+   * simple Constructor for a player with score.
+   */
+  public Player(String name, int health, int maxWeight, int score) {
+    super(-1, name, "Player");
+    this.health = health;
+    this.maxWeight = maxWeight;
+    this.score = score;
+  }
 
   /**
    *  Constructor for a player with items.
@@ -30,7 +39,7 @@ public class Player extends EntityContainer<Item> {
                 Map<String, Item> items) {
     super(-1, name, "Player", items);
     this.health = health;
-    this.maxWeight = 13;
+    this.maxWeight = maxWeight;
     updateCurrentWeight();
   }
 
@@ -150,7 +159,31 @@ public class Player extends EntityContainer<Item> {
     return roomNumber;
   }
 
+  /**
+   * Sets the player' score.
+   */
+  public void setScore(int score) {
+    this.score = score;
+  }
 
+  /**
+   * get the player's score.
+   */
+  public int getScore() {
+    return score;
+  }
+
+  /**
+   * Add score to player.
+   * @param score the score to be added.
+   */
+  public void addScore(int score) {
+    this.score += score;
+  }
+
+  /**
+   * get all items in player's inventory.
+   */
   @Override
   public Map<String, Item> getEntities() {
     return super.getEntities();
@@ -192,9 +225,6 @@ public class Player extends EntityContainer<Item> {
     this.roomNumber = roomNumber;
   }
 
-  public Map<String, Item> getItems() {
-    return super.getEntities();
-  }
 
   /**
    * Get an item from player's inventory.
@@ -208,10 +238,10 @@ public class Player extends EntityContainer<Item> {
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
             "\"health\":\"" + getHealth() + "\"," +
-            "\"inventory\":\"" + getItems() + "\"," +
+            "\"inventory\":\"" + getEntities() + "\"," +
             "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
             "\"roomNumber\":\"" + getRoomNumber() + "\"," +
-            "\"score\":\"" + gameWorld.getScore() + "\"" + // can score be stored anywhere else? in gameWorld?
+            "\"score\":\"" + getScore() + "\", " +
             " }";
   }
 

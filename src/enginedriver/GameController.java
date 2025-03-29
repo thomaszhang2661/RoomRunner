@@ -179,7 +179,7 @@ public class GameController {
       if(player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
         viewer.showText(itemName + "added to your inventory!");
-        gameWorld.setScore(gameWorld.getScore() + itemAttempt.getValue());
+        player.setScore(player.getScore() + itemAttempt.getValue());
       } else {
         viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
                 + "  your bag is full.");
@@ -202,7 +202,7 @@ public class GameController {
       player.removeItem(item);
       currentRoom.addEntity(item);
       viewer.showText(itemName + "dropped here in " + currentRoom.getName());
-      gameWorld.setScore(gameWorld.getScore() - item.getValue());
+      player.setScore(player.getScore() - item.getValue());
     } else {
       viewer.showText("Sorry, you don't have " + itemName + " in your bag");
     }
@@ -226,12 +226,17 @@ public class GameController {
     //get fixtures keys from the room
     List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
             .toList();
+    //get problem from the room
+    String problemDescription = currentRoom.getProblem().getDescription();
 
     // show the items, fixtures, problem in the room
     viewer.showText("Items you see here: ");
     viewer.showText(String.join(", ", itemNames));
     viewer.showText("Fixtures you see here: ");
     viewer.showText(String.join(", ", fixtureNames));
+    // TODO discuss 需要先显示 problem吗
+    viewer.showText("You see the following problem: ");
+    viewer.showText(problemDescription);
   }
 
 
@@ -255,38 +260,44 @@ public class GameController {
 
     //check solution type
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
-    if(solutionClass== Item.class) {
-      IProblem<Item> itemProblem = (IProblem<Item>) problem;
-      boolean flag = itemProblem.solve(itemAttempt);
+    if (solutionClass == Item.class) {
+      IProblem<Item> itemproblem = (IProblem<Item>) problem;
+      boolean flag = itemproblem.solve(itemAttempt);
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
         unlockExits(currentRoom); // update room exits
 
-        int points = itemProblem.getValue();
-        gameWorld.addScore(points); // update score
-        viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
+        int points = itemproblem.getValue();
+        player.addScore(points); // update score
+        viewer.showText("+ " + points + ". Current Score is " + player.getScore());
         return;
       } else {
         viewer.showText("You have failed to solve the problem with " + itemName);
         // deal with monster attack
         handleMonsterAttack(problem);
       }
-
     }
-
-
   }
 
-
-
-
+  /**
+   * Unlocks room
+   * @param room
+   */
+  private void unlockExits(Room room) {
+    for (String key : room.getExits().keySet()) {
+      int value = room.getExits().get(key);
+      if (value < 0) {
+        room.unlockExit(key);  // Unlock exit if value is negative
+      }
+    }
+  }
 
   /**
    * Check the player's inventory.
    */
   private void checkInventory() {
     // Logic to check inventory
-    Map<String, Item> items = player.getItems();
+    Map<String, Item> items = player.getEntities();
     if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
@@ -335,7 +346,7 @@ public class GameController {
       // Unlock the exit of the room
       unlockExits(room);
       // Add the score to the player
-      gameWorld.addScore(problem.getValue());
+      player.addScore(problem.getValue());
     } else {
       viewer.showText("Sorry, your answer is incorrect.");
     }
@@ -356,10 +367,6 @@ public class GameController {
    * Answer a puzzle.
    */
   private void answerPuzzle() {
-
-    // 临时添加调试输出
-    System.out.println("当前房间是否有谜题: " + (problem != null));
-    System.out.println("玩家输入: " + input);
 
     // get the current room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
@@ -451,5 +458,13 @@ public class GameController {
       monster.attack(player);
       //TODO 这里好像要说话，需要完善
     }
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"gameWorld\":" + gameWorld.toString() + "," +
+            "\"player\":" + player.toString() +
+            " }";
   }
 }
