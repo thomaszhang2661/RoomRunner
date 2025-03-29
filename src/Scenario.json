@@ -35,9 +35,9 @@
         "name": "Avatar",
         "health": "100",
         "inventory": "Iron Sword",
-        "maxWeight": "20",
-        "currentWeight": "0",
-        "roomNumber": "1",
+        "max_weight": "20",
+        "current_weight": "0",
+        "room_number": "1",
         "score": "0"
       }
     ]
