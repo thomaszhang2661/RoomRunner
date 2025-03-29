@@ -11,14 +11,16 @@ public class Player extends EntityContainer<Item> {
   private int maxWeight;
   private int currentWeight;
   private int roomNumber; //the room that player is in
+  private int score;
 
   /**
    * simple Constructor for a player.
    */
-  public Player(String name, int health, int maxWeight) {
+  public Player(String name, int health, int maxWeight, int score) {
     super(-1, name, "Player");
     this.health = health;
     this.maxWeight = maxWeight;
+    this.score = score;
   }
 
 
@@ -122,6 +124,12 @@ public class Player extends EntityContainer<Item> {
     return roomNumber;
   }
 
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public int getScore() {return score;}
+
 
   @Override
   public Map<String, Item> getEntities() {
@@ -179,6 +187,7 @@ public class Player extends EntityContainer<Item> {
             "\"inventory\":\"" + getItems() + "\"," +
             "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
             "\"roomNumber\":\"" + getRoomNumber() + "\"," +
+            "\"score\":\"" + getScore() + "\", " +
             " }";
   }
 

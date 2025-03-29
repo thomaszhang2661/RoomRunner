@@ -16,18 +16,17 @@ public class GameWorld {
 //  private Map<String, Fixture> fixtures;
 //  private Map<String, Monster> monsters;
 //  private Map<String, Puzzle> puzzles;
-  private int score;
+//  private int score;
   private Player player; //记录生命值、item、位置等
 
   public GameWorld(String name, String version,
                    Map<Integer, Room> rooms,
-                   Player player,
-                   int score) {
+                   Player player) {
     this.name = name; // ？？？need name TODO
     this.version = version;
     this.rooms = rooms;
     this.player = player;
-    this.score = score;
+//    this.score = score;
 
   }
 
@@ -61,15 +60,15 @@ public class GameWorld {
     this.rooms = rooms;
   }
   public void setScore(int score) {
-    this.score = score;
+    player.setScore(score);
   }
 
   public int getScore() {
-    return score;
+    return player.getScore();
   }
 
-  public void setPlayer(String name, int health, int maxWeight) {
-    this.player = new Player(name, health, maxWeight);
+  public void setPlayer(String name, int health, int maxWeight, int score) {
+    this.player = new Player(name, health, maxWeight, score);
   }
   public void setPlayer(Player player) {
     this.player = player;
@@ -81,7 +80,6 @@ public class GameWorld {
     sb.append("{ ");
     sb.append("\"name\":\"").append(name).append("\",");
     sb.append("\"version\":\"").append(version).append("\",");
-    sb.append("\"score\":").append(score).append(",");
 
     sb.append("\"rooms\":{");
     for (Map.Entry<Integer, Room> entry : rooms.entrySet()) {
