@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class PlayerTest {
   private Player player;
-  private Item lamp, thumbDrive, carrot, goldenTicket;
+  private Item lamp, thumbDrive, carrot;
 
   @Before
   public void setUp() {
@@ -27,11 +27,13 @@ public class PlayerTest {
             "but a HUGE carrot! Bigger than you've seen before.", 1, 1,
             5, 10, "You apply the Mod 2 operator " +
             "and take note of the remainder.");
-    goldenTicket = new Item("Golden Ticket",
-            "A Golden Ticket inviting your team to the Architectural " +
-                    "Review and Code Walk with our TA Team.", 1, 1, 5,
-            10, "You read the Golden Ticket and mark your calendar. 'We " +
-            "cannot miss our code review!', you happily shout as you place it in the slot.");
+
+    // Initialize player with a starting inventory
+    Map<String, Item> items = new HashMap<>();
+    items.put(lamp.getName(), lamp);
+    items.put(thumbDrive.getName(), thumbDrive);
+
+    player = new Player("Hero", 100, 50, items);
   }
 
   @Test
@@ -52,7 +54,8 @@ public class PlayerTest {
     assertEquals(HEALTH_STATUS.WOOZY, player.checkStatus(), "Health at 20 should be WOOZY");
 
     player.gainOrLoseHealth(30);
-    assertEquals(HEALTH_STATUS.FATIGUED, player.checkStatus(), "Health at 50 should be FATIGUED");
+    assertEquals(HEALTH_STATUS.FATIGUED, player.checkStatus(),
+            "Health at 50 should be FATIGUED");
 
     player.gainOrLoseHealth(30);
     assertEquals(HEALTH_STATUS.AWAKE, player.checkStatus(), "Health at 80 should be AWAKE");
@@ -64,6 +67,63 @@ public class PlayerTest {
     player.setRoomNumber(5);
     assertEquals(5, player.getRoomNumber());
   }
-}
 
+
+  @Test
+  public void testRemoveItemSuccess() {
+    // Verify initial weight
+    assertEquals(4, player.getCurrentWeight(), "Initial weight should be the " +
+            "sum of lamp (3) and thumb drive (1).");
+
+    // Remove the lamp and verify
+    boolean removedLamp = player.removeItem(lamp); // Method under test
+    assertTrue(removedLamp, "Lamp should be successfully removed.");
+    assertEquals(1, player.getCurrentWeight(), "Weight should " +
+            "decrease by the sword's weight (3).");
+
+    // Remove the thumb drive and verify
+    boolean removedThumbDrive = player.removeItem(thumbDrive); // Method under test
+    assertTrue(removedThumbDrive, "Thumb drive should be successfully removed.");
+    assertEquals(0, player.getCurrentWeight(), "Weight should be 0 " +
+            "after removing all items.");
+  }
+
+  @Test
+  public void testAddItemWithinWeightLimit() {
+    // Create an item
+    Item key = new Item("Key", "A medium-sized key. Looks like it may " +
+            "unlock a cabinet or desk.", 3, 3, 5, 1,
+            "You insert the key and turn it. 'Click!'");
+
+    // Add the item to inventory
+    boolean added = player.addItem(key);
+    assertTrue(added, "Key should be added to the inventory within the weight limit.");
+
+    // Ensure the item exists in the inventory
+    assertTrue(player.getItems().containsKey("Key"), "Inventory should contain the Key.");
+
+    // Verify the current weight is updated
+    assertEquals(5, player.getCurrentWeight(), "Current weight should " +
+                                                      "include the weight of the Key (1).");
+  }
+
+  @Test
+  public void testAddItemOutsideWeightLimit() {
+
+    // Attempt to add the item to the inventory
+    boolean added = player.addItem(carrot);
+
+    // Ensure the item is not added to the inventory
+    assertFalse(added, "Carrot should not be added as it exceeds the weight limit.");
+
+    // Ensure the item does not exist in the inventory
+    assertFalse(player.getItems().containsKey("Carrot"), "Inventory should not " +
+                                                                  "contain the Carrot.");
+
+    // Verify the current weight remains unchanged
+    assertEquals(4, player.getCurrentWeight(), "Current weight should remain " +
+            "unchanged when adding an item exceeds the weight limit.");
+  }
+
+}
 
