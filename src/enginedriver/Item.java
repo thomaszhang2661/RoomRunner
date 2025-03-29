@@ -2,7 +2,7 @@ package enginedriver;
 
 import java.awt.*;
 
-public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
+public class Item  extends IdentifiableEntity implements  IValuable,IWeightable {
   private int maxUses;
   private int remainingUses;
   private int value;
@@ -16,15 +16,18 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
                                          int weight,
               String whenUsed) {
     super(name, description);
+
+    if (remainingUses < 0) {
+      throw new IllegalArgumentException("Remaining uses of an item cannot be less than 0");
+    }
+    if (maxUses < 0) {
+      throw new IllegalArgumentException("Max uses of an item cannot be less than 0");
+    }
     this.maxUses = maxUses;
     this.remainingUses = remainingUses;
     this.value = value;
     this.weight = weight;
     this.whenUsed = whenUsed;
-
-  }
-
-  public void use() {
 
   }
 
@@ -46,7 +49,9 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
     return weight;
   }
 
-  public String getWhenUsed() {return "";}
+  public String getWhenUsed() {
+    return whenUsed;
+  }
 
   @Override
   public int getId() {
