@@ -38,6 +38,9 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    * Get all entities from the container.
    */
   public Map<String, T> getEntities() {
+    if (stringEntityMap == null) {
+      return null;
+    }
     return stringEntityMap;
   }
 
@@ -65,9 +68,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
     return result;
   }
 
-  //  public <T>  T  getEntity(String entityName) {
-  //    return (T) stringEntityMap.get(entityName);
-  //  }
+
   /**
    * Adds an entity to the container.
    */
@@ -90,6 +91,9 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    * Check if the container has an entity.
    */
   public Boolean hasEntity(T entity) {  // 使用 T 类型代替 IdentifiableEntity
+    if (stringEntityMap == null) {
+      return  false;
+    }
     return stringEntityMap.containsKey(entity.getName());
   }
 
@@ -97,6 +101,9 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    * Check if the container has an entity.
    */
   public Boolean hasEntity(String entityName) {
+    if (stringEntityMap == null) {
+      return false;
+    }
     return stringEntityMap.containsKey(entityName);
   }
 
@@ -104,69 +111,3 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
 }
 
 
-
-//package enginedriver;
-
-//
-//import java.util.Map;
-//
-///**
-// *  Class for a container of entities.
-// */
-//abstract class EntityContainer extends IdentifiableEntity {
-//
-//  private Map<String,IdentifiableEntity> entityNames;
-//
-//  /**
-//   * Constructor for an identifiable entity: empty container.
-//   */
-//  public EntityContainer(int id, String name, String description) {
-//    super(id, name, description);
-//  }
-//
-//  /**
-//   * Constructor for an identifiable entity: container with entities.
-//   */
-//  public EntityContainer(int id, String name,
-//                         String description,
-//                         Map<String,IdentifiableEntity> entityNames) {
-//    super(id, name, description);
-//    this.entityNames = entityNames;
-//  }
-//
-//
-//  /**
-//   * Adds an entity to the container.
-//   */
-//  public void addEntity(IdentifiableEntity entity) {
-//    entityNames.put(entity.getName(), entity);
-//  }
-//
-//  /**
-//   * Remove an entity from the container.
-//   */
-//  public void removeEntity(IdentifiableEntity entity) {
-//    entityNames.remove(entity.getName());
-//  }
-//
-//  /**
-//   * Check if the container has an entity.
-//   */
-//  public Boolean  hasEntity(IdentifiableEntity entity) {
-//    return entityNames.containsKey(entity.getName());
-//  }
-//
-//  /**
-//   * Check if the container has an entity.
-//   */
-//  public Boolean  hasEntity(String entityName) {
-//    return entityNames.containsKey(entityName);
-//  }
-//
-//  /**
-//   * get all entities from the container.
-//   */
-//  public Map<String,IdentifiableEntity> getEntities() {
-//    return entityNames;
-//  }
-//}
