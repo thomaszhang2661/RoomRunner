@@ -1,16 +1,13 @@
 package enginedriver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
-import jsonreader.GameWorldDeserializer;
-import jsonreader.PlayerDeserializer;
+
+import jsonreader.GameDataLoader;
 
 /**
  * The GameEngineApp class is the main entry point for the game engine application.
@@ -33,20 +30,23 @@ public class GameEngineApp {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
-    // create ObjectMapper
-    ObjectMapper mapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
-    // register GameWorldDeserializer
-    module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
-    mapper.registerModule(module);
-    // parse gameWorld
-    GameWorld gameWorld = mapper.readValue(new File(gameFileName), GameWorld.class);
+    //    // create ObjectMapper
+    //    ObjectMapper mapper = new ObjectMapper();
+    //    SimpleModule module = new SimpleModule();
+    //    // register GameWorldDeserializer
+    //    module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
+    //    mapper.registerModule(module);
+    //    // parse gameWorld
+    //    GameWorld gameWorld = mapper.readValue(new File(gameFileName), GameWorld.class);
+    //
+    //    // register PlayerDeserializer
+    //    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
+    //    mapper.registerModule(module);
+    //    // parse player
+    //    Player player = mapper.readValue(new File(gameFileName), Player.class);
 
-    // register PlayerDeserializer
-    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
-    mapper.registerModule(module);
-    // parse player
-    Player player = mapper.readValue(new File(gameFileName), Player.class);
+    GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
+    Player player = GameDataLoader.loadPlayer(gameFileName, gameWorld);
 
     // if player is null, create a new player from input
     // TODO： 检测是否存在同名文件，有重名要提示不能用

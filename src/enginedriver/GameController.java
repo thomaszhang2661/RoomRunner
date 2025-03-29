@@ -437,7 +437,7 @@ public class GameController {
   @Override
   public String toString() {
     return "{ "
-            + "\"gameWorld\":" + gameWorld.toString() + ","
+            + gameWorld.toString() + ","
             + "\"player\":" + player.toString()
             + " }";
   }
