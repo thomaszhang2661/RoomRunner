@@ -172,13 +172,31 @@ public class Player extends EntityContainer<Item> {
     return roomNumber;
   }
 
+  /**
+   * Sets the player' score.
+   */
   public void setScore(int score) {
     this.score = score;
   }
 
-  public int getScore() {return score;}
+  /**
+   * get the player's score.
+   */
+  public int getScore() {
+    return score;
+  }
 
+  /**
+   * Add score to player.
+   * @param score the score to be added.
+   */
+  public void addScore(int score) {
+    this.score += score;
+  }
 
+  /**
+   * get all items in player's inventory.
+   */
   @Override
   public Map<String, Item> getEntities() {
     return super.getEntities();

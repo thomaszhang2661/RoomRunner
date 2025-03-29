@@ -44,7 +44,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Get one entity from the container.
    */
-  public <U> U getEntity(String entityName, Class<U> clazz) {
+  public <U extends IdentifiableEntity> U getEntity(String entityName, Class<U> clazz) {
     Object entity = stringEntityMap.get(entityName);
     if (clazz.isInstance(entity)) {
       return clazz.cast(entity);  // 安全地进行类型转换

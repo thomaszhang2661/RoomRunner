@@ -105,7 +105,7 @@ public class GameController {
       break;
       case "X": examine(objectName);
       break;
-      case "A": answerPuzzle();
+      case "A": answerPuzzle(objectName);
       break;
       case "Q": quit();
       break;
@@ -145,7 +145,10 @@ public class GameController {
         Room enteredRoom = gameWorld.getRoom(attempRoomNum);
         //move player to the new room
         player.setRoomNumber(attempRoomNum);
+
         // deal with monster attack
+        // get problem from the room,get prloblem clas
+
         IProblem<?> problem  =  enteredRoom.getProblem();
         handleMonsterAttack(problem);
 
@@ -172,7 +175,7 @@ public class GameController {
     //get room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     //get item
-    Item itemAttempt = currentRoom.getEntity(itemName, Item.class);
+    Item itemAttempt = currentRoom.getItem(itemName);
 
     if (itemAttempt != null) {
       if(player.addItem(itemAttempt)) {
@@ -225,12 +228,15 @@ public class GameController {
     //get fixtures keys from the room
     List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
             .toList();
+    //get problem from the room
+    String problemDescription = currentRoom.getProblem().getDescription();
 
     // show the items, fixtures, problem in the room
     viewer.showText("Items you see here: ");
     viewer.showText(String.join(", ", itemNames));
     viewer.showText("Fixtures you see here: ");
     viewer.showText(String.join(", ", fixtureNames));
+
   }
 
 
@@ -254,16 +260,16 @@ public class GameController {
 
     //check solution type
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
-    if(solutionClass== Item.class) {
-      IProblem<Item> itemProblem = (IProblem<Item>) problem;
-      boolean flag = itemProblem.solve(itemAttempt);
+    if (solutionClass == Item.class) {
+      IProblem<Item> itemproblem = (IProblem<Item>) problem;
+      boolean flag = itemproblem.solve(itemAttempt);
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
         unlockExits(currentRoom); // update room exits
 
-        int points = itemProblem.getValue();
-        gameWorld.addScore(points); // update score
-        viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
+        int points = itemproblem.getValue();
+        player.addScore(points); // update score
+        viewer.showText("+ " + points + ". Current Score is " + player.getScore());
         return;
       } else {
         viewer.showText("You have failed to solve the problem with " + itemName);
@@ -273,25 +279,14 @@ public class GameController {
     }
   }
 
-  /**
-   * Unlocks room
-   * @param room
-   */
-  private void unlockExits(Room room) {
-    for (String key : room.getExits().keySet()) {
-      int value = room.getExits().get(key);
-      if (value < 0) {
-        room.unlockExit(key);  // Unlock exit if value is negative
-      }
-    }
-  }
+
 
   /**
    * Check the player's inventory.
    */
   private void checkInventory() {
     // Logic to check inventory
-    Map<String, Item> items = player.getItems();
+    Map<String, Item> items = player.getEntities();
     if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
@@ -307,8 +302,8 @@ public class GameController {
   private void examine(String entityName) {
     // Logic to examine item
     // get current room
-    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    IIdentifiableEntity entity= currentRoom.getEntity(entityName, Item.class);
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    IIdentifiableEntity entity = currentRoom.getEntity(entityName, Item.class);
     if (entity == null) {
       entity = currentRoom.getEntity(entityName, Fixture.class);
     }
@@ -320,78 +315,76 @@ public class GameController {
   }
 
   /**
-   * Determine if puzzle solution is correct.
-   * @param isCorrect
+   * Unlocks room
    * @param room
-   * @param problem
    */
-  private void handlePuzzleSolution(boolean isCorrect, Room room, IProblem<?> problem) {
-    if (isCorrect) {
-      viewer.showText("You have successfully solved the puzzle!");
-      // Unlock the exit of the room
-      unlockExits(room);
-      // Add the score to the player
-      gameWorld.addScore(problem.getValue());
-    } else {
-      viewer.showText("Sorry, your answer is incorrect.");
-      // Puzzle affects the player
-      if (((Puzzle<?>) problem).getAffect_player()) {
-        player.gainOrLoseHealth(-5);
-        viewer.showText("Player takes -5 damage!");
+  private void unlockExits(Room<?> room) {
+    for (String key : room.getExits().keySet()) {
+      int value = room.getExits().get(key);
+      if (value < 0) {
+        room.unlockExit(key);  // Unlock exit if value is negative
       }
     }
   }
 
+  private void handlePuzzleSolution(Room<?> room, IProblem<?> problem) {
+    viewer.showText("You have successfully solved the puzzle!");
+    // Unlock the exit of the room
+    unlockExits(room);
+    // Add the score to the player
+    player.addScore(problem.getValue());
+  }
+
+
   /**
    * Answer a puzzle.
    */
-  private void answerPuzzle() {
+  private void answerPuzzle(String objectName) {
+
+    if (objectName == null || objectName.isEmpty()) {
+      viewer.showText("Please provide an answer.");
+      return;
+    }
 
     // get the current room
-    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
     // get puzzle or moster in the room
-    IProblem problem = currentRoom.getProblem();
+    IProblem<?> problem = currentRoom.getProblem();
     if (problem == null) {
       viewer.showText("There is no puzzle or monster in this room.");
       return;
     }
     // check if the problem is a puzzle
-    if (problem.getClass() != Puzzle.class) {
+    if (!(problem instanceof Puzzle)) {
       viewer.showText("There is no puzzle in this room.");
       return;
     }
 
+    Puzzle<?> puzzle = (Puzzle<?>) problem;
+
     // check if the puzzle is solved
-    if (!problem.getActive()) {
+    if (!puzzle.getActive()) {
       viewer.showText("The puzzle is already solved.");
       return;
     }
 
-    // get the solution of the puzzle
-    String solution = problem.getSolution().toString();
+    // 确认puzzle类型
     // check if the solution is a string
-    if (solution.startsWith("'") && solution.endsWith("'")) {
-      String answer = solution.substring(1, solution.length() - 1);
-      handlePuzzleSolution(problem.solve(answer), currentRoom, problem);
-
-      unlockExits(currentRoom);
-
-      int points = problem.getValue();
-      gameWorld.addScore(points); // update score
-      viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
-
-    } else {
-      // the solution is an item
-      Item itemAttempt = player.getEntity(solution, Item.class);
-      if (itemAttempt == null) {
-        viewer.showText("The " + solution + " you provided is incorrect.");
-        // deal with monster attack
-        handleMonsterAttack(problem);
-        return;
+    if (puzzle.getSolution() instanceof String) {
+      Puzzle<String> puzzleString = (Puzzle<String>) puzzle;
+      if (puzzleString.solve(objectName)) {
+        handlePuzzleSolution(currentRoom, puzzle);
+      } else {
+        viewer.showText("Your answer is not right.");
       }
-      handlePuzzleSolution(problem.solve(itemAttempt), currentRoom, problem);
+    }else {
+      viewer.showText("Your answer is not right, try to use an item.");
+
     }
   }
+
+
+
 
   /**
    * Quit the game.
