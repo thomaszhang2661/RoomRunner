@@ -14,7 +14,7 @@ public class PuzzleTest {
     assertEquals("It's dark!", puzzle.getDescription());
     assertTrue(puzzle.getActive());
     assertTrue(puzzle.getAffects_target());
-    assertTrue(puzzle.getAffect_player());
+    assertTrue(puzzle.getAffects_player());
     assertEquals("Lamp", puzzle.getSolution());
     assertEquals(150, puzzle.getValue());
     assertEquals("You cannot see!", puzzle.getEffects());
