@@ -22,6 +22,7 @@ public class Monster<T> extends Problem<T>{
             affects_player, solution, value, effects, target,
             pictureName);
     this.attack = attack;
+    this.damage = damage;
   }
 
 
@@ -65,10 +66,18 @@ public class Monster<T> extends Problem<T>{
     return super.getEffects();
   }
 
+  /**
+   * Retrieves the damage.
+   * @return monster's damage.
+   */
   public int getDamage() {
     return damage;
   }
 
+  /**
+   * Attacks the player and affects their health.
+   * @param player the player being attacked.
+   */
   public void attack(Player player) {
     // Attack the player
     if (super.getActive() && super.getAffect_player()) {
@@ -76,10 +85,18 @@ public class Monster<T> extends Problem<T>{
     }
   }
 
+  /**
+   * Determines if the monster can attack.
+   * @return boolean.
+   */
   public boolean canAttack() {
     return super.isSolved();
   }
 
+  /**
+   * Retrieves the attack description.
+   * @return
+   */
   public String getAttack() {
     return attack;
   }

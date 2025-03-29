@@ -319,6 +319,12 @@ public class GameController {
     }
   }
 
+  /**
+   * Determine if puzzle solution is correct.
+   * @param isCorrect
+   * @param room
+   * @param problem
+   */
   private void handlePuzzleSolution(boolean isCorrect, Room room, IProblem<?> problem) {
     if (isCorrect) {
       viewer.showText("You have successfully solved the puzzle!");
