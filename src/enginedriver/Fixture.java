@@ -15,16 +15,16 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   /**
    * Simple constructor for fixture without weight
    */
-  public Fixture(int id, String name, String description) {
-    super(id, name, description);
+  public Fixture(String name, String description) {
+    super(name, description);
     this.weight = 1000;//TODO move to config file
   }
 
   /**
    * Constructor for a fixture with weight.
    */
-  public Fixture(int id, String name, String description, int weight) {
-    super(id, name, description);
+  public Fixture(String name, String description, int weight) {
+    super(name, description);
     this.weight = weight;
   }
 
