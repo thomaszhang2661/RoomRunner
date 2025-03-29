@@ -17,6 +17,7 @@ public class GameController {
 
   /**
    * Constructor for GameController.
+
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
@@ -255,12 +256,15 @@ public class GameController {
     //check solution type
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
     if(solutionClass== Item.class) {
-      IProblem<Item> itemproblem = (IProblem<Item>) problem;
-      boolean flag = itemproblem.solve(itemAttempt);
+      IProblem<Item> itemProblem = (IProblem<Item>) problem;
+      boolean flag = itemProblem.solve(itemAttempt);
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
-        //TODO update room exits
-        //TODO update score
+        unlockExits(currentRoom); // update room exits
+
+        int points = itemProblem.getValue();
+        gameWorld.addScore(points); // update score
+        viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
         return;
       } else {
         viewer.showText("You have failed to solve the problem with " + itemName);

@@ -31,6 +31,10 @@ public class GameWorld {
 
   }
 
+  public GameWorld(String name, String version, Map<Integer, Room> rooms, Map<String, Item> items, Map<String, Fixture> fixtures, Map<String, Monster> monsters, Map<String, Puzzle> puzzles, Player player) {
+  }
+
+
   // Getters and Setters
   public String getName() {
     return name;

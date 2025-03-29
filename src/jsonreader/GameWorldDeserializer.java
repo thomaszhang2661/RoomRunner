@@ -49,7 +49,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       // Room constructor do not accept List.
       // Need to change it to Map<elementName, element>
       Room room = new Room(id, roomName, description, exits, itemNames, fixtureNames, problem);
-      rooms.put(Integer.parseInt(id), room);
+      rooms.put(Integer.parseInt(String.valueOf(id)), room);
     }
 
 //    parse items
