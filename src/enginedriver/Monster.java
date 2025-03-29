@@ -72,7 +72,7 @@ public class Monster<T> extends Problem<T>{
   public void attack(Player player) {
     // Attack the player
     if (super.getActive() && super.getAffect_player()) {
-      player.gainOrLoseHealth(damage);
+      player.gainOrLoseHealth(-Math.abs(damage));
     }
   }
 

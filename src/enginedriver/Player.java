@@ -11,6 +11,7 @@ public class Player extends EntityContainer<Item> {
   private int maxWeight;
   private int currentWeight;
   private int roomNumber; //the room that player is in
+  private GameWorld gameWorld;
 
   /**
    * simple Constructor for a player.
@@ -83,17 +84,14 @@ public class Player extends EntityContainer<Item> {
 
 
   public HEALTH_STATUS checkStatus() {
-  //TODO check homework websit, may want to use ENUM HEALTH_STATUS
-//    if (health > 75) {
-//      return "Healthy";
-//    } else if (health > 50) {
-//      return "Injured";
-//    } else if (health > 25) {
-//      return "Badly Injured";
-//    } else {
-//      return "Near Death";
-//    }
-    return null;
+  // check homework website, may want to use ENUM HEALTH_STATUS
+    if (this.health <= 0 )
+      return HEALTH_STATUS.SLEEP;
+    if(this.health < 40)
+      return HEALTH_STATUS.WOOZY;
+    if(this.health < 70)
+      return HEALTH_STATUS.FATIGUED;
+    return HEALTH_STATUS.AWAKE;
   }
 
   public int getHealth() {
@@ -179,7 +177,7 @@ public class Player extends EntityContainer<Item> {
             "\"inventory\":\"" + getItems() + "\"," +
             "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
             "\"roomNumber\":\"" + getRoomNumber() + "\"," +
-            "\"score\":\"" + score + "\"" + // can score be stored anywhere else? in gameWorld?
+            "\"score\":\"" + gameWorld.getScore() + "\"" + // can score be stored anywhere else? in gameWorld?
             " }";
   }
 
