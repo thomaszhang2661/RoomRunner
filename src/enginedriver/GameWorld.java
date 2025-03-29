@@ -18,6 +18,10 @@ public class GameWorld {
 //  private int score;
 //  private Player player; //记录生命值、item、位置等
 
+  // Default constructor for deserialization
+  public GameWorld() {
+  }
+
   public GameWorld(String name, String version,
                    Map<Integer, Room> rooms) {
     this.name = name; // ？？？need name TODO
