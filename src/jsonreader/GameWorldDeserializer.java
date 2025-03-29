@@ -6,20 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import enginedriver.*;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import enginedriver.Fixture;
-import enginedriver.GameWorld;
-import enginedriver.IProblem;
-import enginedriver.IdentifiableEntity;
-import enginedriver.Item;
-import enginedriver.Monster;
-import enginedriver.Player;
-import enginedriver.Puzzle;
-import enginedriver.Room;
 
 public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
 
@@ -44,20 +35,6 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       Fixture fixture = mapper.treeToValue(fixtureNode, Fixture.class);
       fixtures.put(fixture.getName(), fixture);
     }
-
-//    // parse monsters
-//    Map<String, Monster> monsters = new HashMap<>();
-//    for (JsonNode monsterNode : rootNode.get("monsters")) {
-//      Monster monster = mapper.treeToValue(monsterNode, Monster.class);
-//      monsters.put(monster.getName(), monster);
-//    }
-//
-//    //  parse puzzles
-//    Map<String, Puzzle> puzzles = new HashMap<>();
-//    for (JsonNode puzzleNode : rootNode.get("puzzles")) {
-//      Puzzle puzzle = mapper.treeToValue(puzzleNode, Puzzle.class);
-//      puzzles.put(puzzle.getName(), puzzle);
-//    }
 
     // parse rooms
     Map<Integer, Room> rooms = new HashMap<>();
