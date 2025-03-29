@@ -1,56 +1,37 @@
 {
-  "name": "Simple Scenarios",
-  "version": "0.0.1",
-
-  "rooms":[
-    { "room_name":"Dungeon Entrance", "room_number": "1",
-      "description":"Facing north, you are in front of the entrance of a dungeon and there's a bilibard near the entrance. You come from the east and have been given a commission to find a nobleman's lost necklace, which was likely stolen by goblins in the dungeon.",
-      "N": "2", "S": "0", "E": "-5", "W": "0","puzzle": "Nobleman's Commission", "monster": null, "items": null, "fixtures": "Biliboard", "picture": "entrance.png" },
-    { "room_name":"First Layer", "room_number": "2",
-      "description":"*CRACK* The staircase behind you has broken! Now seemingly you can only go forward. But wait, there is an iron sword on the ground, maybe you can make use of it?",
-      "N": "0", "S": "-1", "E": "0", "W": "3","puzzle": "Broken Staircase", "monster": null, "items": "Iron Sword", "fixtures": null, "picture": "first_layer.png" },
-    { "room_name":"Second Layer", "room_number": "3",
-      "description":"You've entered the second layer of the dungeon. The goblin is blocking the way south.",
-      "N": "0", "S": "-4", "E": "2", "W": "0","puzzle": null, "monster": "Goblin", "items": null, "fixtures": null, "picture": "second_layer.png" },
-    { "room_name":"Treasure Room", "room_number": "4",
-      "description":"You've found the treasure room! There are some items on the ground.",
-      "N": "3", "S": "0", "E": "0", "W": "0","puzzle": null, "monster": null, "items": "Necklace, Repair Tool", "fixtures": null, "picture": "treasure_room.png" },
-    { "room_name":"Guild", "room_number": "5",
-      "description":"Horray! You've solved the nobleman's commission, now collect your reward!",
-      "N": "0", "S": "0", "E": "0", "W": "1","puzzle": null, "monster": null, "items": "Gold Coin", "fixtures": null,"picture": "guild.png" }
-  ],
-  "items":[
-    { "name":"Iron Sword", "weight": "5", "max_uses": "50", "uses_remaining": "2", "value" : "100", "when_used" : "You swang the sword to something.",
-      "description":"It looks like someone threw the dying sword down on the way back. Even though the sword is about to break, it's still of good quality and worth using for now.", "picture": "iron_sword.png" },
-    { "name":"Necklace", "weight": "1", "max_uses": "1", "uses_remaining": "1", "value" : "500", "when_used" : "You took the necklace out of your pocket.",
-      "description":"It's a necklace that the nobleman lost. It's a very valuable item, so you should return it to the nobleman as soon as possible.", "picture": "necklace.png" },
-    { "name":"Repair Tool", "weight": "3", "max_uses": "1", "uses_remaining": "1", "value" : "50", "when_used" : "You used the repair tool.",
-      "description":"You found the repair tool in the treasure room...A repair tool, in a dungeon?", "picture": "repair_tool.png" },
-    { "name":"Gold Coin", "weight": "1", "max_uses": "1", "uses_remaining": "1", "value" : "1000", "when_used" : "You took the gold coin out of your pocket.",
-      "description":"It's a gold coin that the nobleman gave you as a reward. It's a very valuable item, so you should keep it carefully.", "picture": "gold_coin.png" }
-  ],
-  "fixtures":[
-    { "name":"Biliboard", "weight": "1000", "puzzle":null, "states" : null,
-      "description":"ATTENTION! \nThe entrance stairs have not been maintained for a long time, so please enter at your own risk!", "picture": null }
-  ],
-  "monsters":[
-    { "name":"Goblin", "active": "true", "affects_target":"true", "affects_player": "true", "solution" : "Iron Sword", "value" : "300",
-      "description" : "Looks like someone didn't make you welcome! A goblin is blocking the way west.",
-      "effects" : "You can't go further until you defeat him!",
-      "damage" : "-15",
-      "target" : "3:Cave", "can_attack": "true", "attack":"Goblin is coming at you with big sticks!", "picture": "goblin.png" }
-  ],
-  "puzzles":[
-    { "name":"Broken Staircase", "active": "true", "affects_target":"true", "affects_player": "true", "solution" : "Repair Tool", "value" : "150",
-      "description" : "The staircase is broken and you cannot go back! ...maybe you can fix it with something in the dungeon?",
-      "effects" : "You cannot go back to the ground until you fix the staircase.",
-      "target" : "2:First Layer", "picture": "broken_staircase.png" },
-    { "name":"Nobleman's Commission", "active": "true", "affects_target":"true", "affects_player": "true", "solution" : "Necklace", "value" : "500",
-      "description" : "The nobleman was moving back and forth from side to side in the Guild with an anxious look, as if he had lost something very important. You can't come back to the Guild empty-handed!",
-      "effects" : "You cannot go back to the guild until you find the nobleman's necklace.",
-      "target" : "5:Guild", "picture": "nobleman.png" }
-  ],
-  "player": [
-    {"name": "Avatar", "health": "100", "inventory": "", "max_weight": "20", "roomNumber": "1", "score": "0" }
-  ]
+  "gameWorld": {
+    "name": "Simple Scenarios",
+    "version": "0.0.1",
+    "rooms": [
+      { "room_name": "Dungeon Entrance", "room_number": "1", "description": "Facing north, you are in front of the entrance of a dungeon and there's a bilibard near the entrance. You come from the east and have been given a commission to find a nobleman's lost necklace, which was likely stolen by goblins in the dungeon.", "N": "2", "S": "0", "E": "-5", "W": "0", "puzzle": "Nobleman's Commission", "monster": null, "items": null, "fixtures": "Biliboard", "picture": "entrance.png" },
+      { "room_name": "First Layer", "room_number": "2", "description": "*CRACK* The staircase behind you has broken! Now seemingly you can only go forward. But wait, there is an iron sword on the ground, maybe you can make use of it?", "N": "0", "S": "-1", "E": "0", "W": "3", "puzzle": "Broken Staircase", "monster": null, "items": "Iron Sword", "fixtures": null, "picture": "first_layer.png" },
+      { "room_name": "Second Layer", "room_number": "3", "description": "You've entered the second layer of the dungeon. The goblin is blocking the way south.", "N": "0", "S": "-4", "E": "2", "W": "0", "puzzle": null, "monster": "Goblin", "items": null, "fixtures": null, "picture": "second_layer.png" },
+      { "room_name": "Treasure Room", "room_number": "4", "description": "You've found the treasure room! There are some items on the ground.", "N": "3", "S": "0", "E": "0", "W": "0", "puzzle": null, "monster": null, "items": "Necklace, Repair Tool", "fixtures": null, "picture": "treasure_room.png" },
+      { "room_name": "Guild", "room_number": "5", "description": "Horray! You've solved the nobleman's commission, now collect your reward!", "N": "0", "S": "0", "E": "0", "W": "1", "puzzle": null, "monster": null, "items": "Gold Coin", "fixtures": null, "picture": "guild.png" }
+    ],
+    "items": [
+      { "name": "Iron Sword", "weight": "5", "max_uses": "50", "uses_remaining": "2", "value": "100", "when_used": "You swang the sword to something.", "description": "It looks like someone threw the dying sword down on the way back. Even though the sword is about to break, it's still of good quality and worth using for now.", "picture": "iron_sword.png" },
+      { "name": "Necklace", "weight": "1", "max_uses": "1", "uses_remaining": "1", "value": "500", "when_used": "You took the necklace out of your pocket.", "description": "It's a necklace that the nobleman lost. It's a very valuable item, so you should return it to the nobleman as soon as possible.", "picture": "necklace.png" },
+      { "name": "Repair Tool", "weight": "3", "max_uses": "1", "uses_remaining": "1", "value": "50", "when_used": "You used the repair tool.", "description": "You found the repair tool in the treasure room...A repair tool, in a dungeon?", "picture": "repair_tool.png" },
+      { "name": "Gold Coin", "weight": "1", "max_uses": "1", "uses_remaining": "1", "value": "1000", "when_used": "You took the gold coin out of your pocket.", "description": "It's a gold coin that the nobleman gave you as a reward. It's a very valuable item, so you should keep it carefully.", "picture": "gold_coin.png" }
+    ],
+    "fixtures": [
+      { "name": "Biliboard", "weight": "1000", "puzzle": null, "states": null, "description": "ATTENTION! \nThe entrance stairs have not been maintained for a long time, so please enter at your own risk!", "picture": null }
+    ],
+    "monsters": [
+      { "name": "Goblin", "active": "true", "affects_target": "true", "affects_player": "true", "solution": "Iron Sword", "value": "300", "description": "Looks like someone didn't make you welcome! A goblin is blocking the way west.", "effects": "You can't go further until you defeat him!", "damage": "-15", "target": "3:Cave", "can_attack": "true", "attack": "Goblin is coming at you with big sticks!", "picture": "goblin.png" }
+    ],
+    "puzzles": [
+      { "name": "Broken Staircase", "active": "true", "affects_target": "true", "affects_player": "true", "solution": "Repair Tool", "value": "150", "description": "The staircase is broken and you cannot go back! ...maybe you can fix it with something in the dungeon?", "effects": "You cannot go back to the ground until you fix the staircase.", "target": "2:First Layer", "picture": "broken_staircase.png" },
+      { "name": "Nobleman's Commission", "active": "true", "affects_target": "true", "affects_player": "true", "solution": "Necklace", "value": "500", "description": "The nobleman was moving back and forth from side to side in the Guild with an anxious look, as if he had lost something very important. You can't come back to the Guild empty-handed!", "effects": "You cannot go back to the guild until you find the nobleman's necklace.", "target": "5:Guild", "picture": "nobleman.png" }
+    ]
+  },
+  "player": {
+    "name": "Avatar",
+    "health": "100",
+    "inventory": "",
+    "max_weight": "20",
+    "roomNumber": "1",
+    "score": "0"
+  }
 }
