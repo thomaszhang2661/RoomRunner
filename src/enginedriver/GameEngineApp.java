@@ -1,13 +1,20 @@
 package enginedriver;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
+import jsonreader.GameControllerDeserializer;
 import jsonreader.GameDataLoader;
+import jsonreader.GameWorldDeserializer;
+import jsonreader.PlayerDeserializer;
 
 public class GameEngineApp {
   private GameController gameController;
@@ -18,13 +25,32 @@ public class GameEngineApp {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
-    // 解析游戏文件（JSON），加载游戏世界和玩家
-    GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
+
+    // 创建 ObjectMapper 并注册自定义反序列化器
+    ObjectMapper mapper1 = new ObjectMapper();
+    mapper1.registerModule(new SimpleModule()
+            .addDeserializer(GameWorld.class, new GameWorldDeserializer());
+
+    // 解析游戏文件（JSON），加载游戏世界
+    GameWorld gameWorld = mapper1.readValue(new File(gameFileName), GameWorld.class);
+
+//    如果存在player
+    // 创建 ObjectMapper 并注册自定义反序列化器
+    ObjectMapper mapper2 = new ObjectMapper();
+    mapper2.registerModule(new SimpleModule()
+            .addDeserializer(Player.class, new PlayerDeserializer()));
+
+    // 解析游戏文件（JSON），加载玩家角色
+    Player player = mapper2.readValue(new File(gameFileName), Player.class);
+
+//    如果不存在player
     // 创建玩家
     // 提示用户输入名字
     // TODO： 检测是否存在同名文件，有重名要提示不能用
-    String playerName = getPlayerName();
-    Player player = new Player(playerName, 100, 13, 0); // 提示玩家输入名字
+    if (player == null) {
+      String playerName = getPlayerName();
+      player = new Player(playerName, 100, 13, 0); // 提示玩家输入名字
+    }
 
     this.gameController = new GameController(gameWorld, player);
   }

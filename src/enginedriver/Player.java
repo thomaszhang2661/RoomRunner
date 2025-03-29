@@ -2,6 +2,7 @@ package enginedriver;
 
 import java.awt.Image;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class for player in the game.
@@ -40,6 +41,18 @@ public class Player extends EntityContainer<Item> {
     super(-1, name, "Player", items);
     this.health = health;
     this.maxWeight = maxWeight;
+    updateCurrentWeight();
+  }
+
+  /**
+   *  Constructor for a player with items and score.
+   */
+  public Player(String name, int health, int maxWeight,
+                Map<String, Item> items, int score) {
+    super(-1, name, "Player", items);
+    this.health = health;
+    this.maxWeight = maxWeight;
+    this.score = score;
     updateCurrentWeight();
   }
 
@@ -207,10 +220,6 @@ public class Player extends EntityContainer<Item> {
     this.roomNumber = roomNumber;
   }
 
-  public Map<String, Item> getItems() {
-    return super.getEntities();
-  }
-
   /**
    * Get an item from player's inventory.
    */
@@ -223,8 +232,9 @@ public class Player extends EntityContainer<Item> {
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
             "\"health\":\"" + getHealth() + "\"," +
-            "\"inventory\":\"" + getItems() + "\"," +
-            "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
+            "\"inventory\":\"" + getEntities().keySet().stream().collect(Collectors.joining(", ")) + "\"," +
+            "\"maxWeight\":\"" + getMaxWeight() + "\"," +
+            "\"currentWeight\":\"" + getCurrentWeight() + "\"," +
             "\"roomNumber\":\"" + getRoomNumber() + "\"," +
             "\"score\":\"" + getScore() + "\", " +
             " }";

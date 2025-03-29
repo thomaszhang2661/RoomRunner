@@ -21,7 +21,7 @@ public class IdentifiableEntity implements IIdentifiableEntity{
   }
 
   /**
-   * Constructor for an identifiable entity, with out ID.
+   * Constructor for an identifiable entity, without ID.
    */
   public IdentifiableEntity( String name, String description) {
     this.id = -1;

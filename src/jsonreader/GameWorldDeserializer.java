@@ -39,8 +39,8 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     // parse rooms
     Map<Integer, Room> rooms = new HashMap<>();
     for (JsonNode roomNode : rootNode.get("rooms")) {
-      int id = roomNode.get("room_number").asInt();
       String roomName = roomNode.get("room_name").asText();
+      int id = roomNode.get("room_number").asInt();
       String description = roomNode.get("description").asText();
 
       Map<String, Integer> exits = new HashMap<>();
@@ -54,10 +54,12 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       for (String itemName : roomNode.get("items").asText().split(", ")) {
         itemEntities.put(itemName, items.get(itemName));
       }
+
       Map<String, IdentifiableEntity> fixtureEntities = new HashMap<>();
       for (String fixtureName : roomNode.get("fixtures").asText().split(", ")) {
         fixtureEntities.put(fixtureName, fixtures.get(fixtureName));
       }
+
       // combine itemEntities and fixtureEntities into one map
       Map<String, IdentifiableEntity> entityNames = new HashMap<>();
       entityNames.putAll(itemEntities);
@@ -71,8 +73,15 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         problem = mapper.treeToValue(roomNode.get("puzzle"), Puzzle.class);
       }
 
+
       Room room = new Room(id, roomName, description, exits, entityNames, problem);
       rooms.put(id, room);
+
+      // parse player if present
+      Player player = null;
+      if (rootNode.has("player")) {
+        player = mapper.treeToValue(roomNode.get("player"), Player.class);
+      }
     }
 
     return new GameWorld(name, version, rooms);
