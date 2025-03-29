@@ -56,7 +56,8 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         String description = getNodeText(itemNode, "description");
         String picture = getNodeText(itemNode, "picture"); // not used
 
-        Item item = new Item(itemName, description, maxUses, remainingUses, value, weight, whenUsed);
+        Item item = new Item(itemName, description, maxUses, remainingUses,
+                value, weight, whenUsed);
         items.put(item.getName(), item);
       }
     }
@@ -103,8 +104,9 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         String attack = getNodeText(monsterNode, "attack");
         String pictureName = getNodeText(monsterNode, "picture");
 
-        Monster<?> monster = new Monster<>(monsterName, description, active, affectsTarget, canAttack,
-                affectsPlayer, solution, value, damage, effects, target, pictureName, attack);
+        Monster<?> monster = new Monster<>(monsterName, description, active,
+                affectsTarget, canAttack, affectsPlayer, solution, value,
+                damage, effects, target, pictureName, attack);
       }
     }
 

@@ -1,22 +1,29 @@
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import enginedriver.HEALTH_STATUS;
 import enginedriver.Item;
 import enginedriver.Player;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
+
+/**
+ * Test class for Player.
+ */
 public class PlayerTest {
   private Player player;
-  private Item lamp, thumbDrive, carrot;
+  private Item lamp;
+  private Item thumbDrive;
+  private Item carrot;
 
+  /**
+   * Set up the test environment.
+   */
   @Before
   public void setUp() {
     player = new Player("TestPlayer", 100, 20);
@@ -26,10 +33,10 @@ public class PlayerTest {
     thumbDrive = new Item("Thumb Drive", "A USB thumb drive for computers",
             1000, 1000, 150, 1,
             "You insert the thumb drive.");
-    carrot = new Item("Carrot", "A carrot. But not just any carrot, " +
-            "but a HUGE carrot! Bigger than you've seen before.", 1, 1,
-            5, 50, "You apply the Mod 2 operator " +
-            "and take note of the remainder.");
+    carrot = new Item("Carrot", "A carrot. But not just any carrot, "
+            + "but a HUGE carrot! Bigger than you've seen before.", 1, 1,
+            5, 50, "You apply the Mod 2 operator "
+            + "and take note of the remainder.");
 
     // Initialize player with a starting inventory
     Map<String, Item> items = new HashMap<>();
@@ -51,7 +58,8 @@ public class PlayerTest {
   public void testCheckHealthStatus() {
     // Start with full health
     player.gainOrLoseHealth(-player.getHealth()); // Reset health to 0
-    Assertions.assertEquals(HEALTH_STATUS.SLEEP, player.checkStatus(), "Health at 0 should be SLEEP");
+    Assertions.assertEquals(HEALTH_STATUS.SLEEP, player.checkStatus(),
+            "Health at 0 should be SLEEP");
 
     player.gainOrLoseHealth(20);
     assertEquals(HEALTH_STATUS.WOOZY, player.checkStatus(), "Health at 20 should be WOOZY");
@@ -75,27 +83,27 @@ public class PlayerTest {
   @Test
   public void testRemoveItemSuccess() {
     // Verify initial weight
-    assertEquals(4, player.getCurrentWeight(), "Initial weight should be the " +
-            "sum of lamp (3) and thumb drive (1).");
+    assertEquals(4, player.getCurrentWeight(), "Initial weight should be the "
+            + "sum of lamp (3) and thumb drive (1).");
 
     // Remove the lamp and verify
     boolean removedLamp = player.removeItem(lamp); // Method under test
     assertTrue(removedLamp, "Lamp should be successfully removed.");
-    assertEquals(1, player.getCurrentWeight(), "Weight should " +
-            "decrease by the sword's weight (3).");
+    assertEquals(1, player.getCurrentWeight(), "Weight should "
+            + "decrease by the sword's weight (3).");
 
     // Remove the thumb drive and verify
     boolean removedThumbDrive = player.removeItem(thumbDrive); // Method under test
     assertTrue(removedThumbDrive, "Thumb drive should be successfully removed.");
-    assertEquals(0, player.getCurrentWeight(), "Weight should be 0 " +
-            "after removing all items.");
+    assertEquals(0, player.getCurrentWeight(), "Weight should be 0 "
+            + "after removing all items.");
   }
 
   @Test
   public void testAddItemWithinWeightLimit() {
     // Create an item
-    Item key = new Item("Key", "A medium-sized key. Looks like it may " +
-            "unlock a cabinet or desk.", 3, 3, 5, 1,
+    Item key = new Item("Key", "A medium-sized key. Looks like it may "
+            + "unlock a cabinet or desk.", 3, 3, 5, 1,
             "You insert the key and turn it. 'Click!'");
 
     // Add the item to inventory
@@ -106,8 +114,8 @@ public class PlayerTest {
     assertTrue(player.getEntities().containsKey("Key"), "Inventory should contain the Key.");
 
     // Verify the current weight is updated
-    assertEquals(5, player.getCurrentWeight(), "Current weight should " +
-                                                      "include the weight of the Key (1).");
+    assertEquals(5, player.getCurrentWeight(), "Current weight should "
+            + "include the weight of the Key (1).");
   }
 
   @Test
@@ -120,12 +128,12 @@ public class PlayerTest {
     assertFalse(added, "Carrot should not be added as it exceeds the weight limit.");
 
     // Ensure the item does not exist in the inventory
-    assertFalse(player.getEntities().containsKey("Carrot"), "Inventory should not " +
-                                                                  "contain the Carrot.");
+    assertFalse(player.getEntities().containsKey("Carrot"), "Inventory should not "
+            + "contain the Carrot.");
 
     // Verify the current weight remains unchanged
-    assertEquals(4, player.getCurrentWeight(), "Current weight should remain " +
-            "unchanged when adding an item exceeds the weight limit.");
+    assertEquals(4, player.getCurrentWeight(), "Current weight should remain "
+            + "unchanged when adding an item exceeds the weight limit.");
   }
 
 }

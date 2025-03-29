@@ -1,10 +1,13 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import enginedriver.Monster;
 import enginedriver.Player;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class MonsterTest {
   private Monster<String> rabbit;
@@ -19,16 +22,16 @@ class MonsterTest {
     // Initialize Rabbit from JSON data
     rabbit = new Monster<>(
             "Rabbit",
-            "Awww. A furry rabbit twitching its nose and eating a carrot. " +
-                    "Makes you want to pet him",
+            "Awww. A furry rabbit twitching its nose and eating a carrot. "
+                    + "Makes you want to pet him",
             true, // Active
             true, // Affects target
             true, // Affects player
             "Carrot", // Solution
             300, // Value
             -15, // Damage
-            "A monster Rabbit moves towards you! He's blocking the way north.\n" +
-                    "I think you might be dinner!",
+            "A monster Rabbit moves towards you! He's blocking the way north.\n"
+                    + "I think you might be dinner!",
             "7:Dining Room",
             "monster-rabbit.png",
             "licks you with a giant tongue!"
@@ -56,8 +59,8 @@ class MonsterTest {
   void testMonsterInitialization() {
     // Validate Rabbit
     assertEquals("Rabbit", rabbit.getName());
-    assertEquals("Awww. A furry rabbit twitching its nose and eating a carrot. " +
-            "Makes you want to pet him", rabbit.getDescription());
+    assertEquals("Awww. A furry rabbit twitching its nose and eating a carrot. "
+            + "Makes you want to pet him", rabbit.getDescription());
     assertTrue(rabbit.getActive());
     assertEquals("Carrot", rabbit.getSolution());
     assertEquals(300, rabbit.getValue());
@@ -67,8 +70,8 @@ class MonsterTest {
 
     // Validate Teddy Bear
     assertEquals("Teddy Bear", teddyBear.getName());
-    assertEquals("A peaceful, cute-looking teddy bear with its hair clipped " +
-            "sits on the floor", teddyBear.getDescription());
+    assertEquals("A peaceful, cute-looking teddy bear with its hair clipped "
+            + "sits on the floor", teddyBear.getDescription());
     assertTrue(teddyBear.getActive());
     assertEquals("Hair Clippers", teddyBear.getSolution());
     assertEquals(200, teddyBear.getValue());
@@ -102,10 +105,10 @@ class MonsterTest {
 
     // Incorrect solution for Teddy Bear
     boolean teddyBearSolved = teddyBear.solve("WrongSolution");
-    assertFalse(teddyBearSolved, "Teddy Bear should not be " +
-            "solved with an incorrect solution.");
-    assertTrue(teddyBear.getActive(), "Teddy Bear should " +
-            "remain active after failed solution.");
+    assertFalse(teddyBearSolved, "Teddy Bear should not be "
+            + "solved with an incorrect solution.");
+    assertTrue(teddyBear.getActive(), "Teddy Bear should "
+            + "remain active after failed solution.");
   }
 
   // Test Monster Attack on Player
@@ -116,13 +119,13 @@ class MonsterTest {
 
     // Rabbit attacks the player
     rabbit.attack(player);
-    assertEquals(85, player.getHealth(), "Player health should " +
-            "decrease by 15 due to Rabbit attack.");
+    assertEquals(85, player.getHealth(), "Player health should "
+            + "decrease by 15 due to Rabbit attack.");
 
     // Teddy Bear attacks the player
     teddyBear.attack(player);
-    assertEquals(80, player.getHealth(), "Player health should " +
-            "decrease by 5 due to Teddy Bear attack.");
+    assertEquals(80, player.getHealth(), "Player health should "
+            + "decrease by 5 due to Teddy Bear attack.");
   }
 
   // Test Monster Attack When Inactive
@@ -131,13 +134,13 @@ class MonsterTest {
     // Solve Rabbit, making it inactive
     rabbit.solve("Carrot");
     rabbit.attack(player);
-    assertEquals(100, player.getHealth(), "Player health should " +
-            "remain unchanged when inactive Rabbit attacks.");
+    assertEquals(100, player.getHealth(), "Player health should "
+            + "remain unchanged when inactive Rabbit attacks.");
 
     // Solve Teddy Bear, making it inactive
     teddyBear.solve("Hair Clippers");
     teddyBear.attack(player);
-    assertEquals(100, player.getHealth(), "Player health should " +
-            "remain unchanged when inactive Teddy Bear attacks.");
+    assertEquals(100, player.getHealth(), "Player health should "
+            + "remain unchanged when inactive Teddy Bear attacks.");
   }
 }

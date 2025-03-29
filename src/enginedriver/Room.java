@@ -46,7 +46,7 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
-              Map<String,IdentifiableEntity> entityNames,
+              Map<String, IdentifiableEntity> entityNames,
               T problem) {
     super(id, name, description, entityNames);
     this.exits = exits;
@@ -55,6 +55,7 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
 
   /**
    * Returns a map of exits from the room.
+
    * @return Map of exits rooms from data.
    */
   public Map<String, Integer> getExits() {
@@ -117,33 +118,33 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
    * get the String list of items in the room.
    */
   public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
-    return String.join(", " ,getEntitiesByType(clazz).stream()
+    return String.join(", ", getEntitiesByType(clazz).stream()
             .map(U::getName)
             .toList());
   }
 
   @Override
   public String toString() {
-    return "{ " +
-            "\"room_name\":\"" + getName() + "\"," +
-            "\"room_number\":\"" + getId() + "\"," +
-            "\"description\":\"" + getDescription() + "\"," +
-            "\"N\":\"" + getExits().get("N") + "\"," +
-            "\"S\":\"" + getExits().get("S") + "\"," +
-            "\"E\":\"" + getExits().get("E") + "\"," +
-            "\"W\":\"" + getExits().get("W") + "\"," +
-            (getProblem() instanceof Monster
+    return "{ "
+            + "\"room_name\":\"" + getName() + "\","
+            + "\"room_number\":\"" + getId() + "\","
+            + "\"description\":\"" + getDescription() + "\","
+            + "\"N\":\"" + getExits().get("N") + "\","
+            + "\"S\":\"" + getExits().get("S") + "\","
+            + "\"E\":\"" + getExits().get("E") + "\","
+            + "\"W\":\"" + getExits().get("W") + "\","
+            + (getProblem() instanceof Monster
                     // is a monster
                     ? "\"puzzle\":null,\"monster\":\"" + getProblem() + "\","
                     : (getProblem() != null
                     // is a puzzle
                     ? "\"puzzle\":\"" + getProblem() + "\",\"monster\":null,"
                     // both is null
-                    : "\"puzzle\":null,\"monster\":null,")) +
-            "\"items\":\"" + getElementNames(Item.class) + "\"," +
-            "\"fixtures\":\"" + getElementNames(Fixture.class) + "\"," +
-            "\"picture\":\"" + getPicture() + "\"" +
-            " }";
+                    : "\"puzzle\":null,\"monster\":null,"))
+            + "\"items\":\"" + getElementNames(Item.class) + "\","
+            + "\"fixtures\":\"" + getElementNames(Fixture.class) + "\","
+            + "\"picture\":\"" + getPicture() + "\""
+            + " }";
   }
 
 }

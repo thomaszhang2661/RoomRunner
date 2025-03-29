@@ -2,7 +2,6 @@ package enginedriver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -10,36 +9,46 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
-
 import jsonreader.GameWorldDeserializer;
 import jsonreader.PlayerDeserializer;
 
+/**
+ * The GameEngineApp class is the main entry point for the game engine application.
+ * It initializes the game world and player, and starts the game loop.
+ */
 public class GameEngineApp {
   private GameController gameController;
   private Readable source;
   private Appendable output;
 
+  /**
+   * Constructor for the GameEngineApp class.
+
+   * @param gameFileName the name of the game file
+   * @param source the input source
+   * @param output the output destination
+   * @throws IOException if an error occurs during input/output
+   */
   public GameEngineApp(String gameFileName, Readable source, Appendable output) throws IOException {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
-    // 创建 ObjectMapper 并注册自定义反序列化器
+    // create ObjectMapper
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
+    // register GameWorldDeserializer
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
     mapper.registerModule(module);
-
-    // 解析游戏世界
+    // parse gameWorld
     GameWorld gameWorld = mapper.readValue(new File(gameFileName), GameWorld.class);
 
-    // 注册 PlayerDeserializer 并传入 gameWorld
+    // register PlayerDeserializer
     module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
     mapper.registerModule(module);
-
-    // 解析玩家角色
+    // parse player
     Player player = mapper.readValue(new File(gameFileName), Player.class);
 
-    // 如果不存在 player，则创建新玩家
+    // if player is null, create a new player from input
     // TODO： 检测是否存在同名文件，有重名要提示不能用
     if (player == null) {
       String playerName = getPlayerName();
@@ -50,6 +59,11 @@ public class GameEngineApp {
   }
 
 
+  /**
+   * Starts the game engine application.
+
+   * @throws IOException if an error occurs during input/output
+   */
   public void start() throws IOException {
     BufferedReader reader = new BufferedReader((Reader) source);
 
@@ -63,6 +77,12 @@ public class GameEngineApp {
     }
   }
 
+  /**
+   * Main method to start the game.
+
+   * @param args command line arguments
+   * @throws IOException if an error occurs during input/output
+   */
   public static void main(String[] args) throws IOException {
     String s = "Sir Mix-A-Lot\nT NOTEBOOK\nN\nT HAIR CLIPPERS\nT KEY\nD NOTEBOOK\nQuit";
     BufferedReader stringReader = new BufferedReader(new StringReader(s));

@@ -9,7 +9,7 @@ import java.util.Objects;
  * Items have a name, description, max uses, remaining uses,
  * value, weight, and when used.
  */
-public class Item  extends IdentifiableEntity implements  IValuable,IWeightable {
+public class Item  extends IdentifiableEntity implements  IValuable, IWeightable {
   private final int maxUses;
   private int remainingUses;
   private final int value;
@@ -19,7 +19,7 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
   /**
    * Constructor for an item.
    */
-  public Item(String name, String description,int maxUses,
+  public Item(String name, String description, int maxUses,
                                          int remainingUses,
                                          int value,
                                          int weight,
@@ -96,36 +96,38 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
 
   @Override
   public String toString() {
-    return "{ " +
-            "\"name\":\"" + getName() + "\"," +
-            "\"weight\":\"" + getWeight() + "\"," +
-            "\"max_uses\":\"" + getUseMax() + "\"," +
-            "\"uses_remaining\":\"" + getRemainingUses() + "\"," +
-            "\"value\":\"" + getValue() + "\"," +
-            "\"when_used\":\"" + getWhenUsed() + "\"," +
-            "\"description\":\"" + getDescription() + "\"," +
-            "\"picture\":\"" + getPicture() + "\"" +
-            " }";
+    return "{ "
+            + "\"name\":\"" + getName() + "\","
+            + "\"weight\":\"" + getWeight() + "\","
+            + "\"max_uses\":\"" + getUseMax() + "\","
+            + "\"uses_remaining\":\"" + getRemainingUses() + "\","
+            + "\"value\":\"" + getValue() + "\","
+            + "\"when_used\":\"" + getWhenUsed() + "\","
+            + "\"description\":\"" + getDescription() + "\","
+            + "\"picture\":\"" + getPicture() + "\""
+            + " }";
   }
 
   /**
    * equals method for the item class.
+
    * @param o the object to compare to
    * @return true if the objects are equal, false otherwise
    */
   @Override
   public boolean equals(Object o) {
-  //    return super.equals(o) && o instanceof Item item &&
-  //            maxUses == item.maxUses &&
-  //            remainingUses == item.remainingUses &&
-  //            value == item.value &&
-  //            weight == item.weight &&
-  //            whenUsed.equals(item.whenUsed);
+    //    return super.equals(o) && o instanceof Item item &&
+    //            maxUses == item.maxUses &&
+    //            remainingUses == item.remainingUses &&
+    //            value == item.value &&
+    //            weight == item.weight &&
+    //            whenUsed.equals(item.whenUsed);
     return super.equals(o);
   }
 
   /**
    * hashcode method for the item class.
+
    * @return the hashcode of the item
    */
   @Override

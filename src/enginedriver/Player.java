@@ -100,6 +100,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Determines whether a player gains or loses health.
+
    * @param h either the damage or the healing that affects the health.
    */
   public void gainOrLoseHealth(int h) {
@@ -112,20 +113,25 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Determines which health status the player is in.
+
    * @return the health status.
    */
   public HEALTH_STATUS checkStatus() {
-    if (this.health <= 0 )
+    if (this.health <= 0) {
       return HEALTH_STATUS.SLEEP;
-    if (this.health < 40)
+    }
+    if (this.health < 40) {
       return HEALTH_STATUS.WOOZY;
-    if (this.health < 70)
+    }
+    if (this.health < 70) {
       return HEALTH_STATUS.FATIGUED;
+    }
     return HEALTH_STATUS.AWAKE;
   }
 
   /**
    * Retrieves the player's health.
+
    * @return player's health.
    */
   public int getHealth() {
@@ -139,6 +145,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Retrieves the name.
+
    * @return name of player.
    */
   public String getName() {
@@ -147,6 +154,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Retrieves the description.
+
    * @return player's description.
    */
   public String getDescription() {
@@ -155,6 +163,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Retrieves a picture of the player.
+
    * @return picture.
    */
   public Image getPicture() {
@@ -163,6 +172,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Retrieves the room number, which represents which room we're currently in.
+
    * @return the current location of the player.
    */
   public int getRoomNumber() {
@@ -185,6 +195,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Add score to player.
+
    * @param score the score to be added.
    */
   public void addScore(int score) {
@@ -201,7 +212,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Add an item into player's inventory if it is within the maxWeight.
-   *
+
    * @param item the name of the item to be added
    * @return true if the item is within the maxWeight and successfully added, false otherwise
    */
@@ -229,6 +240,7 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Sets the room number.
+
    * @param roomNumber a number that represents a specific room.
    */
   public void setRoomNumber(int roomNumber) {
@@ -246,15 +258,16 @@ public class Player extends EntityContainer<Item> {
 
   @Override
   public String toString() {
-    return "{ " +
-            "\"name\":\"" + getName() + "\"," +
-            "\"health\":\"" + getHealth() + "\"," +
-            "\"inventory\":\"" + getEntities().keySet().stream().collect(Collectors.joining(", ")) + "\"," +
-            "\"max_weight\":\"" + getMaxWeight() + "\"," +
-            "\"current_weight\":\"" + getCurrentWeight() + "\"," +
-            "\"room_number\":\"" + getRoomNumber() + "\"," +
-            "\"score\":\"" + getScore() + "\"" +
-            " }";
+    return "{ "
+            + "\"name\":\"" + getName() + "\","
+            + "\"health\":\"" + getHealth() + "\","
+            + "\"inventory\":\"" + getEntities().keySet().stream().collect(
+                    Collectors.joining(", ")) + "\","
+            + "\"max_weight\":\"" + getMaxWeight() + "\","
+            + "\"current_weight\":\"" + getCurrentWeight() + "\","
+            + "\"room_number\":\"" + getRoomNumber() + "\","
+            + "\"score\":\"" + getScore() + "\""
+            + " }";
   }
 
 }

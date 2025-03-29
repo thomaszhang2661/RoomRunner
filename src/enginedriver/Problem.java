@@ -1,8 +1,14 @@
 package enginedriver;
 
-import java.awt.*;
+import java.awt.Image;
 
-abstract public class Problem<T> extends IdentifiableEntity
+/**
+ * Class for problems in the game.
+ * Problems are puzzles or riddles that the player must solve.
+
+ * @param <T> the type of the solution
+ */
+public abstract class Problem<T> extends IdentifiableEntity
         implements IProblem<T>, IValuable {
   private Boolean active;
   private Boolean affects_target;
@@ -15,7 +21,10 @@ abstract public class Problem<T> extends IdentifiableEntity
 
 
 
-  public Problem(String name, String description,Boolean active,
+  /**
+   * Constructor for a problem.
+   */
+  public Problem(String name, String description, Boolean active,
                  Boolean affects_target, Boolean affects_player,
                  T solution, int value, String effects,
                  String target, String pictureName) {
@@ -43,6 +52,7 @@ abstract public class Problem<T> extends IdentifiableEntity
   public String getTarget() {
     return target;
   }
+
   @Override
   public boolean getActive() {
     return active;

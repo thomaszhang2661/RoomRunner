@@ -1,11 +1,15 @@
 package enginedriver;
 
-import java.awt.*;
+import java.awt.Image;
 
-public class Monster<T> extends Problem<T>{
+/**
+ * Class for monsters in the game.
+ */
+public class Monster<T> extends Problem<T> {
   private int damage;
   private String attack;
   private boolean canAttack;
+
   /**
    * Constructor for Puzzle.
    */
@@ -71,6 +75,7 @@ public class Monster<T> extends Problem<T>{
 
   /**
    * Retrieves the damage.
+
    * @return monster's damage.
    */
   public int getDamage() {
@@ -79,6 +84,7 @@ public class Monster<T> extends Problem<T>{
 
   /**
    * Attacks the player and affects their health.
+
    * @param player the player being attacked.
    */
   public void attack(Player player) {
@@ -90,7 +96,8 @@ public class Monster<T> extends Problem<T>{
 
   /**
    * Determines if the monster can attack.
-   * @return boolean.
+
+   * @return boolean for attack.
    */
   public boolean canAttack() {
     return super.isSolved();
@@ -98,7 +105,8 @@ public class Monster<T> extends Problem<T>{
 
   /**
    * Retrieves the attack description.
-   * @return
+
+   * @return String for attack.
    */
   public String getAttack() {
     return attack;
@@ -106,20 +114,20 @@ public class Monster<T> extends Problem<T>{
 
   @Override
   public String toString() {
-    return "{ " +
-            "\"name\":\"" + getName() + "\"," +
-            "\"active\":\"" + getActive() + "\"," +
-            "\"affects_target\":\"" + getAffects_target() + "\"," +
-            "\"affects_player\":\"" + getAffects_player() + "\"," +
-            "\"solution\":\"" + getSolution() + "\"," +
-            "\"value\":\"" + getValue() + "\"," +
-            "\"description\":\"" + getDescription() + "\"," +
-            "\"effects\":\"" + getEffects() + "\"," +
-            "\"damage\":\"" + getDamage() + "\"," +
-            "\"target\":\"" + getTarget() + "\"," +
-            "\"can_attack\":\"" + canAttack() + "\"," +
-            "\"attack\":\"" + getAttack() + "\"," +
-            "\"picture\":\"" + getPictureName() + "\"" +
-            " }";
+    return "{ "
+            + "\"name\":\"" + getName() + "\","
+            + "\"active\":\"" + getActive() + "\","
+            + "\"affects_target\":\"" + getAffects_target() + "\","
+            + "\"affects_player\":\"" + getAffects_player() + "\","
+            + "\"solution\":\"" + getSolution() + "\","
+            + "\"value\":\"" + getValue() + "\","
+            + "\"description\":\"" + getDescription() + "\","
+            + "\"effects\":\"" + getEffects() + "\","
+            + "\"damage\":\"" + getDamage() + "\","
+            + "\"target\":\"" + getTarget() + "\","
+            + "\"can_attack\":\"" + canAttack() + "\","
+            + "\"attack\":\"" + getAttack() + "\","
+            + "\"picture\":\"" + getPictureName() + "\""
+            + " }";
   }
 }
