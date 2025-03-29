@@ -54,7 +54,7 @@ abstract public class Problem<T> extends IdentifiableEntity
   }
 
   public boolean isSolved() {
-    return active;
+    return !active;
   }
 
   @Override
@@ -70,7 +70,7 @@ abstract public class Problem<T> extends IdentifiableEntity
     if (input instanceof Item) {
       //conver input to Item
       Item item = (Item) input;
-      if (item.getName().equals(solution)
+      if (item.equals(solution)
               && item.getRemainingUses() > 0) {
         active = false;
 
