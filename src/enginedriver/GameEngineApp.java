@@ -11,8 +11,6 @@ import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
-import jsonreader.GameControllerDeserializer;
-import jsonreader.GameDataLoader;
 import jsonreader.GameWorldDeserializer;
 import jsonreader.PlayerDeserializer;
 
@@ -25,35 +23,32 @@ public class GameEngineApp {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
-
     // 创建 ObjectMapper 并注册自定义反序列化器
-    ObjectMapper mapper1 = new ObjectMapper();
-    mapper1.registerModule(new SimpleModule()
-            .addDeserializer(GameWorld.class, new GameWorldDeserializer());
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
+    mapper.registerModule(module);
 
-    // 解析游戏文件（JSON），加载游戏世界
-    GameWorld gameWorld = mapper1.readValue(new File(gameFileName), GameWorld.class);
+    // 解析游戏世界
+    GameWorld gameWorld = mapper.readValue(new File(gameFileName), GameWorld.class);
 
-//    如果存在player
-    // 创建 ObjectMapper 并注册自定义反序列化器
-    ObjectMapper mapper2 = new ObjectMapper();
-    mapper2.registerModule(new SimpleModule()
-            .addDeserializer(Player.class, new PlayerDeserializer()));
+    // 注册 PlayerDeserializer 并传入 gameWorld
+    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
+    mapper.registerModule(module);
 
-    // 解析游戏文件（JSON），加载玩家角色
-    Player player = mapper2.readValue(new File(gameFileName), Player.class);
+    // 解析玩家角色
+    Player player = mapper.readValue(new File(gameFileName), Player.class);
 
-//    如果不存在player
-    // 创建玩家
-    // 提示用户输入名字
+    // 如果不存在 player，则创建新玩家
     // TODO： 检测是否存在同名文件，有重名要提示不能用
     if (player == null) {
       String playerName = getPlayerName();
-      player = new Player(playerName, 100, 13, 0); // 提示玩家输入名字
+      player = new Player(playerName, 100, 20, 0); // 提示玩家输入名字
     }
 
     this.gameController = new GameController(gameWorld, player);
   }
+
 
   public void start() throws IOException {
     BufferedReader reader = new BufferedReader((Reader) source);
