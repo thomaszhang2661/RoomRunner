@@ -35,7 +35,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       String picture = itemNode.get("picture").asText(); // not used
 
       Item item = new Item(itemName, description, maxUses, remainingUses, value, weight, whenUsed);
-      items.put(name, item);
+      items.put(item.getName(), item);
     }
 
     // parse fixtures

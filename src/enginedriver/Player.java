@@ -56,6 +56,21 @@ public class Player extends EntityContainer<Item> {
     updateCurrentWeight();
   }
 
+  /**
+   *  Constructor for an existing player.
+   */
+  public Player(String name, int health, int maxWeight,
+                int currentWeight, int roomNumber,
+                Map<String, Item> items, int score) {
+    super(-1, name, "Player", items);
+    this.health = health;
+    this.maxWeight = maxWeight;
+    this.currentWeight = currentWeight;
+    this.roomNumber = roomNumber;
+    this.score = score;
+    updateCurrentWeight();
+  }
+
 
   /**
    * Get current total weight of inventory.
