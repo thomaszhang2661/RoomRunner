@@ -31,7 +31,7 @@
     "health": "100",
     "inventory": "",
     "max_weight": "20",
-    "roomNumber": "1",
+    "room_number": "1",
     "score": "0"
   }
 }
