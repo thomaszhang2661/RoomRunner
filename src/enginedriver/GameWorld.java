@@ -16,7 +16,7 @@ public class GameWorld {
 //  private Map<String, Monster> monsters;
 //  private Map<String, Puzzle> puzzles;
 //  private int score;
-//  private Player player; //记录生命值、item、位置等
+  private Player player; //记录生命值、item、位置等
 
   // Default constructor for deserialization
   public GameWorld() {
@@ -132,7 +132,7 @@ public class GameWorld {
     if (!rooms.isEmpty()) sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
     sb.append("],");
 
-//    sb.append("\"player\":").append(player.toString());
+    sb.append("\"player\":").append(player.toString());
     sb.append(" }");
     return sb.toString();
   }
