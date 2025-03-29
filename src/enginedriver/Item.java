@@ -1,7 +1,12 @@
 package enginedriver;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.awt.*;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Item  extends IdentifiableEntity implements  IValuable,IWeightable {
   private int maxUses;
   private int remainingUses;
@@ -10,11 +15,12 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
   private String whenUsed;
   private IdentifiableEntity identifiableItem;
 
-  public Item(String name, String description,int maxUses,
-                                         int remainingUses,
-                                         int value,
-                                         int weight,
-              String whenUsed) {
+  @JsonCreator
+  public Item(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("max_uses")int maxUses,
+              @JsonProperty("uses_remaining") int remainingUses,
+              @JsonProperty("value") int value,
+              @JsonProperty("weight") int weight,
+              @JsonProperty("when_used") String whenUsed) {
     super(name, description);
 
     if (remainingUses < 0) {

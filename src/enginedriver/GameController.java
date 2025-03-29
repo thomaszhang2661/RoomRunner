@@ -357,6 +357,10 @@ public class GameController {
    */
   private void answerPuzzle() {
 
+    // 临时添加调试输出
+    System.out.println("当前房间是否有谜题: " + (problem != null));
+    System.out.println("玩家输入: " + input);
+
     // get the current room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     // get puzzle or moster in the room

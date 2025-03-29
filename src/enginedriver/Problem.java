@@ -54,7 +54,7 @@ abstract public class Problem<T> extends IdentifiableEntity
   }
 
   public boolean isSolved() {
-    return active;
+    return !active;
   }
 
   @Override

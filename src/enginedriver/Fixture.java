@@ -16,8 +16,12 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
    * @param name
    * @param description
    */
-  public Fixture(int id, String name, String description) {
+  public Fixture(int id, String name, String description, int weight, Puzzle puzzle) {
     super(id, name, description);
+    this.weight = weight;
+    this.puzzle = puzzle;
+    this.picture = null;
+    this.states = null;
   }
 
   public Object getStates() {
