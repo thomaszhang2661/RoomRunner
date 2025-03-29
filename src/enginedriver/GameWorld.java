@@ -12,10 +12,10 @@ public class GameWorld {
   private String name;
   private String version;
   private Map<Integer, Room> rooms;
-  private Map<String, Item> items;
-  private Map<String, Fixture> fixtures;
-  private Map<String, Monster> monsters;
-  private Map<String, Puzzle> puzzles;
+//  private Map<String, Item> items;
+//  private Map<String, Fixture> fixtures;
+//  private Map<String, Monster> monsters;
+//  private Map<String, Puzzle> puzzles;
   private int score;
   private Player player; //记录生命值、item、位置等
 
@@ -29,9 +29,6 @@ public class GameWorld {
     this.player = player;
     this.score = score;
 
-  }
-
-  public GameWorld(String name, String version, Map<Integer, Room> rooms, Map<String, Item> items, Map<String, Fixture> fixtures, Map<String, Monster> monsters, Map<String, Puzzle> puzzles, Player player) {
   }
 
 
