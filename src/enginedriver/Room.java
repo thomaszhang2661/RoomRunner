@@ -5,18 +5,18 @@ import java.util.Map;
 /**
  * class for a room in the game.
  */
-public class Room  extends  EntityContainer<IdentifiableEntity> {
+public class Room<T> extends  EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
-  private IProblem problem;
+  private T problem;
 
   /**
    * Simple Constructor for a room
    */
   public Room(int id, String name, String description,
-              Map<String, Integer> exits, String problem) {
+              Map<String, Integer> exits, T problem) {
     super(id, name, description);
     this.exits = exits;
-    this.problem = null;
+    this.problem = problem;
   }
 
   /**
@@ -36,7 +36,7 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
               Map<String,IdentifiableEntity> entityNames,
-              IProblem problem) {
+              T problem) {
     super(id, name, description, entityNames);
     this.exits = exits;
     this.problem = problem;
@@ -88,7 +88,7 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
   /**
    * get the problem in the room.
    */
-  public IProblem getProblem() {
+  public T getProblem() {
     return problem;
   }
 
