@@ -19,7 +19,7 @@ public class ItemTest {
     assertEquals("A", item.getName());
     assertEquals("desc", item.getDescription());
     assertEquals(5, item.getUseMax());
-    assertEquals(2, item.getUseRemain());
+    assertEquals(2, item.getRemainingUses());
     assertEquals(100, item.getValue());
     assertEquals(10, item.getWeight());
     assertEquals("when used", item.getWhenUsed());
@@ -48,15 +48,15 @@ public class ItemTest {
   void testGetUseRemain() {
     Item item1 = new Item("A", "desc", 10, 5,
             100, 10, "when used");
-    assertEquals(5, item1.getUseRemain());
+    assertEquals(5, item1.getRemainingUses());
 
     Item item2 = new Item("B", "desc", 10, 0,
             50, 5, "used");
-    assertEquals(0, item2.getUseRemain());
+    assertEquals(0, item2.getRemainingUses());
 
     Item item3 = new Item("C", "desc", 10, 10,
             20, 2, "used soon");
-    assertEquals(10, item3.getUseRemain());
+    assertEquals(10, item3.getRemainingUses());
   }
 
   /**
@@ -174,7 +174,7 @@ public class ItemTest {
     String expected =
             "{ \"name\":\"A\",\"weight\":\"2\",\"max_uses\":\"5\",\"uses_remaining"
                     + "\":\"3\",\"value\":\"100\","
-                    + "\"when_used\":\"\",\"description\":\"descA\",\"picture\":\"null\" }";
+                    + "\"when_used\":\"Now\",\"description\":\"descA\",\"picture\":\"null\" }";
 
     assertEquals(expected, item.toString());
   }

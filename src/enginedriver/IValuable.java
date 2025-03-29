@@ -11,13 +11,13 @@ public interface IValuable extends IIdentifiableEntity {
    */
   int getValue();
 
-  /**
-   * Adds a value to p[layer.
-   */
-  void  addValue(Player player);
-
-  /**
-   * Removes a value from player.
-   */
-  void removeValue(Player player);
+//  /**
+//   * Adds a value to p[layer.
+//   */
+//  void  addValue(Player player);
+//
+//  /**
+//   * Removes a value from player.
+//   */
+//  void removeValue(Player player);
 }

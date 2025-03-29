@@ -1,26 +1,29 @@
 package enginedriver;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.awt.Image;
 
-import java.awt.*;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Class for items in the game.
+ * Items are objects that can be used by the player.
+ * Items have a name, description, max uses, remaining uses,
+ * value, weight, and when used.
+ */
 public class Item  extends IdentifiableEntity implements  IValuable,IWeightable {
-  private int maxUses;
+  private final int maxUses;
   private int remainingUses;
-  private int value;
-  private int weight;
-  private String whenUsed;
+  private final int value;
+  private final int weight;
+  private final String whenUsed;
   private IdentifiableEntity identifiableItem;
 
-  @JsonCreator
-  public Item(@JsonProperty("name") String name, @JsonProperty("description") String description, @JsonProperty("max_uses")int maxUses,
-              @JsonProperty("uses_remaining") int remainingUses,
-              @JsonProperty("value") int value,
-              @JsonProperty("weight") int weight,
-              @JsonProperty("when_used") String whenUsed) {
+  /**
+   * Constructor for an item.
+   */
+  public Item(String name, String description,int maxUses,
+                                         int remainingUses,
+                                         int value,
+                                         int weight,
+              String whenUsed) {
     super(name, description);
 
     if (remainingUses < 0) {
@@ -37,7 +40,19 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
 
   }
 
-  public int getUseRemain() {
+  /**
+   * Constructor for an item with no max uses.
+   */
+  public void setRemainingUses(int remainingUses) {
+    if (remainingUses > 0) {
+      this.remainingUses = remainingUses;
+    } else {
+      throw new IllegalArgumentException(
+              "Remaining uses of an item cannot be less than 0");
+    }
+  }
+
+  public int getRemainingUses() {
     return remainingUses;
   }
 
@@ -85,7 +100,7 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
             "\"name\":\"" + getName() + "\"," +
             "\"weight\":\"" + getWeight() + "\"," +
             "\"max_uses\":\"" + getUseMax() + "\"," +
-            "\"uses_remaining\":\"" + getUseRemain() + "\"," +
+            "\"uses_remaining\":\"" + getRemainingUses() + "\"," +
             "\"value\":\"" + getValue() + "\"," +
             "\"when_used\":\"" + getWhenUsed() + "\"," +
             "\"description\":\"" + getDescription() + "\"," +

@@ -5,18 +5,29 @@ import java.util.Map;
 /**
  * class for a room in the game.
  */
-public class Room  extends  EntityContainer<IdentifiableEntity> {
+public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
-  private IProblem problem;
+  private T problem;
+
 
   /**
-   * Simple Constructor for a room
+   * Simple Constructor for a room.
    */
   public Room(int id, String name, String description,
-              Map<String, Integer> exits, String problem) {
+              Map<String, Integer> exits) {
     super(id, name, description);
     this.exits = exits;
     this.problem = null;
+  }
+
+  /**
+   * Simple Constructor for a room with problem.
+   */
+  public Room(int id, String name, String description,
+              Map<String, Integer> exits,  T problem) {
+    super(id, name, description);
+    this.exits = exits;
+    this.problem = problem;
   }
 
   /**
@@ -31,12 +42,12 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
   }
 
   /**
-   * Constructor for a room with Map of Entities.
+   * Constructor for a room with Map of Entities and a problem.
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
               Map<String,IdentifiableEntity> entityNames,
-              IProblem problem) {
+              T problem) {
     super(id, name, description, entityNames);
     this.exits = exits;
     this.problem = problem;
@@ -81,14 +92,24 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
   /**
    *  get an Entity from the room.
    */
-  public <U> U getEntity(String entityName, Class<U> clazz) {
+  public <U extends IdentifiableEntity> U getEntity(
+          String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);
   }
 
   /**
+   *  get an Item from the room.
+   */
+  public Item  getItem(String itemName) {
+    return super.getEntity(itemName, Item.class);
+  }
+
+
+
+  /**
    * get the problem in the room.
    */
-  public IProblem getProblem() {
+  public T getProblem() {
     return problem;
   }
 

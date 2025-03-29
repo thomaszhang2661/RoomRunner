@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -106,7 +105,7 @@ public class GameController {
       break;
       case "X": examine(objectName);
       break;
-      case "A": answerPuzzle();
+      case "A": answerPuzzle(objectName);
       break;
       case "Q": quit();
       break;
@@ -146,7 +145,10 @@ public class GameController {
         Room enteredRoom = gameWorld.getRoom(attempRoomNum);
         //move player to the new room
         player.setRoomNumber(attempRoomNum);
+
         // deal with monster attack
+        // get problem from the room,get prloblem clas
+
         IProblem<?> problem  =  enteredRoom.getProblem();
         handleMonsterAttack(problem);
 
@@ -173,7 +175,7 @@ public class GameController {
     //get room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     //get item
-    Item itemAttempt = currentRoom.getEntity(itemName, Item.class);
+    Item itemAttempt = currentRoom.getItem(itemName);
 
     if (itemAttempt != null) {
       if(player.addItem(itemAttempt)) {
@@ -234,9 +236,7 @@ public class GameController {
     viewer.showText(String.join(", ", itemNames));
     viewer.showText("Fixtures you see here: ");
     viewer.showText(String.join(", ", fixtureNames));
-    // TODO discuss 需要先显示 problem吗
-    viewer.showText("You see the following problem: ");
-    viewer.showText(problemDescription);
+
   }
 
 
@@ -279,6 +279,8 @@ public class GameController {
     }
   }
 
+
+
   /**
    * Check the player's inventory.
    */
@@ -300,8 +302,8 @@ public class GameController {
   private void examine(String entityName) {
     // Logic to examine item
     // get current room
-    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    IIdentifiableEntity entity= currentRoom.getEntity(entityName, Item.class);
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    IIdentifiableEntity entity = currentRoom.getEntity(entityName, Item.class);
     if (entity == null) {
       entity = currentRoom.getEntity(entityName, Fixture.class);
     }
@@ -313,9 +315,10 @@ public class GameController {
   }
 
   /**
-   * Helper method to unlock exits of a room.
+   * Unlocks room
+   * @param room
    */
-  private void unlockExits(Room room) {
+  private void unlockExits(Room<?> room) {
     for (String key : room.getExits().keySet()) {
       int value = room.getExits().get(key);
       if (value < 0) {
@@ -324,83 +327,64 @@ public class GameController {
     }
   }
 
-  /**
-   * Helper method to handle common logic for solving the puzzle
-   */
-  private void handlePuzzleSolution(boolean isCorrect, Room room, IProblem<?> problem) {
-    if (isCorrect) {
-      viewer.showText("You have successfully solved the puzzle!");
-      // Unlock the exit of the room
-      unlockExits(room);
-      // Add the score to the player
-      player.addScore(problem.getValue());
-    } else {
-      viewer.showText("Sorry, your answer is incorrect.");
-    }
+  private void handlePuzzleSolution(Room<?> room, IProblem<?> problem) {
+    viewer.showText("You have successfully solved the puzzle!");
+    // Unlock the exit of the room
+    unlockExits(room);
+    // Add the score to the player
+    player.addScore(problem.getValue());
   }
 
-  /**
-   * Helper function to capitalize the first letter of each word in a string.
-   * @param input the input string
-   * @return the string with each word's first letter capitalized
-   */
-  private String capitalizeWords(String input) {
-    return Arrays.stream(input.split("\\s+"))
-            .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-            .collect(Collectors.joining(" "));
-  }
 
   /**
    * Answer a puzzle.
    */
-  private void answerPuzzle() {
+  private void answerPuzzle(String objectName) {
+
+    if (objectName == null || objectName.isEmpty()) {
+      viewer.showText("Please provide an answer.");
+      return;
+    }
 
     // get the current room
-    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
     // get puzzle or moster in the room
-    IProblem problem = currentRoom.getProblem();
+    IProblem<?> problem = currentRoom.getProblem();
     if (problem == null) {
       viewer.showText("There is no puzzle or monster in this room.");
       return;
     }
     // check if the problem is a puzzle
-    if (problem.getClass() != Puzzle.class) {
+    if (!(problem instanceof Puzzle)) {
       viewer.showText("There is no puzzle in this room.");
       return;
     }
 
+    Puzzle<?> puzzle = (Puzzle<?>) problem;
+
     // check if the puzzle is solved
-    if (!problem.getActive()) {
+    if (!puzzle.getActive()) {
       viewer.showText("The puzzle is already solved.");
       return;
     }
 
-    // get player's input
-    String input;
-    while (true) {
-      viewer.showText("Please enter your answer: ");
-      Scanner scanner = new Scanner(System.in);
-      input = scanner.nextLine();
-      if (!input.isEmpty()) {
-        break;
-      }
-      viewer.showText("You must enter an answer.");
-    }
-    input = input.trim().replaceAll("\\s+", " ").toLowerCase();
-
-    // get the solution of the puzzle
-    String correctSolution = problem.getSolution().toString();
+    // 确认puzzle类型
     // check if the solution is a string
-    if (correctSolution.startsWith("'") && correctSolution.endsWith("'")) {
-      input = "'" + capitalizeWords(input) + "'";
-      // try to solve the puzzle with the input
-      handlePuzzleSolution(problem.solve(input), currentRoom, problem);
-    } else {
-      // the solution is an item
-      input = capitalizeWords(input);
-      useItem(input);
+    if (puzzle.getSolution() instanceof String) {
+      Puzzle<String> puzzleString = (Puzzle<String>) puzzle;
+      if (puzzleString.solve(objectName)) {
+        handlePuzzleSolution(currentRoom, puzzle);
+      } else {
+        viewer.showText("Your answer is not right.");
       }
-}
+    }else {
+      viewer.showText("Your answer is not right, try to use an item.");
+
+    }
+  }
+
+
+
 
   /**
    * Quit the game.
