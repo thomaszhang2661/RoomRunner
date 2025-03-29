@@ -34,6 +34,9 @@ public class PuzzleTest {
     assertEquals(-1, puzzle.getId());
   }
 
+  /**
+   * Test solve method of Puzzle.
+   */
   @Test
   public void testPuzzleSolve() {
     Puzzle<String> puzzle = new Puzzle<>("Darkness",
@@ -44,6 +47,22 @@ public class PuzzleTest {
     assertFalse(puzzle.getActive());
   }
 
+  /**
+   * Test solve method of Puzzle with wrong input.
+   */
+  @Test
+  public void testPuzzleSolveWrongInput() {
+    Puzzle<String> puzzle = new Puzzle<>("Darkness",
+            "It's dark!", true, true,
+            true, "Lamp", 150, "You cannot see!",
+            "6:Kitchen", "darkness.png");
+    assertFalse(puzzle.solve("WrongInput"));
+    assertTrue(puzzle.getActive());
+  }
+
+  /**
+   * Test the toString method of Puzzle.
+   */
   @Test
   public void testPuzzleToString() {
     Puzzle<String> puzzle = new Puzzle<>("Darkness",
