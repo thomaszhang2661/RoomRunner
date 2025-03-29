@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import enginedriver.GameWorld;
+import enginedriver.Player;
 
 public class GameDataLoader {
   private static final ObjectMapper mapper = new ObjectMapper();
@@ -15,6 +16,7 @@ public class GameDataLoader {
   static {
     SimpleModule module = new SimpleModule();
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
+    module.addDeserializer(Player.class, new PlayerDeserializer());
     mapper.registerModule(module);
   }
 

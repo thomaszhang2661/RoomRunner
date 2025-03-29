@@ -17,15 +17,14 @@ public class GameWorld {
 //  private Map<String, Monster> monsters;
 //  private Map<String, Puzzle> puzzles;
 //  private int score;
-  private Player player; //记录生命值、item、位置等
+//  private Player player; //记录生命值、item、位置等
 
   public GameWorld(String name, String version,
-                   Map<Integer, Room> rooms,
-                   Player player) {
+                   Map<Integer, Room> rooms) {
     this.name = name; // ？？？need name TODO
     this.version = version;
     this.rooms = rooms;
-    this.player = player;
+//    this.player = player;
 //    this.score = score;
 
   }
@@ -59,20 +58,20 @@ public class GameWorld {
   public void setRooms(Map<Integer, Room>  rooms) {
     this.rooms = rooms;
   }
-  public void setScore(int score) {
-    player.setScore(score);
-  }
+//  public void setScore(int score) {
+//    player.setScore(score);
+//  }
 
-  public int getScore() {
-    return player.getScore();
-  }
+//  public int getScore() {
+//    return player.getScore();
+//  }
 
-  public void setPlayer(String name, int health, int maxWeight, int score) {
-    this.player = new Player(name, health, maxWeight, score);
-  }
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
+//  public void setPlayer(String name, int health, int maxWeight, int score) {
+//    this.player = new Player(name, health, maxWeight, score);
+//  }
+//  public void setPlayer(Player player) {
+//    this.player = player;
+//  }
 
   @Override
   public String toString() {
@@ -81,54 +80,53 @@ public class GameWorld {
     sb.append("\"name\":\"").append(name).append("\",");
     sb.append("\"version\":\"").append(version).append("\",");
 
-    sb.append("\"rooms\":{");
-    for (Map.Entry<Integer, Room> entry : rooms.entrySet()) {
-      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    sb.append("\"rooms\":[");
+    for (Room room : rooms.values()) {
+      sb.append(room.toString()).append(",");
     }
-    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
-    sb.append("},");
+    if (!rooms.isEmpty()) sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("],");
 
-    sb.append("\"items\":{");
+    sb.append("\"items\":[");
     for (Room room : rooms.values()) {
       for (Item item : room.getEntitiesByType(Item.class)) {
-        sb.append("\"").append(item.getName()).append("\":").append(item.toString()).append(",");
+        sb.append(item.toString()).append(",");
       }
     }
-    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
-    sb.append("},");
+    if (!rooms.isEmpty()) sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("],");
 
-    sb.append("\"fixtures\":{");
+    sb.append("\"fixtures\":[");
     for (Room room : rooms.values()) {
       for (Fixture fixture : room.getEntitiesByType(Fixture.class)) {
-        sb.append("\"").append(fixture.getName()).append("\":").append(fixture.toString()).append(",");
+        sb.append(fixture.toString()).append(",");
       }
     }
-    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
-    sb.append("},");
+    if (!rooms.isEmpty()) sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("],");
 
-    sb.append("\"monsters\":{");
+    sb.append("\"monsters\":[");
     for (Room room : rooms.values()) {
       if (room.getProblem() instanceof Monster) {
-        Monster monster = (Monster) room.getProblem();
-        sb.append("\"").append(monster.getName()).append("\":").append(monster.toString()).append(",");
+        Monster<?> monster = (Monster<?>) room.getProblem();
+        sb.append(monster.toString()).append(",");
       }
     }
-    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
-    sb.append("},");
+    if (!rooms.isEmpty()) sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("],");
 
-    sb.append("\"puzzles\":{");
+    sb.append("\"puzzles\":[");
     for (Room room : rooms.values()) {
       if (room.getProblem() instanceof Puzzle) {
-        Puzzle puzzle = (Puzzle) room.getProblem();
-        sb.append("\"").append(puzzle.getName()).append("\":").append(puzzle.toString()).append(",");
+        Puzzle<?> puzzle = (Puzzle<?>) room.getProblem();
+        sb.append(puzzle.toString()).append(",");
       }
     }
-    sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
-    sb.append("},");
+    if (!rooms.isEmpty()) sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
+    sb.append("],");
 
-    sb.append("\"player\":").append(player.toString());
+//    sb.append("\"player\":").append(player.toString());
     sb.append(" }");
-
     return sb.toString();
   }
 
