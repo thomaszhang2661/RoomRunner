@@ -105,7 +105,7 @@ public class GameController {
       break;
       case "X": examine(objectName);
       break;
-      case "A": answerPuzzle(objectName);
+      case "A": answerPuzzle();
       break;
       case "Q": quit();
       break;
@@ -236,9 +236,7 @@ public class GameController {
     viewer.showText(String.join(", ", itemNames));
     viewer.showText("Fixtures you see here: ");
     viewer.showText(String.join(", ", fixtureNames));
-    // TODO discuss 需要先显示 problem吗
-    viewer.showText("You see the following problem: ");
-    viewer.showText(problemDescription);
+
   }
 
 
@@ -281,18 +279,7 @@ public class GameController {
     }
   }
 
-  /**
-   * Unlocks room
-   * @param room
-   */
-  private void unlockExits(Room<?> room) {
-    for (String key : room.getExits().keySet()) {
-      int value = room.getExits().get(key);
-      if (value < 0) {
-        room.unlockExit(key);  // Unlock exit if value is negative
-      }
-    }
-  }
+
 
   /**
    * Check the player's inventory.
@@ -327,7 +314,18 @@ public class GameController {
     }
   }
 
-
+  /**
+   * Unlocks room
+   * @param room
+   */
+  private void unlockExits(Room<?> room) {
+    for (String key : room.getExits().keySet()) {
+      int value = room.getExits().get(key);
+      if (value < 0) {
+        room.unlockExit(key);  // Unlock exit if value is negative
+      }
+    }
+  }
 
   private void handlePuzzleSolution(Room<?> room, IProblem<?> problem) {
     viewer.showText("You have successfully solved the puzzle!");
