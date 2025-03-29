@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * class for a room in the game.
  */
-public class Room<T>  extends  EntityContainer<IdentifiableEntity> {
+public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
   private T problem;
 
@@ -81,9 +81,18 @@ public class Room<T>  extends  EntityContainer<IdentifiableEntity> {
   /**
    *  get an Entity from the room.
    */
-  public <U> U getEntity(String entityName, Class<U> clazz) {
+  public <U extends IdentifiableEntity> U getEntity(String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);
   }
+
+  /**
+   *  get an Item from the room.
+   */
+  public Item  getItem(String itemName) {
+    return super.getEntity(itemName, Item.class);
+  }
+
+
 
   /**
    * get the problem in the room.
