@@ -105,7 +105,7 @@ public class GameController {
       break;
       case "X": examine(objectName);
       break;
-      case "A": answerPuzzle();
+      case "A": answerPuzzle(objectName);
       break;
       case "Q": quit();
       break;
