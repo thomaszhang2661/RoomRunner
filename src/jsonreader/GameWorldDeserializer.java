@@ -25,14 +25,30 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     // parse items
     Map<String, Item> items = new HashMap<>();
     for (JsonNode itemNode : rootNode.get("items")) {
-      Item item = mapper.treeToValue(itemNode, Item.class);
-      items.put(item.getName(), item);
+      String itemName = itemNode.get("name").asText();
+      int weight = itemNode.get("weight").asInt();
+      int maxUses = itemNode.get("max_uses").asInt();
+      int remainingUses = itemNode.get("uses_remaining").asInt();
+      int value = itemNode.get("value").asInt();
+      String whenUsed = itemNode.get("when_used").asText();
+      String description = itemNode.get("description").asText();
+      String picture = itemNode.get("picture").asText(); // not used
+
+      Item item = new Item(itemName, description, maxUses, remainingUses, value, weight, whenUsed);
+      items.put(name, item);
     }
 
     // parse fixtures
     Map<String, Fixture> fixtures = new HashMap<>();
     for (JsonNode fixtureNode : rootNode.get("fixtures")) {
-      Fixture fixture = mapper.treeToValue(fixtureNode, Fixture.class);
+      String fixtureName = fixtureNode.get("name").asText();
+      int weight = fixtureNode.get("weight").asInt();
+      Puzzle puzzle = null; // not used
+      Object states = fixtureNode.get("states"); // not used
+      String description = fixtureNode.get("description").asText();
+      String picture = fixtureNode.get("picture").asText(); // not used
+
+      Fixture fixture = new Fixture(fixtureName, description, weight, puzzle, states, picture);
       fixtures.put(fixture.getName(), fixture);
     }
 
