@@ -3,6 +3,7 @@ package jsonreader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import enginedriver.GameController;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -18,8 +19,14 @@ public class GameDataSaver {
    * @param fileName   the name of the file to save to
    * @throws IOException if an error occurs during saving
    */
-  public static void saveGameController(GameController controller, String fileName)
+  public static void saveGameJson(GameController controller, String fileName)
           throws IOException {
+    // Check if the file already exists
+    File file = new File(fileName);
+    if (file.exists()) {
+      throw new IOException("File already exists: " + fileName);
+    }
+
     ObjectMapper mapper = new ObjectMapper();
     mapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
 
