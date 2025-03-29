@@ -118,9 +118,7 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
     Item item = (Item) o;
-    return maxUses == item.maxUses && getValue() == item.getValue() && getWeight()
-            == item.getWeight() && Objects.equals(getWhenUsed(), item.getWhenUsed())
-            && Objects.equals(identifiableItem, item.identifiableItem);
+    return Objects.equals(identifiableItem, item.identifiableItem);
   }
 
   /**
@@ -129,6 +127,6 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
    */
   @Override
   public int hashCode() {
-    return Objects.hash(maxUses, getValue(), getWeight(), getWhenUsed(), identifiableItem);
+    return Objects.hash(identifiableItem);
   }
 }
