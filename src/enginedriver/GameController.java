@@ -266,9 +266,9 @@ public class GameController {
         viewer.showText("You have successfully solved the problem with " + itemName);
         unlockExits(currentRoom); // update room exits
 
-        int points = itemProblem.getValue();
-        gameWorld.addScore(points); // update score
-        viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
+        int points = itemproblem.getValue();
+        player.addScore(points); // update score
+        viewer.showText("+ " + points + ". Current Score is " + player.getScore());
         return;
       } else {
         viewer.showText("You have failed to solve the problem with " + itemName);
@@ -296,7 +296,7 @@ public class GameController {
    */
   private void checkInventory() {
     // Logic to check inventory
-    Map<String, Item> items = player.getItems();
+    Map<String, Item> items = player.getEntities();
     if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
@@ -336,7 +336,7 @@ public class GameController {
       // Unlock the exit of the room
       unlockExits(room);
       // Add the score to the player
-      gameWorld.addScore(problem.getValue());
+      player.addScore(problem.getValue());
     } else {
       viewer.showText("Sorry, your answer is incorrect.");
       // Puzzle affects the player
@@ -382,8 +382,8 @@ public class GameController {
       unlockExits(currentRoom);
 
       int points = problem.getValue();
-      gameWorld.addScore(points); // update score
-      viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
+      player.addScore(points); // update score
+      viewer.showText("+ " + points + ". Current Score is " + player.getScore());
 
     } else {
       // the solution is an item
