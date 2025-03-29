@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import enginedriver.Fixture;
@@ -31,15 +30,6 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
 
     String name = rootNode.get("name").asText();
     String version = rootNode.get("version").asText();
-
-    // parse player and score
-    Player player = null;
-    int score = 0;
-    if (rootNode.has("player")) {
-      JsonNode playerNode = rootNode.get("player");
-      player = mapper.treeToValue(playerNode, Player.class);
-      score = playerNode.has("score") ? playerNode.get("score").asInt() : 0;
-    }
 
     // parse items
     Map<String, Item> items = new HashMap<>();
@@ -108,6 +98,6 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       rooms.put(id, room);
     }
 
-    return new GameWorld(name, version, rooms, player, score);
+    return new GameWorld(name, version, rooms);
   }
 }
