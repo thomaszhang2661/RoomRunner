@@ -29,6 +29,7 @@ public class GameWorld {
 
   }
 
+
   // Getters and Setters
   public String getName() {
     return name;
@@ -61,8 +62,12 @@ public class GameWorld {
 //    player.setScore(score);
 //  }
 
+//  public void addScore(int inputValue) {
+//    this.score += inputValue;
+//  }
+//
 //  public int getScore() {
-//    return player.getScore();
+//    return score;
 //  }
 
 //  public void setPlayer(String name, int health, int maxWeight, int score) {

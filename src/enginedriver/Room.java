@@ -2,7 +2,6 @@ package enginedriver;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * class for a room in the game.
@@ -15,7 +14,7 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
    * Simple Constructor for a room
    */
   public Room(int id, String name, String description,
-              Map<String, Integer> exits) {
+              Map<String, Integer> exits, List<String> itemNames, List<String> fixtureNames, String problem) {
     super(id, name, description);
     this.exits = exits;
     this.problem = null;
