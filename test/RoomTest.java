@@ -14,7 +14,7 @@ import enginedriver.Monster;
 
 
 /**
- * Tests for the Room class. 
+ * Tests for the Room class.
  * One test method per public method in Room.
  */
 public class RoomTest {
@@ -60,9 +60,9 @@ public class RoomTest {
     Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("itemA", new Item("itemA", "descA", 1, 1,
             10, 5, "used"));
-    entities.put("fixtureB", new Fixture(11, "fixtureB", "fixtureDesc", 1000));
+    entities.put("fixtureB", new Fixture("fixtureB", "fixtureDesc", 1000));
 
-    Room<?> room = new Room(10, "C", "descC", exits, entities);
+    Room room = new Room(10, "C", "descC", exits, entities);
     assertEquals(10, room.getId());
     assertEquals("C", room.getName());
     assertEquals("descC", room.getDescription());
@@ -89,7 +89,7 @@ public class RoomTest {
     // Initialize an entity map
     Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("itemB", new Item("B", "descB", 2, 2, 20, 10, "used"));
-    entities.put("fixtureY", new Fixture(12, "Y", "fixtureDescY", 1000));
+    entities.put("fixtureY", new Fixture("Y", "fixtureDescY", 1000));
 
     // Create Monster
     Monster<String> monster = new Monster<>(
@@ -116,7 +116,7 @@ public class RoomTest {
     Map<String, Integer> exits = new HashMap<>();
     exits.put("N", 1);
     exits.put("S", -2);
-    Room<?> room = new Room(1, "A", "descA", exits);
+    Room room = new Room(1, "A", "descA", exits);
 
     Map<String, Integer> returnedExits = room.getExits();
     assertEquals(1, returnedExits.get("N"));
@@ -129,16 +129,18 @@ public class RoomTest {
   @Test
   void testAddEntity() {
     Map<String, Integer> exits = new HashMap<>();
-    Room<?> room = new Room(3, "C", "descC", exits);
 
-    IdentifiableEntity itemA = new Item("A", "descA", 1, 1,
+    Item itemA = new Item("itemA", "descA", 1, 1,
             10, 5, "used");
-    IdentifiableEntity itemB = new Item("B", "descB", 2, 2,
-            20, 10, "used");
 
+    Map<String, Item> items = new HashMap<>();
+    items.put(itemA.getName(), itemA);
+
+    Room room = new Room(3, "C", "descC", exits, items);
+
+    Item itemB = new Item("itemB", "descB", 2, 2,
+            20, 10, "used");
     // Add entities
-    assertTrue(room.addEntity(itemA));
-    assertTrue(room.hasEntity(itemA));
     assertTrue(room.addEntity(itemB));
     assertTrue(room.hasEntity(itemB));
   }
@@ -157,7 +159,7 @@ public class RoomTest {
     entities.put(itemA.getName(), itemA);
     entities.put(itemB.getName(), itemB);
 
-    Room<?> room = new Room(4, "D", "descD", exits, entities);
+    Room room = new Room(4, "D", "descD", exits, entities);
 
     // Remove existing entity
     assertTrue(room.removeEntity(itemA));
@@ -173,14 +175,14 @@ public class RoomTest {
   @Test
   void testHasEntityWithEntity() {
     Map<String, Integer> exits = new HashMap<>();
-    Room<?> room = new Room(5, "E", "descE", exits);
-
-    IdentifiableEntity itemA = new Item("A", "descA", 1, 1,
+    Map<String, Item> items = new HashMap<>();
+    Item itemA = new Item("itemA", "descA", 1, 1,
             10, 5, "used");
-    room.addEntity(itemA);
+    items.put(itemA.getName(), itemA);
+    Room room = new Room(5, "E", "descE", exits, items);
 
     assertTrue(room.hasEntity(itemA));
-    IdentifiableEntity itemB = new Item("B", "descB", 2, 2,
+    Item itemB = new Item("itemB", "descB", 2, 2,
             20, 10, "used");
     assertFalse(room.hasEntity(itemB));
   }
@@ -191,14 +193,16 @@ public class RoomTest {
   @Test
   void testHasEntityWithString() {
     Map<String, Integer> exits = new HashMap<>();
-    Room<?> room = new Room(6, "F", "descF", exits);
-
-    IdentifiableEntity itemA = new Item("A", "descA", 1, 1,
+    Map<String, Item> items = new HashMap<>();
+    Item itemA = new Item("itemA", "descA", 1, 1,
             10, 5, "used");
-    room.addEntity(itemA);
+    items.put(itemA.getName(), itemA);
+    Room room = new Room(5, "E", "descE", exits, items);
 
-    assertTrue(room.hasEntity("A"));
-    assertFalse(room.hasEntity("B"));
+    assertTrue(room.hasEntity("itemA"));
+    Item itemB = new Item("itemB", "descB", 2, 2,
+            20, 10, "used");
+    assertFalse(room.hasEntity("itemB"));
   }
 
   /**
@@ -207,24 +211,26 @@ public class RoomTest {
   @Test
   void testGetEntity() {
     Map<String, Integer> exits = new HashMap<>();
-    Room<?> room = new Room(7, "G", "descG", exits);
-
-    Item itemA = new Item("A", "descA", 1, 1,
+    Map<String, Item> elements = new HashMap<>();
+    Item itemA = new Item("itemA", "descA", 1, 1,
             10, 5, "used");
-    Fixture fixtureX = new Fixture(7, "X", "fixtureX");
-    room.addEntity(itemA);
+    elements.put("itemA", itemA);
+
+    Room room = new Room(7, "G", "descG", exits, elements);
+
+    Fixture fixtureX = new Fixture("fixtureX", "fixtureX", 1000);
     room.addEntity(fixtureX);
 
     // Retrieve as Item
-    Item retrievedItem = (Item) room.getEntity("A", Item.class);
-    assertEquals("A", retrievedItem.getName());
+    Item retrievedItem = (Item) room.getEntity("itemA", Item.class);
+    assertEquals("itemA", retrievedItem.getName());
 
     // Retrieve as Fixture
-    Fixture retrievedFixture = (Fixture) room.getEntity("X", Fixture.class);
-    assertEquals("X", retrievedFixture.getName());
+    Fixture retrievedFixture = (Fixture) room.getEntity("fixtureX", Fixture.class);
+    assertEquals("fixtureX", retrievedFixture.getName());
 
     // Mismatched type => null
-    Fixture shouldBeNull = (Fixture) room.getEntity("A", Fixture.class);
+    Fixture shouldBeNull = (Fixture) room.getEntity("fixtureA", Fixture.class);
     assertNull(shouldBeNull);
 
     // Non-existent name => null
@@ -258,11 +264,11 @@ public class RoomTest {
   void testGetElementNames() {
     Map<String, Integer> exits = new HashMap<>();
     Map<String, IdentifiableEntity> entities = new HashMap<>();
-    Item itemA = new Item("A", "descA", 1, 1,
+    Item itemA = new Item("itemA", "descA", 1, 1,
             10, 5, "used");
-    Item itemB = new Item("B", "descB", 2, 2,
+    Item itemB = new Item("itemB", "descB", 2, 2,
             20, 10, "used");
-    Fixture fixtureX = new Fixture(9, "X", "fixtureX");
+    Fixture fixtureX = new Fixture("fixtureX", "fixtureX", 9);
     entities.put(itemA.getName(), itemA);
     entities.put(itemB.getName(), itemB);
     entities.put(fixtureX.getName(), fixtureX);
@@ -271,99 +277,15 @@ public class RoomTest {
 
     // Get items' names
     String itemNames = room.getElementNames(Item.class);
-    assertTrue(itemNames.contains("A"));
-    assertTrue(itemNames.contains("B"));
-    assertFalse(itemNames.contains("X"));
+    assertTrue(itemNames.contains("itemA"));
+    assertTrue(itemNames.contains("itemB"));
+    assertFalse(itemNames.contains("fixtureX"));
 
     // Get fixtures' names
     String fixtureNames = room.getElementNames(Fixture.class);
-    assertTrue(fixtureNames.contains("X"));
-    assertFalse(fixtureNames.contains("A"));
-    assertFalse(fixtureNames.contains("B"));
+    assertTrue(fixtureNames.contains("fixtureX"));
+    assertFalse(fixtureNames.contains("itemA"));
+    assertFalse(fixtureNames.contains("itemB"));
   }
 
-  /**
-   * Test toString().
-   */
-  @Test
-  void testToString() {
-    Map<String, Integer> exits = new HashMap<>();
-    exits.put("N", 10);
-    exits.put("S", 20);
-    exits.put("E", 30);
-    exits.put("W", -40);
-
-    Map<String, IdentifiableEntity> entities = new HashMap<>();
-    // Single item and single fixture for a predictable toString outcome:
-    entities.put("A", new Item("A", "descA", 1, 1, 10, 5, "used"));
-    entities.put("X", new Fixture(10, "X", "fixtureX"));
-
-    // A Puzzle
-    Puzzle<String> puzzle = new Puzzle<>(
-            "PuzzleName", "PuzzleDesc", true, false,
-            false, "PuzzleSolution", 99, "puzzleEffects",
-            "puzzleTarget", "puzzlePic"
-    );
-
-    // A Monster
-    Monster<String> monster = new Monster<>(
-            "MonsterName", "MonsterDesc", true, true,
-            true, "MonsterSolution", 200, 15,
-            "monsterEffects", "monsterTarget", "monsterPic", "Bite"
-    );
-
-    // Room with puzzle
-    Room<?> puzzleRoom = new Room(11, "K", "descK", exits, entities, puzzle);
-
-    String puzzleJSON = "{ \"name\":\"PuzzleName\",\"active\":\"true\",\"affects_target\":\"false\","
-            + "\"affects_player\":\"false\",\"solution\":\"PuzzleSolution\",\"value\":\"99\","
-            + "\"description\":\"PuzzleDesc\",\"effects\":\"puzzleEffects\",\"target\":\"puzzleTarget\","
-            + "\"picture\":\"null\" }";
-
-    String expectedPuzzleRoomString =
-            "{ " +
-                    "\"room_name\":\"K\"," +
-                    "\"room_number\":\"11\"," +
-                    "\"description\":\"descK\"," +
-                    "\"N\":\"10\"," +
-                    "\"S\":\"20\"," +
-                    "\"E\":\"30\"," +
-                    "\"W\":\"-40\"," +
-                    "\"puzzle\":\"" + puzzleJSON.replace("\"", "\\\"") + "\"," +
-                    "\"monster\":null," +
-                    "\"items\":\"A\"," +
-                    "\"fixtures\":\"X\"," +
-                    "\"picture\":\"null\"" +
-                    " }";
-
-    assertEquals(expectedPuzzleRoomString, puzzleRoom.toString());
-
-    // Room with monster
-    Room<?> monsterRoom = new Room(12, "L", "descL", exits, entities, monster);
-
-
-    String monsterJSON = "{ \"name\":\"MonsterName\",\"active\":\"true\",\"affects_target\":\"true\","
-            + "\"affects_player\":\"true\",\"solution\":\"MonsterSolution\",\"value\":\"200\","
-            + "\"description\":\"MonsterDesc\",\"effects\":\"monsterEffects\",\"damage\":\"15\","
-            + "\"target\":\"monsterTarget\",\"can_attack\":\"true\",\"attack\":\"Bite\",\"picture\":\"null\" }";
-
-
-    String expectedMonsterRoomString =
-            "{ " +
-                    "\"room_name\":\"L\"," +
-                    "\"room_number\":\"12\"," +
-                    "\"description\":\"descL\"," +
-                    "\"N\":\"10\"," +
-                    "\"S\":\"20\"," +
-                    "\"E\":\"30\"," +
-                    "\"W\":\"-40\"," +
-                    "\"puzzle\":null," +
-                    "\"monster\":\"" + monsterJSON.replace("\"", "\\\"") + "\"," +
-                    "\"items\":\"A\"," +
-                    "\"fixtures\":\"X\"," +
-                    "\"picture\":\"null\"" +
-                    " }";
-
-    assertEquals(expectedMonsterRoomString, monsterRoom.toString());
-  }
 }

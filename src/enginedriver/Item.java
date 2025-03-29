@@ -15,7 +15,6 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
   private final int value;
   private final int weight;
   private final String whenUsed;
-  private IdentifiableEntity identifiableItem;
 
   /**
    * Constructor for an item.
@@ -107,5 +106,31 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
             "\"description\":\"" + getDescription() + "\"," +
             "\"picture\":\"" + getPicture() + "\"" +
             " }";
+  }
+
+  /**
+   * equals method for the item class.
+   * @param o the object to compare to
+   * @return true if the objects are equal, false otherwise
+   */
+  @Override
+  public boolean equals(Object o) {
+  //    return super.equals(o) && o instanceof Item item &&
+  //            maxUses == item.maxUses &&
+  //            remainingUses == item.remainingUses &&
+  //            value == item.value &&
+  //            weight == item.weight &&
+  //            whenUsed.equals(item.whenUsed);
+    return super.equals(o);
+  }
+
+  /**
+   * hashcode method for the item class.
+   * @return the hashcode of the item
+   */
+  @Override
+  public int hashCode() {
+    //return super.hashCode() + Objects.hash(maxUses, remainingUses, value, weight, whenUsed);
+    return super.hashCode();
   }
 }

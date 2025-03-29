@@ -26,4 +26,14 @@ public interface IIdentifiableEntity {
    * Returns the picture of the entity.
    */
   Image getPicture();
+
+  /**
+   *  equals method for IdentifiableEntity.
+   */
+  boolean equals(Object obj);
+
+  /**
+   *  hashCode method for IdentifiableEntity.
+   */
+  int hashCode();
 }
