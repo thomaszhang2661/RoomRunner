@@ -69,6 +69,10 @@ public abstract class IdentifiableEntity
     return null;
   }
 
+  public String getPictureName() {
+    return null;
+  }
+
   /**
    *  equals method for IdentifiableEntity.
    */

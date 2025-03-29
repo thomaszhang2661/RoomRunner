@@ -103,7 +103,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         String attack = getNodeText(monsterNode, "attack");
         String pictureName = getNodeText(monsterNode, "picture");
 
-        Monster<?> monster = new Monster<>(monsterName, description, active, affectsTarget,
+        Monster<?> monster = new Monster<>(monsterName, description, active, affectsTarget, canAttack,
                 affectsPlayer, solution, value, damage, effects, target, pictureName, attack);
       }
     }
