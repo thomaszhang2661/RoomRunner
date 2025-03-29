@@ -10,7 +10,7 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   private final int weight;
   private Puzzle<?> puzzle;
   private Object states;
-  private Image picture;
+  private String pictureName;
   //TODO: accomposition for weightable
   /**
    * Simple constructor for fixture without weight
@@ -28,12 +28,13 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
     this.weight = weight;
   }
 
-  public Fixture(String name, String description, int weight, Puzzle puzzle, Object states, String picture) {
+  public Fixture(String name, String description, int weight, Puzzle puzzle, Object states,
+                 String pictureName) {
     super(name, description);
     this.weight = weight;
     this.puzzle = puzzle;
     this.states = states;
-    this.picture = Toolkit.getDefaultToolkit().getImage(picture);
+    this.pictureName = pictureName;
   }
 
   public Object getStates() {
