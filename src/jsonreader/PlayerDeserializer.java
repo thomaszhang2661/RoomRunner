@@ -20,7 +20,7 @@ import java.util.Map;
 public class PlayerDeserializer extends JsonDeserializer<Player> {
 
   // Initialize gameWorld for finding items
-  private GameWorld gameWorld;
+  private final GameWorld gameWorld;
 
   /**
    * Constructor for PlayerDeserializer.
@@ -47,16 +47,17 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
     Player player = null;
 
     if (rootNode.has("player")) {
-      String name = rootNode.get("name").asText();
-      int health = rootNode.get("health").asInt();
-      int maxWeight = rootNode.get("max_weight").asInt();
-      int currentWeight = rootNode.get("current_weight").asInt();
-      int roomNumber = rootNode.get("room_number").asInt();
-      int score = rootNode.get("score").asInt();
+      JsonNode playerNode = rootNode.get("player");
+      String name = playerNode.get("name").asText();
+      int health = playerNode.get("health").asInt();
+      int maxWeight = playerNode.get("max_weight").asInt();
+      int currentWeight = playerNode.get("current_weight").asInt();
+      int roomNumber = playerNode.get("room_number").asInt();
+      int score = playerNode.get("score").asInt();
 
       // parse inventory
       Map<String, Item> inventory = new HashMap<>();
-      JsonNode inventoryNode = rootNode.get("inventory");
+      JsonNode inventoryNode = playerNode.get("inventory");
 
       String[] itemNames = inventoryNode.asText().split(",\\s*");
       for (String itemName : itemNames) {
@@ -67,7 +68,6 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
           }
         }
       }
-
 
       player = new Player(name, health, maxWeight, currentWeight, roomNumber, inventory, score);
     }

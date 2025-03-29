@@ -22,7 +22,7 @@
     ],
 
     "monsters": [
-      { "name": "Goblin", "active": "true", "affects_target": "true", "affects_player": "true", "solution": "Iron Sword", "value": "300", "description": "Looks like someone didn't make you welcome! A goblin is blocking the way west.", "effects": "You can't go further until you defeat him!", "damage": "-15", "target": "3:Cave", "can_attack": "true", "attack": "Goblin is coming at you with big sticks!", "picture": "goblin.png" }
+      { "name": "Goblin", "active": "true", "affects_target": "true", "affects_player": "true", "solution": "Iron Sword", "value": "300", "description": "Looks like someone didn't make you welcome! A goblin is blocking the way west.", "effects": "You can't go further until you defeat him!", "damage": "-15", "target": "3:Cave", "can_attack": "true", "attack": "Goblin is co  ming at you with big sticks!", "picture": "goblin.png" }
     ],
 
     "puzzles": [
