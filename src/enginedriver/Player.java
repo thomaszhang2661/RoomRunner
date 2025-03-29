@@ -253,8 +253,7 @@ public class Player extends EntityContainer<Item> {
             "\"maxWeight\":\"" + getMaxWeight() + "\"," +
             "\"currentWeight\":\"" + getCurrentWeight() + "\"," +
             "\"roomNumber\":\"" + getRoomNumber() + "\"," +
-            "\"score\":\"" + getScore() + "\", " +
-            " }";
+            "\"score\":\"" + getScore() + "\"" + " }";
   }
 
 }
