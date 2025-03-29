@@ -9,8 +9,19 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
   private Map<String, Integer> exits;
   private T problem;
 
+
   /**
    * Simple Constructor for a room.
+   */
+  public Room(int id, String name, String description,
+              Map<String, Integer> exits) {
+    super(id, name, description);
+    this.exits = exits;
+    this.problem = null;
+  }
+
+  /**
+   * Simple Constructor for a room with problem.
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,  T problem) {
@@ -31,7 +42,7 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
   }
 
   /**
-   * Constructor for a room with Map of Entities.
+   * Constructor for a room with Map of Entities and a problem.
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
@@ -81,7 +92,8 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
   /**
    *  get an Entity from the room.
    */
-  public <U extends IdentifiableEntity> U getEntity(String entityName, Class<U> clazz) {
+  public <U extends IdentifiableEntity> U getEntity(
+          String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);
   }
 

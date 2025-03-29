@@ -84,14 +84,14 @@ public class GameWorld {
     sb.append("\"version\":\"").append(version).append("\",");
 
     sb.append("\"rooms\":[");
-    for (Room room : rooms.values()) {
+    for (Room<?> room : rooms.values()) {
       sb.append(room.toString()).append(",");
     }
     if (!rooms.isEmpty()) sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
     sb.append("],");
 
     sb.append("\"items\":[");
-    for (Room room : rooms.values()) {
+    for (Room<?> room : rooms.values()) {
       for (Item item : room.getEntitiesByType(Item.class)) {
         sb.append(item.toString()).append(",");
       }
@@ -100,7 +100,7 @@ public class GameWorld {
     sb.append("],");
 
     sb.append("\"fixtures\":[");
-    for (Room room : rooms.values()) {
+    for (Room<?> room : rooms.values()) {
       for (Fixture fixture : room.getEntitiesByType(Fixture.class)) {
         sb.append(fixture.toString()).append(",");
       }
@@ -109,7 +109,7 @@ public class GameWorld {
     sb.append("],");
 
     sb.append("\"monsters\":[");
-    for (Room room : rooms.values()) {
+    for (Room<?> room : rooms.values()) {
       if (room.getProblem() instanceof Monster) {
         Monster<?> monster = (Monster<?>) room.getProblem();
         sb.append(monster.toString()).append(",");
@@ -119,7 +119,7 @@ public class GameWorld {
     sb.append("],");
 
     sb.append("\"puzzles\":[");
-    for (Room room : rooms.values()) {
+    for (Room<?> room : rooms.values()) {
       if (room.getProblem() instanceof Puzzle) {
         Puzzle<?> puzzle = (Puzzle<?>) room.getProblem();
         sb.append(puzzle.toString()).append(",");

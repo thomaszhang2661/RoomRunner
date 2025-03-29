@@ -68,8 +68,13 @@ abstract public class Problem<T> extends IdentifiableEntity
     }
     // if input is Item
     if (input instanceof Item) {
-      if (((Item) input).getName().equals(solution)) {
+      //conver input to Item
+      Item item = (Item) input;
+      if (item.getName().equals(solution)
+              && item.getRemainingUses() > 0) {
         active = false;
+
+        item.setRemainingUses(item.getRemainingUses() - 1);
         return true;
       }
     }

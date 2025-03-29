@@ -5,10 +5,11 @@ import java.awt.Image;
 /**
  * Class for entities that have an ID, name, and description.
  */
-public class IdentifiableEntity implements IIdentifiableEntity{
-  private int id;
-  private String name;
-  private String description;
+public abstract class IdentifiableEntity
+        implements IIdentifiableEntity {
+  private final int id;
+  private final String name;
+  private final String description;
 
   /**
    * Constructor for an identifiable entity.
@@ -21,7 +22,7 @@ public class IdentifiableEntity implements IIdentifiableEntity{
   }
 
   /**
-   * Constructor for an identifiable entity, with out ID.
+   * Constructor for an identifiable entity, without ID.
    */
   public IdentifiableEntity( String name, String description) {
     this.id = -1;

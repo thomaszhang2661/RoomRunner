@@ -58,11 +58,11 @@ public class RoomTest {
 
     // Prepare an entity map
     Map<String, IdentifiableEntity> entities = new HashMap<>();
-    entities.put("itemA", new Item("A", "descA", 1, 1,
+    entities.put("itemA", new Item("itemA", "descA", 1, 1,
             10, 5, "used"));
-    entities.put("fixtureB", new Fixture(11, "B", "fixtureDesc"));
+    entities.put("fixtureB", new Fixture(11, "fixtureB", "fixtureDesc", 1000));
 
-    Room room = new Room(10, "C", "descC", exits, entities);
+    Room<?> room = new Room(10, "C", "descC", exits, entities);
     assertEquals(10, room.getId());
     assertEquals("C", room.getName());
     assertEquals("descC", room.getDescription());
@@ -71,8 +71,8 @@ public class RoomTest {
     assertNull(room.getProblem());
 
     // Confirm entities are there
-    assertTrue(room.hasEntity("A"));
-    assertTrue(room.hasEntity("X"));
+    assertTrue(room.hasEntity("itemA"));
+    assertTrue(room.hasEntity("fixtureB"));
   }
 
   /**
@@ -89,7 +89,7 @@ public class RoomTest {
     // Initialize an entity map
     Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("itemB", new Item("B", "descB", 2, 2, 20, 10, "used"));
-    entities.put("fixtureY", new Fixture(12, "Y", "fixtureDescY"));
+    entities.put("fixtureY", new Fixture(12, "Y", "fixtureDescY", 1000));
 
     // Create Monster
     Monster<String> monster = new Monster<>(
