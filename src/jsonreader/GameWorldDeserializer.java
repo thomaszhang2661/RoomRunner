@@ -43,10 +43,10 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     for (JsonNode fixtureNode : rootNode.get("fixtures")) {
       String fixtureName = fixtureNode.get("name").asText();
       int weight = fixtureNode.get("weight").asInt();
-      Puzzle puzzle = null; // not used
-      Object states = fixtureNode.get("states"); // not used
+      Puzzle puzzle = null;
+      Object states = fixtureNode.get("states");
       String description = fixtureNode.get("description").asText();
-      String picture = fixtureNode.get("picture").asText(); // not used
+      String picture = fixtureNode.get("picture").asText();
 
       Fixture fixture = new Fixture(fixtureName, description, weight, puzzle, states, picture);
       fixtures.put(fixture.getName(), fixture);
