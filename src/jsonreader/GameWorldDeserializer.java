@@ -99,7 +99,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         String effects = getNodeText(monsterNode, "effects");
         int damage = getNodeInt(monsterNode, "damage");
         String target = getNodeText(monsterNode, "target");
-        Boolean canAttack = monsterNode.get("can_attack").asBoolean(); // not used
+        Boolean canAttack = monsterNode.get("can_attack").asBoolean();
         String attack = getNodeText(monsterNode, "attack");
         String pictureName = getNodeText(monsterNode, "picture");
 
