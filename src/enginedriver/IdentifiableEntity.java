@@ -31,11 +31,12 @@ public class IdentifiableEntity implements IIdentifiableEntity{
 
   /**
    * Returns the unique identifier of the entity.
+   *
    * @return String for id
    */
   @Override
-  public String getId() {
-    return "";
+  public int getId() {
+    return id;
   }
 
   /**
@@ -44,7 +45,7 @@ public class IdentifiableEntity implements IIdentifiableEntity{
    */
   @Override
   public String getName() {
-    return "";
+    return name;
   }
 
   /**
@@ -53,7 +54,7 @@ public class IdentifiableEntity implements IIdentifiableEntity{
    */
   @Override
   public String getDescription() {
-    return "";
+    return description;
   }
 
   /**

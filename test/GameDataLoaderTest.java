@@ -1,12 +1,12 @@
 import java.io.IOException;
-import enginedriver.GameDataLoader;
+import jsonreader.GameDataLoader;
 import enginedriver.GameWorld;
 
 public class GameDataLoaderTest {
   public static void main(String[] args) {
     try {
       // Load the game world from a JSON file
-      GameWorld gameWorld = GameDataLoader.loadGameWorld("gameWorld.json");
+      GameWorld gameWorld = GameDataLoader.loadGameWorld("test/Test.json");
 
       // Print the loaded game world details
       System.out.println("Loaded Game World:");
@@ -18,7 +18,7 @@ public class GameDataLoaderTest {
       gameWorld.setVersion("1.0.1");
 
       // Save the modified game world to a new JSON file
-      GameDataLoader.saveGameWorld(gameWorld, "modifiedGameWorld.json");
+      GameDataLoader.saveGameWorld(gameWorld, "TestSaved.json");
 
       System.out.println("Game world saved successfully.");
     } catch (IOException e) {

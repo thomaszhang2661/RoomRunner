@@ -7,6 +7,8 @@ import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
+import jsonreader.GameDataLoader;
+
 public class GameEngineApp {
   private GameController gameController;
   private Readable source;
@@ -22,7 +24,7 @@ public class GameEngineApp {
     // 提示用户输入名字
     // TODO： 检测是否存在同名文件，有重名要提示不能用
     String playerName = getPlayerName();
-    Player player = new Player(playerName, 100, 13); // 提示玩家输入名字
+    Player player = new Player(playerName, 100, 13, 0); // 提示玩家输入名字
 
     this.gameController = new GameController(gameWorld, player);
   }

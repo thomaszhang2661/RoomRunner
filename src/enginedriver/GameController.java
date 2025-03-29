@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -176,8 +177,9 @@ public class GameController {
     if (itemAttempt != null) {
       if(player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
-        viewer.showText("You have successfully add " + itemName + " to your bag!");
-      }else {
+        viewer.showText(itemName + "added to your inventory!");
+        player.setScore(player.getScore() + itemAttempt.getValue());
+      } else {
         viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
                 + "  your bag is full.");
       }
@@ -198,15 +200,15 @@ public class GameController {
     if (item != null) {
       player.removeItem(item);
       currentRoom.addEntity(item);
-      viewer.showText("You have successfully drop " + itemName + "!");
+      viewer.showText(itemName + "dropped here in " + currentRoom.getName());
+      player.setScore(player.getScore() - item.getValue());
     } else {
-      viewer.showText("Sorry, you can not drop " + itemName + ". It's mostly because"
-              + " you don't have this item in your bag.");
+      viewer.showText("Sorry, you don't have " + itemName + " in your bag");
     }
 
   }
 
-  private void lookAround(){
+  private void lookAround() {
     // Logic to look around
     //TODO check if need to show what is inside the room, print names?
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
@@ -215,6 +217,7 @@ public class GameController {
     handleMonsterAttack(problem);
 
     // check if room has
+    viewer.showText("You are currently standing in the" + currentRoom.getName());
     viewer.showText(currentRoom.getDescription());
     //get items keys from the room
     List<String> itemNames = currentRoom.getEntities().keySet().stream()
@@ -226,10 +229,11 @@ public class GameController {
     String problemDescription = currentRoom.getProblem().getDescription();
 
     // show the items, fixtures, problem in the room
-    viewer.showText("You see the following items: ");
+    viewer.showText("Items you see here: ");
     viewer.showText(String.join(", ", itemNames));
-    viewer.showText("You see the following fixtures: ");
+    viewer.showText("Fixtures you see here: ");
     viewer.showText(String.join(", ", fixtureNames));
+    // TODO discuss 需要先显示 problem吗
     viewer.showText("You see the following problem: ");
     viewer.showText(problemDescription);
   }
@@ -260,23 +264,32 @@ public class GameController {
       boolean flag = itemproblem.solve(itemAttempt);
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
-        //TODO update room exits
-        //TODO update score
+        unlockExits(currentRoom); // update room exits
+
+        int points = itemProblem.getValue();
+        gameWorld.addScore(points); // update score
+        viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
         return;
       } else {
         viewer.showText("You have failed to solve the problem with " + itemName);
         // deal with monster attack
         handleMonsterAttack(problem);
       }
-
     }
-
-
   }
 
-
-
-
+  /**
+   * Unlocks room
+   * @param room
+   */
+  private void unlockExits(Room room) {
+    for (String key : room.getExits().keySet()) {
+      int value = room.getExits().get(key);
+      if (value < 0) {
+        room.unlockExit(key);  // Unlock exit if value is negative
+      }
+    }
+  }
 
   /**
    * Check the player's inventory.
@@ -287,9 +300,9 @@ public class GameController {
     if (items.isEmpty()) {
       viewer.showText("There is nothing in your inventory.");
     } else {
-      viewer.showText("You currently have ");
+      viewer.showText("Items in your inventory: ");
       String itemList = String.join(", ", items.keySet());
-      viewer.showText(itemList + " in your bag");
+      viewer.showText(itemList);
     }
   }
 
@@ -311,16 +324,78 @@ public class GameController {
     }
   }
 
-
-
-
+  /**
+   * Determine if puzzle solution is correct.
+   * @param isCorrect
+   * @param room
+   * @param problem
+   */
+  private void handlePuzzleSolution(boolean isCorrect, Room room, IProblem<?> problem) {
+    if (isCorrect) {
+      viewer.showText("You have successfully solved the puzzle!");
+      // Unlock the exit of the room
+      unlockExits(room);
+      // Add the score to the player
+      gameWorld.addScore(problem.getValue());
+    } else {
+      viewer.showText("Sorry, your answer is incorrect.");
+      // Puzzle affects the player
+      if (((Puzzle<?>) problem).getAffect_player()) {
+        player.gainOrLoseHealth(-5);
+        viewer.showText("Player takes -5 damage!");
+      }
+    }
+  }
 
   /**
    * Answer a puzzle.
    */
   private void answerPuzzle() {
-    // Logic to answer puzzle
-    //TODO
+
+    // get the current room
+    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    // get puzzle or moster in the room
+    IProblem problem = currentRoom.getProblem();
+    if (problem == null) {
+      viewer.showText("There is no puzzle or monster in this room.");
+      return;
+    }
+    // check if the problem is a puzzle
+    if (problem.getClass() != Puzzle.class) {
+      viewer.showText("There is no puzzle in this room.");
+      return;
+    }
+
+    // check if the puzzle is solved
+    if (!problem.getActive()) {
+      viewer.showText("The puzzle is already solved.");
+      return;
+    }
+
+    // get the solution of the puzzle
+    String solution = problem.getSolution().toString();
+    // check if the solution is a string
+    if (solution.startsWith("'") && solution.endsWith("'")) {
+      String answer = solution.substring(1, solution.length() - 1);
+      handlePuzzleSolution(problem.solve(answer), currentRoom, problem);
+
+      unlockExits(currentRoom);
+
+      int points = problem.getValue();
+      gameWorld.addScore(points); // update score
+      viewer.showText("+ " + points + ". Current Score is " + gameWorld.getScore());
+
+    } else {
+      // the solution is an item
+      Item itemAttempt = player.getEntity(solution, Item.class);
+      if (itemAttempt == null) {
+        viewer.showText("The " + solution + " you provided is incorrect.");
+        // deal with monster attack
+        handleMonsterAttack(problem);
+        return;
+      }
+      handlePuzzleSolution(problem.solve(itemAttempt), currentRoom, problem);
+    }
   }
 
   /**
@@ -366,5 +441,13 @@ public class GameController {
       monster.attack(player);
       //TODO 这里好像要说话，需要完善
     }
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"gameWorld\":" + gameWorld.toString() + "," +
+            "\"player\":" + player.toString() +
+            " }";
   }
 }

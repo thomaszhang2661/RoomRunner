@@ -1,5 +1,7 @@
 package enginedriver;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,6 +50,19 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
       return clazz.cast(entity);  // 安全地进行类型转换
     }
     return null;
+  }
+
+  /**
+   * Get the list of entities from the container according to the type.
+   */
+  public <U> List<U> getEntitiesByType(Class<U> clazz) {
+    List<U> result = new ArrayList<>();
+    for (T entity : stringEntityMap.values()) {
+      if (clazz.isInstance(entity)) {
+        result.add(clazz.cast(entity));  // 安全类型转换
+      }
+    }
+    return result;
   }
 
   //  public <T>  T  getEntity(String entityName) {

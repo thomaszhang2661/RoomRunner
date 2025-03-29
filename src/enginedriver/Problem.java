@@ -32,8 +32,16 @@ abstract public class Problem<T> extends IdentifiableEntity
   }
 
 
-public boolean getAffect_player() {
+  public boolean getAffect_player() {
     return affects_player;
+  }
+
+  public Boolean getAffects_target() {
+    return affects_target;
+  }
+
+  public String getTarget() {
+    return target;
   }
   @Override
   public boolean getActive() {
@@ -43,6 +51,10 @@ public boolean getAffect_player() {
   @Override
   public T getSolution() {
     return solution;
+  }
+
+  public boolean isSolved() {
+    return active;
   }
 
   @Override
@@ -72,7 +84,7 @@ public boolean getAffect_player() {
   }
 
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 

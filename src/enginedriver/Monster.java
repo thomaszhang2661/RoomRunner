@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class Monster<T> extends Problem<T>{
   private int damage;
+  private String attack;
   /**
    * Constructor for Puzzle.
    */
@@ -16,15 +17,17 @@ public class Monster<T> extends Problem<T>{
                 int value,
                 int damage,
                 String effects,
-                String target, String pictureName) {
+                String target, String pictureName, String attack) {
     super(name, description, active, affects_target,
             affects_player, solution, value, effects, target,
             pictureName);
+    this.attack = attack;
+    this.damage = damage;
   }
 
 
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 
@@ -63,10 +66,57 @@ public class Monster<T> extends Problem<T>{
     return super.getEffects();
   }
 
+  /**
+   * Retrieves the damage.
+   * @return monster's damage.
+   */
+  public int getDamage() {
+    return damage;
+  }
+
+  /**
+   * Attacks the player and affects their health.
+   * @param player the player being attacked.
+   */
   public void attack(Player player) {
     // Attack the player
     if (super.getActive() && super.getAffect_player()) {
-      player.gainOrLoseHealth(damage);
+      player.gainOrLoseHealth(-Math.abs(damage));
     }
+  }
+
+  /**
+   * Determines if the monster can attack.
+   * @return boolean.
+   */
+  public boolean canAttack() {
+    return super.isSolved();
+  }
+
+  /**
+   * Retrieves the attack description.
+   * @return
+   */
+  public String getAttack() {
+    return attack;
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"active\":\"" + isSolved() + "\"," +
+            "\"affects_target\":\"" + getAffects_target() + "\"," +
+            "\"affects_player\":\"" + getAffect_player() + "\"," +
+            "\"solution\":\"" + getSolution() + "\"," +
+            "\"value\":\"" + getValue() + "\"," +
+            "\"description\":\"" + getDescription() + "\"," +
+            "\"effects\":\"" + getEffects() + "\"," +
+            "\"damage\":\"" + getDamage() + "\"," +
+            "\"target\":\"" + getTarget() + "\"," +
+            "\"can_attack\":\"" + canAttack() + "\"," +
+            "\"attack\":\"" + getAttack() + "\"," +
+            "\"picture\":\"" + getPicture() + "\"" +
+            " }";
   }
 }

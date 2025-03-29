@@ -11,6 +11,7 @@ public class Player extends EntityContainer<Item> {
   private int maxWeight;
   private int currentWeight;
   private int roomNumber; //the room that player is in
+  private int score;
 
   /**
    * simple Constructor for a player.
@@ -21,6 +22,15 @@ public class Player extends EntityContainer<Item> {
     this.maxWeight = maxWeight;
   }
 
+  /**
+   * simple Constructor for a player with score.
+   */
+  public Player(String name, int health, int maxWeight, int score) {
+    super(-1, name, "Player");
+    this.health = health;
+    this.maxWeight = maxWeight;
+    this.score = score;
+  }
 
   /**
    *  Constructor for a player with items.
@@ -35,12 +45,15 @@ public class Player extends EntityContainer<Item> {
 
 
   /**
-   * get current total weight of inventory.
+   * Get current total weight of inventory.
    */
   public int getCurrentWeight() {
     return currentWeight;
   }
 
+  /**
+   * Updates and returns the current weight of player's inventory.
+   */
   private void updateCurrentWeight() {
     currentWeight = 0;
     // 获取泛型类型的实体
@@ -69,16 +82,15 @@ public class Player extends EntityContainer<Item> {
   //  }
 
 
-  //TODO 还需要吗？直接updateCurrentWeight()就可以了？
-  private void gainOrLoseWeight(int w) {
-    maxWeight += w;
-  }
-
   // move to gameWorld
 //  public void gainOrLoseScore(int s) {
 //    score += s;
 //  }
 
+  /**
+   * Determines whether a player gains or loses health.
+   * @param h either the damage or the healing that affects the health.
+   */
   public void gainOrLoseHealth(int h) {
     health += h;
     if (health < 0) {
@@ -87,45 +99,71 @@ public class Player extends EntityContainer<Item> {
   }
 
 
+  /**
+   * Determines which health status the player is in.
+   * @return the health status.
+   */
   public HEALTH_STATUS checkStatus() {
-  //TODO check homework websit, may want to use ENUM HEALTH_STATUS
-//    if (health > 75) {
-//      return "Healthy";
-//    } else if (health > 50) {
-//      return "Injured";
-//    } else if (health > 25) {
-//      return "Badly Injured";
-//    } else {
-//      return "Near Death";
-//    }
-    return null;
+  // check homework website, may want to use ENUM HEALTH_STATUS
+    if (this.health <= 0 )
+      return HEALTH_STATUS.SLEEP;
+    if(this.health < 40)
+      return HEALTH_STATUS.WOOZY;
+    if(this.health < 70)
+      return HEALTH_STATUS.FATIGUED;
+    return HEALTH_STATUS.AWAKE;
   }
 
+  /**
+   * Retrieves the player's health.
+   * @return player's health.
+   */
   public int getHealth() {
     return health;
   }
 
-
   @Override
-  public String getId() {
+  public int getId() {
     return super.getId();
   }
 
+  /**
+   * Retrieves the name.
+   * @return name of player.
+   */
   public String getName() {
     return super.getName();
   }
 
+  /**
+   * Retrieves the description.
+   * @return player's description.
+   */
   public String getDescription() {
     return super.getDescription();
   }
 
+  /**
+   * Retrieves a picture of the player.
+   * @return picture.
+   */
   public Image getPicture() {
     return null;
   }
 
+  /**
+   * Retrieves the room number, which represents which room we're currently in.
+   * @return the current location of the player.
+   */
   public int getRoomNumber() {
     return roomNumber;
   }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public int getScore() {return score;}
 
 
   @Override
@@ -161,6 +199,10 @@ public class Player extends EntityContainer<Item> {
     return false;
   }
 
+  /**
+   * Sets the room number.
+   * @param roomNumber a number that represents a specific room.
+   */
   public void setRoomNumber(int roomNumber) {
     this.roomNumber = roomNumber;
   }
@@ -174,6 +216,18 @@ public class Player extends EntityContainer<Item> {
    */
   public <U> U getEntity(String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);  // 直接调用父类的泛型方法
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"name\":\"" + getName() + "\"," +
+            "\"health\":\"" + getHealth() + "\"," +
+            "\"inventory\":\"" + getItems() + "\"," +
+            "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
+            "\"roomNumber\":\"" + getRoomNumber() + "\"," +
+            "\"score\":\"" + getScore() + "\", " +
+            " }";
   }
 
 }
