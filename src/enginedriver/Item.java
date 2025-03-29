@@ -45,7 +45,7 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
    * Constructor for an item with no max uses.
    */
   public void setRemainingUses(int remainingUses) {
-    if (remainingUses > 0) {
+    if (remainingUses >= 0) {
       this.remainingUses = remainingUses;
     } else {
       throw new IllegalArgumentException(
@@ -107,26 +107,5 @@ public class Item  extends IdentifiableEntity implements  IValuable,IWeightable 
             "\"description\":\"" + getDescription() + "\"," +
             "\"picture\":\"" + getPicture() + "\"" +
             " }";
-  }
-
-  /**
-   * equals method for the item class.
-   * @param o the object to compare to
-   * @return true if the objects are equal, false otherwise
-   */
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    Item item = (Item) o;
-    return Objects.equals(identifiableItem, item.identifiableItem);
-  }
-
-  /**
-   * hashcode method for the item class.
-   * @return the hashcode of the item
-   */
-  @Override
-  public int hashCode() {
-    return Objects.hash(identifiableItem);
   }
 }
