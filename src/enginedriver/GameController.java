@@ -17,7 +17,6 @@ public class GameController {
 
   /**
    * Constructor for GameController.
-
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
@@ -399,8 +398,7 @@ public class GameController {
       input = capitalizeWords(input);
       useItem(input);
       }
-    }
-  }
+}
 
   /**
    * Quit the game.

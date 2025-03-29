@@ -179,7 +179,7 @@ public class Player extends EntityContainer<Item> {
             "\"inventory\":\"" + getItems() + "\"," +
             "\"maxWeight\":\"" + getCurrentWeight() + "\"," +
             "\"roomNumber\":\"" + getRoomNumber() + "\"," +
-            "\"score\":\"" + score + "\"" + // can score be stored anywhere else? in gameWorld?
+            "\"score\":\"" + "score" + "\"" + // can score be stored anywhere else? in gameWorld?
             " }";
   }
 

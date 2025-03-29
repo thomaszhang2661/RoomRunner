@@ -12,10 +12,10 @@ public class GameWorld {
   private String name;
   private String version;
   private Map<Integer, Room> rooms;
-//  private Map<String, Item> items;
-//  private Map<String, Fixture> fixtures;
-//  private Map<String, Monster> monsters;
-//  private Map<String, Puzzle> puzzles;
+  private Map<String, Item> items;
+  private Map<String, Fixture> fixtures;
+  private Map<String, Monster> monsters;
+  private Map<String, Puzzle> puzzles;
   private int score;
   private Player player; //记录生命值、item、位置等
 
