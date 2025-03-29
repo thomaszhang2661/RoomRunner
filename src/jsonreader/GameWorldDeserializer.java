@@ -6,21 +6,41 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import enginedriver.*;
-
+import enginedriver.Fixture;
+import enginedriver.GameWorld;
+import enginedriver.IProblem;
+import enginedriver.IdentifiableEntity;
+import enginedriver.Item;
+import enginedriver.Monster;
+import enginedriver.Puzzle;
+import enginedriver.Room;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A custom deserializer for the GameWorld class, which converts a JSON representation of
+ * a game world into a GameWorld object.
+ */
 public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
 
+  /**
+   * Deserialize a JSON representation of a GameWorld into a GameWorld object.
+
+   * @param jsonParser the JsonParser to read the JSON
+   * @param deserializationContext the DeserializationContext
+   * @return the deserialized GameWorld object
+   * @throws IOException if an error occurs during deserialization
+   * @throws JsonProcessingException if an error occurs during JSON processing
+   */
   @Override
-  public GameWorld deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+  public GameWorld deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+          throws IOException, JsonProcessingException {
     ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
     JsonNode rootNode = mapper.readTree(jsonParser);
 
-    String name = rootNode.get("name").asText();
-    String version = rootNode.get("version").asText();
+    final String name = rootNode.get("name").asText();
+    final String version = rootNode.get("version").asText();
 
     // parse items
     Map<String, Item> items = new HashMap<>();
@@ -55,9 +75,9 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     // parse rooms
     Map<Integer, Room> rooms = new HashMap<>();
     for (JsonNode roomNode : rootNode.get("rooms")) {
-      String roomName = roomNode.get("room_name").asText();
-      int id = roomNode.get("room_number").asInt();
-      String description = roomNode.get("description").asText();
+      final String roomName = roomNode.get("room_name").asText();
+      final int id = roomNode.get("room_number").asInt();
+      final String description = roomNode.get("description").asText();
 
       Map<String, Integer> exits = new HashMap<>();
       exits.put("N", roomNode.get("N").asInt());

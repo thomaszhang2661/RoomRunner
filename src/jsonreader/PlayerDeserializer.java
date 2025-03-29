@@ -5,26 +5,44 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import enginedriver.GameWorld;
 import enginedriver.Item;
 import enginedriver.Player;
 import enginedriver.Room;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A custom deserializer for the Player class, which converts a JSON representation of
+ * a player into a Player object.
+ */
 public class PlayerDeserializer extends JsonDeserializer<Player> {
 
-  private GameWorld gameWorld; // for finding items
+  // Initialize gameWorld for finding items
+  private GameWorld gameWorld;
 
+  /**
+   * Constructor for PlayerDeserializer.
+
+   * @param gameWorld the GameWorld instance to search for items
+   */
   public PlayerDeserializer(GameWorld gameWorld) {
     this.gameWorld = gameWorld;
   }
 
+  /**
+   * Deserialize a JSON representation of a Player into a Player object.
+
+   * @param jsonParser the JsonParser to read the JSON
+   * @param deserializationContext the DeserializationContext
+   * @return the deserialized Player object
+   * @throws IOException if an error occurs during deserialization
+   * @throws JsonProcessingException if an error occurs during JSON processing
+   */
   @Override
-  public Player deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+  public Player deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+          throws IOException, JsonProcessingException {
     JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
     Player player = null;
 
@@ -58,7 +76,9 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
   }
 
   /**
-   * 在 GameWorld 的所有房间中查找指定名称的 Item
+   * Finds the Item with the specified name in all rooms in GameWorld.
+
+   * @param itemName the name of the item to find
    */
   private Item findItemInGameWorld(String itemName) {
     for (Room<?> room : gameWorld.getRooms().values()) {
