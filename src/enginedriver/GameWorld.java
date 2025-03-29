@@ -74,25 +74,14 @@ public class GameWorld {
   public void setPlayer(Player player) {
     this.player = player;
   }
-//  @Override
-//  public String toString() {
-//    return "GameWorld{" +
-//            "name='" + name + '\'' +
-//            ", version='" + version + '\'' +
-//            ", rooms=" + rooms +
-//            ", items=" + items +
-//            ", fixtures=" + fixtures +
-//            ", monsters=" + monsters +
-//            ", puzzles=" + puzzles +
-//            ", player=" + player +
-//            '}';
-//  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{ ");
     sb.append("\"name\":\"").append(name).append("\",");
     sb.append("\"version\":\"").append(version).append("\",");
+    sb.append("\"score\":").append(score).append(",");
 
     sb.append("\"rooms\":{");
     for (Map.Entry<Integer, Room> entry : rooms.entrySet()) {
@@ -102,29 +91,39 @@ public class GameWorld {
     sb.append("},");
 
     sb.append("\"items\":{");
-    for (Map.Entry<String, Item> entry : items.entrySet()) {
-      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    for (Room room : rooms.values()) {
+      for (Item item : room.getEntitiesByType(Item.class)) {
+        sb.append("\"").append(item.getName()).append("\":").append(item.toString()).append(",");
+      }
     }
     sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
     sb.append("},");
 
     sb.append("\"fixtures\":{");
-    for (Map.Entry<String, Fixture> entry : fixtures.entrySet()) {
-      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    for (Room room : rooms.values()) {
+      for (Fixture fixture : room.getEntitiesByType(Fixture.class)) {
+        sb.append("\"").append(fixture.getName()).append("\":").append(fixture.toString()).append(",");
+      }
     }
     sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
     sb.append("},");
 
     sb.append("\"monsters\":{");
-    for (Map.Entry<String, Monster> entry : monsters.entrySet()) {
-      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    for (Room room : rooms.values()) {
+      if (room.getProblem() instanceof Monster) {
+        Monster monster = (Monster) room.getProblem();
+        sb.append("\"").append(monster.getName()).append("\":").append(monster.toString()).append(",");
+      }
     }
     sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
     sb.append("},");
 
     sb.append("\"puzzles\":{");
-    for (Map.Entry<String, Puzzle> entry : puzzles.entrySet()) {
-      sb.append("\"").append(entry.getKey()).append("\":").append(entry.getValue().toString()).append(",");
+    for (Room room : rooms.values()) {
+      if (room.getProblem() instanceof Puzzle) {
+        Puzzle puzzle = (Puzzle) room.getProblem();
+        sb.append("\"").append(puzzle.getName()).append("\":").append(puzzle.toString()).append(",");
+      }
     }
     sb.deleteCharAt(sb.length() - 1); // Remove trailing comma
     sb.append("},");
