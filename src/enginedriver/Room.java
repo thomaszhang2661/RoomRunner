@@ -1,6 +1,5 @@
 package enginedriver;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,7 +46,7 @@ public class Room  extends  EntityContainer<IdentifiableEntity> {
    * Returns a map of exits from the room.
    * @return Map of exits rooms from data.
    */
-  Map<String, Integer> getExits() {
+  public Map<String, Integer> getExits() {
     return exits;
   }
 

@@ -2,7 +2,7 @@ package enginedriver;
 
 import java.awt.*;
 
-public class Item  extends IdentifiableEntity implements  IValuable,IWeightable{
+public class Item  extends IdentifiableEntity implements IValuable,IWeightable{
   private int maxUses;
   private int remainingUses;
   private int value;

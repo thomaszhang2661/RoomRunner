@@ -1,7 +1,5 @@
 package enginedriver;
 
-import com.sun.source.tree.PackageTree;
-
 import java.awt.*;
 
 public class Monster<T> extends Problem<T>{

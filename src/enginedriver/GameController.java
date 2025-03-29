@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -256,7 +255,7 @@ public class GameController {
 
     //check solution type
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
-    if(solutionClass== Item.class) {
+    if (solutionClass == Item.class) {
       IProblem<Item> itemproblem = (IProblem<Item>) problem;
       boolean flag = itemproblem.solve(itemAttempt);
       if (flag) {
