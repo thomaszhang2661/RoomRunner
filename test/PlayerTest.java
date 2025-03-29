@@ -1,14 +1,17 @@
-package enginedriver;
-
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import enginedriver.HEALTH_STATUS;
+import enginedriver.Item;
+import enginedriver.Player;
 
 public class PlayerTest {
   private Player player;
@@ -25,7 +28,7 @@ public class PlayerTest {
             "You insert the thumb drive.");
     carrot = new Item("Carrot", "A carrot. But not just any carrot, " +
             "but a HUGE carrot! Bigger than you've seen before.", 1, 1,
-            5, 10, "You apply the Mod 2 operator " +
+            5, 50, "You apply the Mod 2 operator " +
             "and take note of the remainder.");
 
     // Initialize player with a starting inventory
@@ -48,7 +51,7 @@ public class PlayerTest {
   public void testCheckHealthStatus() {
     // Start with full health
     player.gainOrLoseHealth(-player.getHealth()); // Reset health to 0
-    assertEquals(HEALTH_STATUS.SLEEP, player.checkStatus(), "Health at 0 should be SLEEP");
+    Assertions.assertEquals(HEALTH_STATUS.SLEEP, player.checkStatus(), "Health at 0 should be SLEEP");
 
     player.gainOrLoseHealth(20);
     assertEquals(HEALTH_STATUS.WOOZY, player.checkStatus(), "Health at 20 should be WOOZY");
@@ -100,7 +103,7 @@ public class PlayerTest {
     assertTrue(added, "Key should be added to the inventory within the weight limit.");
 
     // Ensure the item exists in the inventory
-    assertTrue(player.getItems().containsKey("Key"), "Inventory should contain the Key.");
+    assertTrue(player.getEntities().containsKey("Key"), "Inventory should contain the Key.");
 
     // Verify the current weight is updated
     assertEquals(5, player.getCurrentWeight(), "Current weight should " +
@@ -117,7 +120,7 @@ public class PlayerTest {
     assertFalse(added, "Carrot should not be added as it exceeds the weight limit.");
 
     // Ensure the item does not exist in the inventory
-    assertFalse(player.getItems().containsKey("Carrot"), "Inventory should not " +
+    assertFalse(player.getEntities().containsKey("Carrot"), "Inventory should not " +
                                                                   "contain the Carrot.");
 
     // Verify the current weight remains unchanged

@@ -2,22 +2,30 @@ package enginedriver;
 
 import java.awt.*;
 
+/**
+ * Class for fixtures in the game.
+ * Fixtures are objects that can be used to solve puzzles.
+ */
 public class Fixture extends IdentifiableEntity implements IWeightable {
-  private int weight;
-  private Puzzle puzzle;
+  private final int weight;
+  private Puzzle<?> puzzle;
   private Object states;
   private Image picture;
-
+  //TODO: accomposition for weightable
   /**
-   * Constructor for an identifiable entity.
-   * Room can use field of id.
-   *
-   * @param id
-   * @param name
-   * @param description
+   * Simple constructor for fixture without weight
    */
   public Fixture(int id, String name, String description) {
     super(id, name, description);
+    this.weight = 1000;//TODO move to config file
+  }
+
+  /**
+   * Constructor for a fixture with weight.
+   */
+  public Fixture(int id, String name, String description, int weight) {
+    super(id, name, description);
+    this.weight = weight;
   }
 
   public Fixture(String name, String description, int weight, Puzzle puzzle, Object states, String picture) {
@@ -32,7 +40,7 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
     return null;
   }
 
-  public Puzzle getPuzzle() {
+  public Puzzle<?> getPuzzle() {
     return puzzle;
   }
 

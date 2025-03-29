@@ -58,11 +58,11 @@ public class RoomTest {
 
     // Prepare an entity map
     Map<String, IdentifiableEntity> entities = new HashMap<>();
-    entities.put("itemA", new Item("A", "descA", 1, 1,
+    entities.put("itemA", new Item("itemA", "descA", 1, 1,
             10, 5, "used"));
-    entities.put("fixtureB", new Fixture(11, "B", "fixtureDesc"));
+    entities.put("fixtureB", new Fixture(11, "fixtureB", "fixtureDesc", 1000));
 
-    Room room = new Room(10, "C", "descC", exits, entities);
+    Room<?> room = new Room(10, "C", "descC", exits, entities);
     assertEquals(10, room.getId());
     assertEquals("C", room.getName());
     assertEquals("descC", room.getDescription());
@@ -71,8 +71,8 @@ public class RoomTest {
     assertNull(room.getProblem());
 
     // Confirm entities are there
-    assertTrue(room.hasEntity("A"));
-    assertTrue(room.hasEntity("X"));
+    assertTrue(room.hasEntity("itemA"));
+    assertTrue(room.hasEntity("fixtureB"));
   }
 
   /**
@@ -89,7 +89,7 @@ public class RoomTest {
     // Initialize an entity map
     Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("itemB", new Item("B", "descB", 2, 2, 20, 10, "used"));
-    entities.put("fixtureY", new Fixture(12, "Y", "fixtureDescY"));
+    entities.put("fixtureY", new Fixture(12, "Y", "fixtureDescY", 1000));
 
     // Create Monster
     Monster<String> monster = new Monster<>(
@@ -116,7 +116,7 @@ public class RoomTest {
     Map<String, Integer> exits = new HashMap<>();
     exits.put("N", 1);
     exits.put("S", -2);
-    Room room = new Room(1, "A", "descA", exits, (IProblem) null);
+    Room<?> room = new Room(1, "A", "descA", exits);
 
     Map<String, Integer> returnedExits = room.getExits();
     assertEquals(1, returnedExits.get("N"));
@@ -129,7 +129,7 @@ public class RoomTest {
   @Test
   void testAddEntity() {
     Map<String, Integer> exits = new HashMap<>();
-    Room room = new Room(3, "C", "descC", exits, (String)null);
+    Room<?> room = new Room(3, "C", "descC", exits);
 
     IdentifiableEntity itemA = new Item("A", "descA", 1, 1,
             10, 5, "used");
@@ -157,7 +157,7 @@ public class RoomTest {
     entities.put(itemA.getName(), itemA);
     entities.put(itemB.getName(), itemB);
 
-    Room room = new Room(4, "D", "descD", exits, entities);
+    Room<?> room = new Room(4, "D", "descD", exits, entities);
 
     // Remove existing entity
     assertTrue(room.removeEntity(itemA));
@@ -173,7 +173,7 @@ public class RoomTest {
   @Test
   void testHasEntityWithEntity() {
     Map<String, Integer> exits = new HashMap<>();
-    Room room = new Room(5, "E", "descE", exits, (String)null);
+    Room<?> room = new Room(5, "E", "descE", exits);
 
     IdentifiableEntity itemA = new Item("A", "descA", 1, 1,
             10, 5, "used");
@@ -191,7 +191,7 @@ public class RoomTest {
   @Test
   void testHasEntityWithString() {
     Map<String, Integer> exits = new HashMap<>();
-    Room room = new Room(6, "F", "descF", exits, (String)null);
+    Room<?> room = new Room(6, "F", "descF", exits);
 
     IdentifiableEntity itemA = new Item("A", "descA", 1, 1,
             10, 5, "used");
@@ -207,7 +207,7 @@ public class RoomTest {
   @Test
   void testGetEntity() {
     Map<String, Integer> exits = new HashMap<>();
-    Room room = new Room(7, "G", "descG", exits, (String)null);
+    Room<?> room = new Room(7, "G", "descG", exits);
 
     Item itemA = new Item("A", "descA", 1, 1,
             10, 5, "used");
@@ -247,7 +247,7 @@ public class RoomTest {
             50, "puzzleEffects", "puzzleTarget", "puzzlePic"
     );
 
-    Room puzzleRoom = new Room(8, "H", "descH", exits, entities, puzzle);
+    Room<?> puzzleRoom = new Room(8, "H", "descH", exits, entities, puzzle);
     assertEquals(puzzle, puzzleRoom.getProblem());
   }
 
@@ -267,7 +267,7 @@ public class RoomTest {
     entities.put(itemB.getName(), itemB);
     entities.put(fixtureX.getName(), fixtureX);
 
-    Room room = new Room(10, "J", "descJ", exits, entities);
+    Room<?> room = new Room(10, "J", "descJ", exits, entities);
 
     // Get items' names
     String itemNames = room.getElementNames(Item.class);
@@ -313,7 +313,7 @@ public class RoomTest {
     );
 
     // Room with puzzle
-    Room puzzleRoom = new Room(11, "K", "descK", exits, entities, puzzle);
+    Room<?> puzzleRoom = new Room(11, "K", "descK", exits, entities, puzzle);
 
     String puzzleJSON = "{ \"name\":\"PuzzleName\",\"active\":\"true\",\"affects_target\":\"false\","
             + "\"affects_player\":\"false\",\"solution\":\"PuzzleSolution\",\"value\":\"99\","
@@ -339,7 +339,7 @@ public class RoomTest {
     assertEquals(expectedPuzzleRoomString, puzzleRoom.toString());
 
     // Room with monster
-    Room monsterRoom = new Room(12, "L", "descL", exits, entities, monster);
+    Room<?> monsterRoom = new Room(12, "L", "descL", exits, entities, monster);
 
 
     String monsterJSON = "{ \"name\":\"MonsterName\",\"active\":\"true\",\"affects_target\":\"true\","

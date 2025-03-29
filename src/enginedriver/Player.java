@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  */
 public class Player extends EntityContainer<Item> {
   private int health;
-  private int maxWeight;
+  private final int maxWeight;
   private int currentWeight;
   private int roomNumber; //the room that player is in
   private int score;
@@ -87,10 +87,8 @@ public class Player extends EntityContainer<Item> {
     // 获取泛型类型的实体
     Map<String, Item> playerEntities = super.getEntities();
     for (Map.Entry<String, Item> entry : playerEntities.entrySet()) {
-      //if (entry.getValue() != null) {
       Item item =  entry.getValue();  // 强制类型转换为 Item 类型
       currentWeight += item.getWeight();    // 获取物品的重量并累加
-      //}
     }
 
   }
@@ -98,22 +96,7 @@ public class Player extends EntityContainer<Item> {
   public int getMaxWeight() {
     return maxWeight;
   }
-  //  public int getCurrentWeight() {
-  //    int currentWeight = 0;
-  //    Map<String,IdentifiableEntity> playerEntities = super.getEntities();
-  //    for (Map.Entry<String, IdentifiableEntity>  item : playerEntities.entrySet()) {
-  //      currentWeight += item.getWeight();
-  //    }
-  //    for (IItem item : inventory) {
-  //      currentWeight += item.getWeight();
-  //    }
-  //  }
 
-
-  // move to gameWorld
-//  public void gainOrLoseScore(int s) {
-//    score += s;
-//  }
 
   /**
    * Determines whether a player gains or loses health.
@@ -132,12 +115,11 @@ public class Player extends EntityContainer<Item> {
    * @return the health status.
    */
   public HEALTH_STATUS checkStatus() {
-  // check homework website, may want to use ENUM HEALTH_STATUS
     if (this.health <= 0 )
       return HEALTH_STATUS.SLEEP;
-    if(this.health < 40)
+    if (this.health < 40)
       return HEALTH_STATUS.WOOZY;
-    if(this.health < 70)
+    if (this.health < 70)
       return HEALTH_STATUS.FATIGUED;
     return HEALTH_STATUS.AWAKE;
   }
@@ -254,11 +236,13 @@ public class Player extends EntityContainer<Item> {
   }
 
   /**
-   * Get an item from player's inventory.
+   *  get an Entity from the room.
    */
-  public <U> U getEntity(String entityName, Class<U> clazz) {
-    return super.getEntity(entityName, clazz);  // 直接调用父类的泛型方法
+  public <U extends IdentifiableEntity> U getEntity(
+          String entityName, Class<U> clazz) {
+    return super.getEntity(entityName, clazz);
   }
+
 
   @Override
   public String toString() {
