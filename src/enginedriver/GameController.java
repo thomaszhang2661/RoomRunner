@@ -178,7 +178,7 @@ public class GameController {
       if(player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
         viewer.showText(itemName + "added to your inventory!");
-        gameWorld.setScore(gameWorld.getScore() + itemAttempt.getValue());
+        player.setScore(player.getScore() + itemAttempt.getValue());
       } else {
         viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
                 + "  your bag is full.");
@@ -201,7 +201,7 @@ public class GameController {
       player.removeItem(item);
       currentRoom.addEntity(item);
       viewer.showText(itemName + "dropped here in " + currentRoom.getName());
-      gameWorld.setScore(gameWorld.getScore() - item.getValue());
+      player.setScore(player.getScore() - item.getValue());
     } else {
       viewer.showText("Sorry, you don't have " + itemName + " in your bag");
     }
@@ -365,5 +365,13 @@ public class GameController {
       monster.attack(player);
       //TODO 这里好像要说话，需要完善
     }
+  }
+
+  @Override
+  public String toString() {
+    return "{ " +
+            "\"gameWorld\":" + gameWorld.toString() + "," +
+            "\"player\":" + player.toString() +
+            " }";
   }
 }
