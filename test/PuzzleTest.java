@@ -21,6 +21,19 @@ public class PuzzleTest {
     assertEquals("6:Kitchen", puzzle.getTarget());
   }
 
+  /**
+   * Test the getID method of Puzzle.
+   */
+  @Test
+  public void testPuzzleGetID() {
+    Puzzle<String> puzzle = new Puzzle<>("Darkness",
+            "It's dark!", true,
+            true, true,
+            "Lamp", 150, "You cannot see!",
+            "6:Kitchen", "darkness.png");
+    assertEquals(-1, puzzle.getId());
+  }
+
   @Test
   public void testPuzzleSolve() {
     Puzzle<String> puzzle = new Puzzle<>("Darkness",
