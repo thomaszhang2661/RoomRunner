@@ -117,7 +117,7 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
    * get the String list of items in the room.
    */
   public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
-    return String.join(", " + getEntitiesByType(clazz).stream()
+    return String.join(", ", getEntitiesByType(clazz).stream()
             .map(U::getName)
             .toList());
   }
