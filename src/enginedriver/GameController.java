@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import jsonreader.GameDataLoader;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -16,12 +16,19 @@ public class GameController {
 
   /**
    * Constructor for GameController.
-
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
     this.player = player;
     this.viewer = Viewer.getInstance();
+  }
+
+  public GameWorld getGameWorld() {
+    return gameWorld;
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
   /*
@@ -411,17 +418,14 @@ public class GameController {
   private void restore() {
     // Logic to restore the game state
     //TODO
-  }
 
-  /**
-   * record the game state.
-   */
-  // Additional methods for game logic can be added here
-  private void record() {
-    // Logic to record the game state for replay
-    // 区分用户操作是否对gameworld造成了影响，
-    //  如果有影响，记录操作和变化
-    //TODO
+    //    try {
+    //      GameWorld gameWorld = jsonreader.GameDataLoader.loadGameWorld(gameFileName);
+    //      this.gameWorld = gameWorld;
+    //    } catch (java.io.IOException e) {
+    //      viewer.showText("Error loading game data: " + e.getMessage());
+    //      e.printStackTrace();
+    //    }
   }
 
 
