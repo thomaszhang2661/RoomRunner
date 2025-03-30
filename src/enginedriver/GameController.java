@@ -293,8 +293,8 @@ public class GameController {
       boolean flag = itemproblem.solve(itemAttempt);
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
-        if (itemproblem.getAffects_target()) {
-          itemproblem.getAffects_player(player);
+        if (itemproblem.getAffectsTarget()) {
+          itemproblem.getAffectsPlayer();
         }
         unlockExits(currentRoom); // update room exits
 
@@ -368,9 +368,9 @@ public class GameController {
   //  }
 
 
-  private void handleProblemSolution(IProblem<?> problem, solution) {
-
-  }
+//  private void handleProblemSolution(IProblem<?> problem, solution) {
+//
+//  }
 
 
     /**
@@ -410,7 +410,8 @@ public class GameController {
     if (puzzle.getSolution() instanceof String) {
       Puzzle<String> puzzleString = (Puzzle<String>) puzzle;
       if (puzzleString.solve(objectName)) {
-        handlePuzzleSolution(currentRoom, puzzleString);
+        //handlePuzzleSolution(currentRoom, puzzleString);
+
       } else {
         viewer.showText("Your answer is not right.");
       }
@@ -463,7 +464,7 @@ public class GameController {
   private void handleMonsterAttack(IProblem problem) {
     if (problem instanceof Monster && problem.getActive()) {
       Monster<?> monster = (Monster) problem;
-      if (monster.getAffect_player() && monster.canAttack())
+      if (monster.getAffectsPlayer() && monster.getCanAttack())
         monster.attack(player);
         viewer.showText(monster.getAttack());
     }

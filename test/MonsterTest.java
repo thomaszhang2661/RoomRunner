@@ -3,6 +3,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import enginedriver.problems.Monster;
+import enginedriver.problems.validator.SolutionValidator;
+import enginedriver.problems.validator.StringSolutionValidator;
+import  enginedriver.problems.validator.ItemSolutionValidator;
 import enginedriver.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +38,8 @@ class MonsterTest {
                     + "I think you might be dinner!",
             "7:Dining Room",
             "monster-rabbit.png",
-            "licks you with a giant tongue!"
+            "licks you with a giant tongue!",
+            new StringSolutionValidator()
     );
 
     // Initialize Teddy Bear from JSON data
@@ -52,7 +56,8 @@ class MonsterTest {
             "A monster Teddy Bear growls at you! You cannot get past!",
             "3:Foyer",
             "monster-teddy.png",
-            "hits you with soft, fluffy paws! You might sneeze!"
+            "hits you with soft, fluffy paws! You might sneeze!",
+            new StringSolutionValidator()
     );
   }
 

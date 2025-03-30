@@ -13,6 +13,10 @@ import enginedriver.Item;
 import enginedriver.problems.IProblem;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
+import enginedriver.problems.validator.ItemSolutionValidator;
+import enginedriver.problems.validator.SolutionValidator;
+import enginedriver.problems.validator.StringSolutionValidator;
+
 import enginedriver.Room;
 import java.io.IOException;
 import java.util.HashMap;
@@ -69,8 +73,17 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
       for (JsonNode fixtureNode : fixturesNode) {
         String fixtureName = getNodeText(fixtureNode, "name");
         int weight = getNodeInt(fixtureNode, "weight");
-        Puzzle puzzle = null;
-        Object states = fixtureNode.get("states");
+        Puzzle<?> puzzle = null;
+
+        // parse states
+        JsonNode statesNode = fixtureNode.get("states");
+        int states; // 用于存储最终的整数值
+        if (statesNode != null && statesNode.isInt()) {
+          states = statesNode.asInt();
+        } else {
+          states = -1; // 默认值
+        }
+
         String description = getNodeText(fixtureNode, "description");
         String picture = getNodeText(fixtureNode, "picture");
 
@@ -88,13 +101,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         Boolean active = monsterNode.get("active").asBoolean();
         Boolean affectsTarget = monsterNode.get("affects_target").asBoolean();
         Boolean affectsPlayer = monsterNode.get("affects_player").asBoolean();
-        String solutionText = getNodeText(monsterNode, "solution");
-        Object solution;
-        if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
-          solution = solutionText.substring(1, solutionText.length() - 1);
-        } else {
-          solution = items.getOrDefault(solutionText, null);
-        }
+
         int value = getNodeInt(monsterNode, "value");
         String description = getNodeText(monsterNode, "description");
         String effects = getNodeText(monsterNode, "effects");
@@ -103,11 +110,25 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         Boolean canAttack = monsterNode.get("can_attack").asBoolean();
         String attack = getNodeText(monsterNode, "attack");
         String pictureName = getNodeText(monsterNode, "picture");
+        String solutionText = getNodeText(monsterNode, "solution");
+        Object solution;
 
-        Monster<?> monster = new Monster<>(monsterName, description, active,
-                affectsTarget, canAttack, affectsPlayer, solution, value,
-                damage, effects, target, pictureName, attack);
-        monsters.put(monster.getName(), monster);
+        if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
+          String solutionString = solutionText.substring(1, solutionText.length() - 1);
+          SolutionValidator<String> validator = new StringSolutionValidator();
+          Monster<String> monster = new Monster<String>(monsterName, description, active,
+                  affectsTarget, canAttack, affectsPlayer, solutionString, value,
+                  damage, effects, target, pictureName, attack, validator);
+          monsters.put(monster.getName(), monster);
+        } else {
+          Item solutionItem = items.getOrDefault(solutionText, null);
+          SolutionValidator<Item> validator = new ItemSolutionValidator();
+          Monster<Item> monster = new Monster<Item>(monsterName, description, active,
+                  affectsTarget, canAttack, affectsPlayer, solutionItem, value,
+                  damage, effects, target, pictureName, attack, validator);
+          monsters.put(monster.getName(), monster);
+        }
+
       }
     }
 
@@ -120,22 +141,29 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         Boolean active = puzzleNode.get("active").asBoolean();
         Boolean affectsTarget = puzzleNode.get("affects_target").asBoolean();
         Boolean affectsPlayer = puzzleNode.get("affects_player").asBoolean();
-        String solutionText = getNodeText(puzzleNode, "solution");
-        Object solution;
-        if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
-          solution = solutionText.substring(1, solutionText.length() - 1);
-        } else {
-          solution = items.getOrDefault(solutionText, null);
-        }
+
         int value = getNodeInt(puzzleNode, "value");
         String description = getNodeText(puzzleNode, "description");
         String effects = getNodeText(puzzleNode, "effects");
         String target = getNodeText(puzzleNode, "target");
         String pictureName = getNodeText(puzzleNode, "picture");
 
-        Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
-                affectsPlayer, solution, value, effects, target, pictureName);
-        puzzles.put(puzzle.getName(), puzzle);
+        String solutionText = getNodeText(puzzleNode, "solution");
+        Object solution;
+        if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
+          String solutionString = solutionText.substring(1, solutionText.length() - 1);
+          SolutionValidator<String> validator = new StringSolutionValidator();
+          Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
+                  affectsPlayer, solutionString, value, effects, target, pictureName, validator);
+          puzzles.put(puzzle.getName(), puzzle);
+
+        } else {
+          Item solutionItem = items.getOrDefault(solutionText, null);
+          SolutionValidator<Item> validator = new ItemSolutionValidator();
+          Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
+                  affectsPlayer, solutionItem, value, effects, target, pictureName,validator);
+          puzzles.put(puzzle.getName(), puzzle);
+        }
       }
     }
 

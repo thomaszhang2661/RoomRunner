@@ -2,6 +2,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import enginedriver.problems.validator.SolutionValidator;
+import enginedriver.problems.validator.StringSolutionValidator;
+import  enginedriver.problems.validator.ItemSolutionValidator;
 import enginedriver.Fixture;
 import enginedriver.GameController;
 import enginedriver.GameWorld;
@@ -71,20 +74,21 @@ public class GameControllerTest {
     Item solution = items.get(solutionName);
     monsters.put("Rabbit", new Monster("Rabbit",
             "Awww. A furry rabbit twitching its nose and eating a carrot. Makes you want to pet him",
-            true, true, true,
+            true, true, true, true,
             solution, 300, -15,
             "A monster Rabbit moves towards you! He's blocking the way north."
                     + " \nI think you might be dinner!", "7:Dining Room",
-            "monster-rabbit.png", "licks you with a giant tongue!"));
+            "monster-rabbit.png", "licks you with a giant tongue!", new ItemSolutionValidator()));
 
     solutionName = "Hair Clippers";
     solution = items.get(solutionName);
-    monsters.put("Teddy Bear", new Monster("Teddy Bear",
+    monsters.put("Teddy Bear", new Monster<Item>("Teddy Bear",
             "A peaceful, cute-looking teddy bear with its hair clipped sits on the floor",
-            true, true, true,
+            true, true, true, true,
             solution, 200, -5,
             "A monster Teddy Bear growls at you! You cannot get past!", "3:Foyer",
-            "monster-teddy.png", "hits you with soft, fluffy paws! You might sneeze!"));
+            "monster-teddy.png", "hits you with soft, fluffy paws! You might sneeze!",
+            new ItemSolutionValidator()));
 
     // Initialize puzzles
     Map<String, Puzzle> puzzles = new HashMap<>();
@@ -93,31 +97,41 @@ public class GameControllerTest {
     solution = items.get(solutionName);
     puzzles.put("DARKNESS", new Puzzle<Item>("DARKNESS", "Darkness! You cannot see!", true, true,
               true, solution,
-              150, "Darkness! You cannot see!", "6:Kitchen", "darkness.png"));
+              150, "Darkness! You cannot see!", "6:Kitchen", "darkness.png",
+              new ItemSolutionValidator()));
 
     solutionName = "Modulo 2";
     solution = items.get(solutionName);
-    puzzles.put("MOD-SPOOKY-VOICE", new Puzzle<Item>("MOD-SPOOKY-VOICE", "An spooky, eerie library. You walked into this eerie library FROM the west. \nAnother room is north. Books are rustling by themselves on a bookshelf.", true, true,
+    puzzles.put("MOD-SPOOKY-VOICE", new Puzzle<Item>(
+            "MOD-SPOOKY-VOICE",
+            "An spooky, eerie library. You walked into this eerie library FROM the west. \nAnother room is north. Books are rustling by themselves on a bookshelf.", true, true,
               false, solution,
-              400, "Books are rustling by themselves on the bookshelf. That's a weird bookshelf. Really weird.\nYou hear a voice whisper: \"~Find Even Numbers Only~\" \nYikes. That's creepy. Maybe we should leave?", "4:Spooky Library", null));
+              400,
+            "Books are rustling by themselves on the bookshelf. That's a weird bookshelf. Really weird.\nYou hear a voice whisper: \"~Find Even Numbers Only~\" \nYikes. That's creepy. Maybe we should leave?", "4:Spooky Library",
+            "", new ItemSolutionValidator()));
 
     solutionName = "'Base Case'";
     puzzles.put("RECURSION-PUZZLE", new Puzzle<String>("RECURSION-PUZZLE", "I feel like we've " +
             "been here before - not quite an infinite loop but infinite...!", true, true,
               false, solutionName,
-              700, "Every time you move, you end up in the same room!\nSomething is etched into the wall with a knife. It says: 'Provide a solution to end the recursive madness'", "10:Recursive Study", null));
+              700, "Every time you move, you end up in the same room!\nSomething is etched into the wall with a knife. It says: 'Provide a solution to end the recursive madness'", "10:Recursive Study",
+            "", new StringSolutionValidator()));
 
     solutionName = "Thumb Drive";
     solution = items.get(solutionName);
     puzzles.put("USB", new Puzzle<Item>("USB", "A laptop with a USB port", true, true,
               false, solution,
-              500, "This is a quiet living room. \nThe dining area is to your south and another room to your east but there seems to be an invisible barrier blocking you from going in that direction. \nA dimly lit laptop is on a small table in the corner", "9:Living Room", null));
+              500, "This is a quiet living room. \nThe dining area is to your south and another " +
+            "room to your east but there seems to be an invisible barrier blocking you from going in that direction. \nA dimly lit laptop is on a small table in the corner", "9:Living Room", null,
+              new ItemSolutionValidator()));
 
     solutionName = "Golden Ticket";
     solution = items.get(solutionName);
     puzzles.put("ROBOT", new Puzzle<Item>("ROBOT", "A large robot with lights flashing, humming a tune from a cartoon. You can't quite remember the song. \nThere's a slot on it's front side it reads: 'Insert Here'", true, true,
               false, solution,
-              250, "This room is pretty much empty, except for a large robot in the corner, making a humming sound. \nIt's annoying! Turn it off!\nThere's a slot on it's front side it reads: 'INSERT TICKET HERE'", "13:Bridge Exit", "robot.png"));
+              250, "This room is pretty much empty, except for a large robot in the corner, " +
+            "making a humming sound. \nIt's annoying! Turn it off!\nThere's a slot on it's front side it reads: 'INSERT TICKET HERE'", "13:Bridge Exit", "robot.png",
+            new ItemSolutionValidator()));
 
     // Initialize rooms
     Map<Integer, Room> rooms = new HashMap<>();
@@ -140,7 +154,7 @@ public class GameControllerTest {
                     + "\nThe walkway leads north. A billboard is in the "
                     + "distance.",
             exits,entities,
-            puzzles.get("DARKNESS")));
+            puzzles.get("DARKNESS"),""));
 
     //update exits
     exits = new HashMap<>();
@@ -154,7 +168,7 @@ public class GameControllerTest {
     entities.put("Chandelier", fixtures.get("Chandelier"));
     rooms.put(2, new Room<Puzzle<?>>(2, "Mansion Entrance",
             "Entrance to an old, musty-smelling mansion. Some people have entered, to never return. \nThe door to the north is open. The courtyard is to your south and a foyer to your north. A chandelier hangs from the ceiling.",
-            exits, entities, null));
+            exits, entities, null,""));
 
     //update exits
     exits = new HashMap<>();
@@ -168,7 +182,7 @@ public class GameControllerTest {
     entities.put("Lamp", items.get("Lamp"));
     rooms.put(3, new Room<Monster<?>>(3, "Foyer",
             "The foyer of the mansion. A staircase leads upstairs but it is dilapidated and unusable. Therefore, the only exits to the south and east. \nA strange breeze moves through the room. Eastward is a small room that looks like a library. A teddy bear lies on the floor with its hair shaved",
-            exits, entities, monsters.get("Teddy Bear")));
+            exits, entities, monsters.get("Teddy Bear"),""));
 
     //update exits
     exits = new HashMap<>();
@@ -182,7 +196,7 @@ public class GameControllerTest {
     entities.put("Bookshelf", fixtures.get("Bookshelf"));
     rooms.put(4, new Room<Puzzle<?>>(4, "Spooky Library",
             "You walked into this eerie library FROM the west. Another room is north. \nBooks now on the floor revealing a secret passage to the East!",
-            exits, entities, puzzles.get("MOD-SPOOKY-VOICE")));
+            exits, entities, puzzles.get("MOD-SPOOKY-VOICE"),""));
 
     //update exits
     exits = new HashMap<>();
@@ -196,7 +210,7 @@ public class GameControllerTest {
     entities.put("Desk", fixtures.get("Desk"));
     rooms.put(5, new Room<Monster<?>>(5, "Hidden Chamber",
             "You've found a hidden chamber! It's a small room that's barely the size of a closet. \nThere's an old desk here. It looks like no one has sat at it in a LONG time.",
-            exits, entities, null));
+            exits, entities, null,""));
 
     //update exits
     exits = new HashMap<>();
@@ -209,7 +223,7 @@ public class GameControllerTest {
     entities.put("Stove", fixtures.get("Stove"));
     rooms.put(6, new Room<Puzzle<?>>(6, "Kitchen",
             "This is a spotless kitchen. Pots and pans are hanging from the ceiling. A stove is here. Stainless steel appliances are everywhere. \nOut of the corner of your eye, you think you see something moving to your west.",
-            exits, entities, puzzles.get("DARKNESS")));
+            exits, entities, puzzles.get("DARKNESS"),""));
 
     //update exits
     exits = new HashMap<>();
@@ -223,7 +237,7 @@ public class GameControllerTest {
     entities.put("Rabbit", monsters.get("Rabbit"));
     rooms.put(7, new Room<Monster<?>>(7, "Dining Room",
             "A large dining room with a Mahogany wood table. \nA cute furry rabbit is on the table eating carrots.",
-            exits, entities, monsters.get("Rabbit")));
+            exits, entities, monsters.get("Rabbit"),""));
 
     //update exits
     exits = new HashMap<>();
@@ -236,7 +250,7 @@ public class GameControllerTest {
     entities.put("Carrot", items.get("Carrot"));
     rooms.put(8, new Room<Monster<?>>(8, "Giant Plate",
             "Uh oh. You're on a giant plate, full of carrots! \nI think we need to go, NOW!",
-            exits, entities, null));
+            exits, entities, null,""));
 
     //update exits
     exits = new HashMap<>();
@@ -249,7 +263,7 @@ public class GameControllerTest {
     entities.put("Laptop", fixtures.get("Laptop"));
     rooms.put(9, new Room<Puzzle<?>>(9, "Living Room",
             "This a living room. The dining area is to your south and another room to your east. \nThe laptop is now making all kinds of noise. A file on a thumb drive has opened automatically and describes a recursive algorithm.",
-            exits, entities, puzzles.get("USB")));
+            exits, entities, puzzles.get("USB"),""));
 
     //update exits
     exits = new HashMap<>();
@@ -262,7 +276,7 @@ public class GameControllerTest {
     entities.put("Professor Keith", fixtures.get("Professor Keith"));
     rooms.put(10, new Room<Puzzle<?>>(10, "Recursive Study",
             "A study/office room. A fake mirror has been shattered showing an opening to the east.",
-            exits, entities, puzzles.get("RECURSION-PUZZLE")));
+            exits, entities, puzzles.get("RECURSION-PUZZLE"),""));
 
     //update exits
     exits = new HashMap<>();
@@ -276,7 +290,7 @@ public class GameControllerTest {
     entities.put("Professor Keith", fixtures.get("Professor Keith"));
     rooms.put(11, new Room<Puzzle<?>>(11, "Align HQ",
             "Align Headquarters. Professor Keith is here working on your architecture review requirements.\n \"Great to see you!\" he says. \"Looks like you're ready to do your code walk!\" \nThere is an open pathway to the north.",
-            exits, entities, null));
+            exits, entities, null,""));
 
     //update exits
     exits = new HashMap<>();

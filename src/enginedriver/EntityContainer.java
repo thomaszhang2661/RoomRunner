@@ -12,6 +12,15 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   private Map<String, T> stringEntityMap;  // 泛型类型 T 代替 IdentifiableEntity
 
   /**
+   * Constructor for an identifiable entity: empty container, picture name.
+   */
+  protected EntityContainer(int id, String name, String description, String pictureName) {
+    super(id, name, description, pictureName);
+    //分配一个新的 HashMap 实例，用于存储实体
+    this.stringEntityMap = new java.util.HashMap<>();
+  }
+
+  /**
    * Constructor for an identifiable entity: empty container.
    */
   protected EntityContainer(int id, String name, String description) {
@@ -23,22 +32,31 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Constructor for an identifiable entity: container with entities.
    */
+  protected EntityContainer(int id, String name, String description, Map<String, T> entityNames, String pictureName) {
+    super(id, name, description, pictureName);
+    this.stringEntityMap = entityNames;
+  }
+
+  /**
+   * Constructor for an identifiable entity: container with entities.
+   */
   protected EntityContainer(int id, String name, String description, Map<String, T> entityNames) {
     super(id, name, description);
     this.stringEntityMap = entityNames;
   }
 
+
   /**
    * set entities to the container.
    */
-  protected void setEntities(Map<String, T> entityNames) {
+  public void setEntities(Map<String, T> entityNames) {
     this.stringEntityMap = entityNames;
   }
 
   /**
    * Get all entities from the container.
    */
-  protected Map<String, T> getEntities() {
+  public Map<String, T> getEntities() {
     if (stringEntityMap == null) {
       return null;
     }
@@ -48,7 +66,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Get one entity from the container.
    */
-  protected  <U extends IdentifiableEntity> U getEntity(String entityName, Class<U> clazz) {
+  public  <U extends IdentifiableEntity> U getEntity(String entityName, Class<U> clazz) {
     Object entity = stringEntityMap.get(entityName);
     if (clazz.isInstance(entity)) {
       return clazz.cast(entity);  // 安全地进行类型转换
@@ -59,7 +77,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Get the list of entities from the container according to the type.
    */
-  protected  <U> List<U> getEntitiesByType(Class<U> clazz) {
+  public  <U> List<U> getEntitiesByType(Class<U> clazz) {
     List<U> result = new ArrayList<>();
     for (T entity : stringEntityMap.values()) {
       if (clazz.isInstance(entity)) {
@@ -73,7 +91,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Adds an entity to the container.
    */
-  protected boolean addEntity(T entity) {  // 使用 T 类型代替 IdentifiableEntity
+  public boolean addEntity(T entity) {  // 使用 T 类型代替 IdentifiableEntity
     if (stringEntityMap.containsKey(entity.getName())) {
       return false;
     }
@@ -101,7 +119,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Check if the container has an entity.
    */
-  protected Boolean hasEntity(String entityName) {
+  public Boolean hasEntity(String entityName) {
     if (stringEntityMap == null) {
       return false;
     }
