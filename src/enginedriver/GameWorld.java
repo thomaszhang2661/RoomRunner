@@ -21,8 +21,7 @@ public class GameWorld {
   /**
    * Default constructor for deserialization.
     */
-  public GameWorld() {
-  }
+  public GameWorld() {}
 
   /**
    * Constructor for GameWorld.
@@ -100,68 +99,74 @@ public class GameWorld {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
+    sb.append("{");
     sb.append("\"name\":\"").append(name).append("\",");
     sb.append("\"version\":\"").append(version).append("\",");
 
     sb.append("\"rooms\":[");
+    boolean firstRoom = true;
     for (Room<?> room : rooms.values()) {
-      sb.append(room.toString()).append(",");
+      if (!firstRoom) {
+        sb.append(",");
+      }
+      sb.append(room.toString());
+      firstRoom = false;
     }
-    // Remove trailing comma
-    if (!rooms.isEmpty()) {
-      sb.deleteCharAt(sb.length() - 1);
-    } // Remove trailing comma
     sb.append("],");
 
     sb.append("\"items\":[");
+    boolean firstItem = true;
     for (Room<?> room : rooms.values()) {
       for (Item item : room.getEntitiesByType(Item.class)) {
-        sb.append(item.toString()).append(",");
+        if (!firstItem) {
+          sb.append(",");
+        }
+        sb.append(item.toString());
+        firstItem = false;
       }
-    }
-    // Remove trailing comma
-    if (!rooms.isEmpty()) {
-      sb.deleteCharAt(sb.length() - 1);
     }
     sb.append("],");
 
     sb.append("\"fixtures\":[");
+    boolean firstFixture = true;
     for (Room<?> room : rooms.values()) {
       for (Fixture fixture : room.getEntitiesByType(Fixture.class)) {
-        sb.append(fixture.toString()).append(",");
+        if (!firstFixture) {
+          sb.append(",");
+        }
+        sb.append(fixture.toString());
+        firstFixture = false;
       }
-    }
-    // Remove trailing comma
-    if (!rooms.isEmpty()) {
-      sb.deleteCharAt(sb.length() - 1);
     }
     sb.append("],");
 
     sb.append("\"monsters\":[");
+    boolean firstMonster = true;
     for (Room<?> room : rooms.values()) {
       if (room.getProblem() instanceof Monster) {
-        Monster<?> monster = (Monster<?>) room.getProblem();
-        sb.append(monster.toString()).append(",");
+        if (!firstMonster) {
+          sb.append(",");
+        }
+        sb.append(((Monster<?>) room.getProblem()).toString());
+        firstMonster = false;
       }
-    }
-    // Remove trailing comma
-    if (!rooms.isEmpty()) {
-      sb.deleteCharAt(sb.length() - 1);
     }
     sb.append("],");
 
     sb.append("\"puzzles\":[");
+    boolean firstPuzzle = true;
     for (Room<?> room : rooms.values()) {
       if (room.getProblem() instanceof Puzzle) {
-        Puzzle<?> puzzle = (Puzzle<?>) room.getProblem();
-        sb.append(puzzle.toString()).append(",");
+        if (!firstPuzzle) {
+          sb.append(",");
+        }
+        sb.append(((Puzzle<?>) room.getProblem()).toString());
+        firstPuzzle = false;
       }
     }
-    // Remove trailing comma
-    if (!rooms.isEmpty()) {
-      sb.deleteCharAt(sb.length() - 1);
-    }
     sb.append("]");
+
+    sb.append("}");
     return sb.toString();
   }
 
