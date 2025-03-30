@@ -10,6 +10,7 @@ import enginedriver.Fixture;
 import enginedriver.GameWorld;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
+import enginedriver.problems.IProblem;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 import enginedriver.Room;
@@ -53,10 +54,10 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         int value = getNodeInt(itemNode, "value");
         String whenUsed = getNodeText(itemNode, "when_used");
         String description = getNodeText(itemNode, "description");
-        String picture = getNodeText(itemNode, "picture"); // not used
+        String pictureName = getNodeText(itemNode, "picture"); // not used
 
         Item item = new Item(itemName, description, maxUses, remainingUses,
-                value, weight, whenUsed);
+                value, weight, whenUsed, pictureName);
         items.put(item.getName(), item);
       }
     }
@@ -182,9 +183,9 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         }
 
         // parse picture (not used)
-        String picture = getNodeText(roomNode, "picture");
+        String pictureName = getNodeText(roomNode, "picture");
 
-        Room room = new Room(id, roomName, description, exits, entityNames, problem);
+        Room room = new Room(id, roomName, description, exits, entityNames, problem, pictureName);
         rooms.put(id, room);
       }
     }
