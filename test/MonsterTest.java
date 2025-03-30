@@ -26,6 +26,7 @@ class MonsterTest {
                     + "Makes you want to pet him",
             true, // Active
             true, // Affects target
+            true, // Can attack
             true, // Affects player
             "Carrot", // Solution
             300, // Value
@@ -43,6 +44,7 @@ class MonsterTest {
             "A peaceful, cute-looking teddy bear with its hair clipped sits on the floor",
             true, // Active
             true, // Affects target
+            true, // Can attack
             true, // Affects player
             "Hair Clippers", // Solution
             200, // Value
@@ -119,6 +121,18 @@ class MonsterTest {
             teddyBear.getEffects());
   }
 
+  /**
+   * Test getPicture method of Monster.
+   */
+  @Test
+  void testMonsterGetPicture() {
+    // Validate Rabbit Picture
+    assertEquals(null, rabbit.getPicture());
+
+    // Validate Teddy Bear Picture
+    assertEquals(null, teddyBear.getPicture());
+  }
+
   // Test Solve with Correct Solution
   @Test
   void testSolveCorrectSolution() {
@@ -182,16 +196,19 @@ class MonsterTest {
             + "remain unchanged when inactive Teddy Bear attacks.");
   }
 
-//  /**
-//   * Test the toString method of Monster.
-//   */
-//  @Test
-//  void testMonsterToString() {
-////    String expected = "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\"," +
-////            "\"affects_player\":\"true\",\"solution\":\"Carrot\",\"value\":\"300\"," +
-////            "\"effects\":\"A monster Rabbit moves towards you! He's blocking the way north.\n" +
-////            "I think you might be dinner!\",\"target\":\"7:Dining Room\"," +
-////            "\"pictureName\":\"monster-rabbit.png\"}";
-////    assertEquals(expected, rabbit.toString());
-//  }
+  /**
+   * Test the toString method of Monster.
+   */
+  @Test
+  void testMonsterToString() {
+    String expected = "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\","
+            + "\"affects_player\":\"true\",\"solution\":\"Carrot\",\"value\":\"300\","
+            + "\"description\":\"Awww. A furry rabbit twitching its nose and eating a carrot. "
+            + "Makes you want to pet him\",\"effects\":\"A monster Rabbit moves towards you! "
+            + "He's blocking the way north.\nI think you might be dinner!\","
+            + "\"damage\":\"-15\",\"target\":\"7:Dining Room\",\"can_attack\":\"false\","
+            + "\"attack\":\"licks you with a giant tongue!\",\"picture\":\"monster-rabbit.png\" }";
+
+    assertEquals(expected, rabbit.toString());
+  }
 }
