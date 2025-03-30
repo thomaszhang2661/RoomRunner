@@ -1,6 +1,7 @@
 package enginedriver.problems;
 
 import enginedriver.Item;
+import enginedriver.problems.validator.SolutionValidator;
 
 /**
  * Class for puzzles in the game.
@@ -18,10 +19,11 @@ public class Puzzle<T> extends Problem<T> {
                 T solution,
                 int value,
                 String effects,
-                String target, String pictureName) {
+                String target, String pictureName, SolutionValidator<T> validator) {
+
     super(name, description, active, affectsTarget,
             affectsPlayer, solution, value, effects, target,
-            pictureName);
+            pictureName, validator);
   }
 
 
@@ -90,8 +92,8 @@ public class Puzzle<T> extends Problem<T> {
     return "{ "
             + "\"name\":\"" + getName() + "\","
             + "\"active\":\"" + getActive() + "\","
-            + "\"affects_target\":\"" + getAffects_target() + "\","
-            + "\"affects_player\":\"" + getAffects_player() + "\","
+            + "\"affects_target\":\"" + getAffectsTarget() + "\","
+            + "\"affects_player\":\"" + getAffectsPlayer() + "\","
             + "\"solution\":\"" + solutionStr + "\","
             + "\"value\":\"" + getValue() + "\","
             + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
