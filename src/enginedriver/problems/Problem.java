@@ -1,9 +1,6 @@
 package enginedriver.problems;
 
-import java.util.Map;
-
 import enginedriver.IValuable;
-import enginedriver.Item;
 import enginedriver.IdentifiableEntity;
 import enginedriver.problems.validator.SolutionValidator;
 
