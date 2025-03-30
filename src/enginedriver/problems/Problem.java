@@ -78,12 +78,18 @@ public abstract class Problem<T> extends IdentifiableEntity
 
 
   @Override
-  public boolean solve(T input) {
+  public int solve(T input) {
+    // if the problem is not active, no need to solve.
+    if (!active) {
+      return 0;
+    }
+    // if the solution is correct, the problem is solved.
     if (validator.validate(solution, input)) {
       active = false;
-      return true;
+      return 1;
     }
-    return false;
+    // if the solution is incorrect, the problem is not solved.
+    return 2;
   }
 
 

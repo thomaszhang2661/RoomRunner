@@ -58,11 +58,11 @@ public class PuzzleTest {
    */
   @Test
   public void testPuzzleSolve() {
-    Puzzle<String> puzzle = new Puzzle<>("Darkness",
+    Puzzle<String> puzzle = new Puzzle<String>("Darkness",
             "It's dark!", true, true,
             true, "Lamp", 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new StringSolutionValidator());
-    assertTrue(puzzle.solve("Lamp"));
+    assertEquals(1, puzzle.solve("Lamp"));
     assertFalse(puzzle.getActive());
   }
 
@@ -79,7 +79,7 @@ public class PuzzleTest {
             true, lamp, 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new ItemSolutionValidator());
 
-    assertTrue(puzzle.solve(lamp));
+    assertEquals(1, puzzle.solve(lamp));
     assertFalse(puzzle.getActive());
   }
   /**
@@ -91,7 +91,7 @@ public class PuzzleTest {
             "It's dark!", true, true,
             true, "Lamp", 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new StringSolutionValidator());
-    assertFalse(puzzle.solve("WrongInput"));
+    assertEquals(2,puzzle.solve("WrongInput"));
     assertTrue(puzzle.getActive());
   }
 

@@ -290,8 +290,8 @@ public class GameController {
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
     if (solutionClass == Item.class) {
       IProblem<Item> itemproblem = (IProblem<Item>) problem;
-      boolean flag = itemproblem.solve(itemAttempt);
-      if (flag) {
+      int flag = itemproblem.solve(itemAttempt);
+      if (flag == 1) {
         viewer.showText("You have successfully solved the problem with " + itemName);
         if (itemproblem.getAffectsTarget()) {
           itemproblem.getAffectsPlayer();
@@ -368,9 +368,23 @@ public class GameController {
   //  }
 
 
-//  private void handleProblemSolution(IProblem<?> problem, solution) {
-//
-//  }
+  private void handleProblemSolution<T>(IProblem<T> problem, String solutionAttempt) {
+
+    //useItem 逻辑
+            // 1 判断 solution 类型
+            //   getWhenUsed
+            //  调用solve 如果成功   handleAffectTarget
+            //  调用solve 如果失败  handleMonsterAttack
+            //   如果是0，viewer 显示
+
+    // Answer和Use共用逻辑
+
+
+    // 4 处理结果
+        //返回1，且affect_target,把房间打开，加分， viewer显示
+        //返回2，处理怪物攻击， viewer显示（getAttack）
+        // 返回0, 不处理，viewer显示
+  }
 
 
   /**
@@ -459,14 +473,26 @@ public class GameController {
     //TODO
   }
 
+  // 处理成功时解开房间
+  private  void handleAffectTarget(IProblem<?> problem) {
+    if (problem.getAffectsTarget()) {
+      String problemTarget = problem.getTarget();
+      String[] parts = problemTarget.split(":", 2);
+      int roomNumber = Integer.parseInt(parts[0].trim());
+      String roomName = parts[1].trim();
+      unlockExits(gameWorld.getRoom(roomNumber));
+      viewer.showText("The room " + roomName + " is unlocked.");
+    }
+  }
 
-
-  private void handleMonsterAttack(IProblem problem) {
-    if (problem instanceof Monster && problem.getActive()) {
+  //处理失败时怪物攻击
+  private void handleMonsterAttack(IProblem<?> problem) {
+    if (problem instanceof Monster ) {
       Monster<?> monster = (Monster) problem;
-      if (monster.getAffectsPlayer() && monster.getCanAttack())
+      if (monster.getAffectsPlayer() && monster.getCanAttack()) {
         monster.attack(player);
         viewer.showText(monster.getAttack());
+      }
     }
   }
 

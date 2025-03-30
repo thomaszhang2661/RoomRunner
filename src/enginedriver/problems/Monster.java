@@ -122,6 +122,17 @@ public class Monster<T> extends Problem<T> {
     return attack;
   }
 
+  /**
+   *  Override solve deal with can attack.
+   */
+  @Override
+  public int solve(T input) {
+    int result = super.solve(input);
+    if (result == 1) {
+      canAttack = false;
+    }
+    return result;
+  }
 
 
   @Override
