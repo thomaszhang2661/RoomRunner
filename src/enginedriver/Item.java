@@ -79,6 +79,15 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
   //    }
   //  }
 
+  public boolean use() {
+    if (remainingUses <= 0) {
+      return false;
+    }
+    remainingUses--;
+    return true;
+  }
+
+
   public int getRemainingUses() {
     return remainingUses;
   }

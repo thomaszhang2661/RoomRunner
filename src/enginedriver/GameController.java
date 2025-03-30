@@ -8,7 +8,6 @@ import java.util.Map;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
-import jsonreader.GameDataLoader;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -258,9 +257,6 @@ public class GameController {
 
   }
 
-
-
-
   /**
    * Use an item.
    */
@@ -294,10 +290,10 @@ public class GameController {
       if (flag == 1) {
         viewer.showText("You have successfully solved the problem with " + itemName);
         if (itemproblem.getAffectsTarget()) {
-          itemproblem.getAffectsPlayer();
+          itemproblem.getAffectsPlayer(); // 需要修改？
         }
         unlockExits(currentRoom); // update room exits
-
+        handleProblemSolution(itemproblem, itemName);
         int points = itemproblem.getValue();
         player.addScore(points); // update score
         viewer.showText("+ " + points + ". Current Score is " + player.getScore());
@@ -309,7 +305,6 @@ public class GameController {
       }
     }
   }
-
 
 
   /**
@@ -368,14 +363,23 @@ public class GameController {
   //  }
 
 
-  private void handleProblemSolution<T>(IProblem<T> problem, String solutionAttempt) {
-
+  private <T> void handleProblemSolution(IProblem<T> problem, String solutionAttempt) {
     //useItem 逻辑
             // 1 判断 solution 类型
             //   getWhenUsed
             //  调用solve 如果成功   handleAffectTarget
             //  调用solve 如果失败  handleMonsterAttack
             //   如果是0，viewer 显示
+    if (problem.getSolution() instanceof Item) {
+      Item itemAttempt = player.getEntity(solutionAttempt, Item.class);
+      if (!itemAttempt.use()) {
+        viewer.showText("Oh no!" + solutionAttempt + " is either empty or cannot be used again!");
+      } else {
+
+      }
+    } else {
+
+    }
 
     // Answer和Use共用逻辑
 
