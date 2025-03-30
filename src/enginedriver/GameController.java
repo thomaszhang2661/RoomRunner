@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import enginedriver.problems.Monster;
+import enginedriver.problems.Problem;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
-import jsonreader.GameDataLoader;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -118,7 +118,7 @@ public class GameController {
       break;
       case "X": examine(objectName);
       break;
-      case "A": answerPuzzle(objectName);
+      case "A": answer(objectName);
       break;
       case "Q": quit();
       break;
@@ -248,7 +248,8 @@ public class GameController {
     List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
             .toList();
     //get problem from the room
-    String problemDescription = currentRoom.getProblem().getDescription();
+    String problemDescription = currentRoom.getProblem()
+            .getDescription();
 
     // show the items, fixtures, problem in the room
     viewer.showText("Items you see here: ");
@@ -265,48 +266,121 @@ public class GameController {
    * Use an item.
    */
   private void useItem(String itemName) {
+
+
     // get room
-    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    boolean hasItem = player.hasEntity(itemName);
+    Room<?> currentRoom = gameWorld.getRoom(
+            player.getRoomNumber());
 
-    if (!hasItem) {
-      viewer.showText("You don't have " + itemName + " in your bag.");
-      // deal with monster attack
-      handleMonsterAttack(currentRoom.getProblem());
-      return;
-    }
-
-    Item itemAttempt = player.getEntity(itemName, Item.class);
+    // get current problem
     IProblem<?> problem  =  currentRoom.getProblem();
 
-    if (itemAttempt == null) {
-      viewer.showText("You don't have " + itemName + " in your bag.");
-      // deal with monster attack
-      handleMonsterAttack(problem);
+    if (problem == null) {
+      viewer.showText("You are trying to use" + itemName
+              + " but nothing interesting happens");
       return;
     }
 
     //check solution type
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
-    if (solutionClass == Item.class) {
-      IProblem<Item> itemproblem = (IProblem<Item>) problem;
-      int flag = itemproblem.solve(itemAttempt);
-      if (flag == 1) {
-        viewer.showText("You have successfully solved the problem with " + itemName);
-        if (itemproblem.getAffectsTarget()) {
-          itemproblem.getAffectsPlayer();
-        }
-        unlockExits(currentRoom); // update room exits
+    // check if the prolem is a IProblem<Item>
+    if (solutionClass != Item.class) {
+      viewer.showText("You are trying to use" + itemName
+              + " but nothing interesting happens");
+      handleMonsterAttack(currentRoom.getProblem());
+      return;
+    }
 
-        int points = itemproblem.getValue();
-        player.addScore(points); // update score
-        viewer.showText("+ " + points + ". Current Score is " + player.getScore());
+    // check if player has this item.
+    boolean hasItem = player.hasEntity(itemName);
+    if (!hasItem) {
+      viewer.showText("You don't have " + itemName
+              + " in your bag.");
+      // deal with monster attack
+      handleMonsterAttack(currentRoom.getProblem());
+      return;
+    }
+
+    // get item
+    Item itemAttempt = player.getEntity(itemName,
+            Item.class);
+
+    Problem<Item> itemproblem = (Problem<Item>) problem;
+    // slove problem
+    int flag = itemproblem.solve(itemAttempt);
+    switch (flag) {
+      case 0:
+        viewer.showText("You are trying to use" + itemName
+                + " but nothing interesting happens");
         return;
-      } else {
-        viewer.showText("You have failed to solve the problem with " + itemName);
-        // deal with monster attack
+      case 1:
+        if (!itemAttempt.use()) {
+          viewer.showText(itemName + "is empty "
+                  + "or cannot be used again.");
+          handleMonsterAttack(problem);
+          return;
+        }
+        viewer.showText(itemAttempt.getWhenUsed());
+        handleProblemSolved(problem);
+        return;
+      case 2:
+        viewer.showText("You are trying to use" + itemName
+                + " but nothing interesting happens");
         handleMonsterAttack(problem);
-      }
+    }
+  }
+
+
+  /**
+   * Answer a puzzle.
+   */
+  private void answer(String objectName) {
+
+    // get the current room
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    // get puzzle or moster in the room
+    IProblem<?> problem = currentRoom.getProblem();
+    if (problem == null) {
+      viewer.showText("There is no question to answer in this room.");
+      return;
+    }
+
+    if (objectName == null || objectName.isEmpty()) {
+      viewer.showText("Please provide an answer.");
+      handleMonsterAttack(problem);
+      return;
+    }
+
+    // check if the puzzle is solved
+    if (!problem.getActive()) {
+      viewer.showText("The puzzle is already solved.");
+      return;
+    }
+
+    // check if the solution is a string
+    if (!(problem.getSolution() instanceof String)) {
+      viewer.showText("You are trying to answer a question, "
+              + "but nothing interesting happens.");
+      handleMonsterAttack(problem);
+    }
+
+    Problem<String> problemString = (Puzzle<String>) problem;
+
+    // solve the problem
+    int flag = problemString.solve(objectName);
+    switch (flag) {
+      case 0:
+        viewer.showText("You are trying to answer the question, "
+                + "but nothing interesting happens.");
+        return;
+      case 1:
+        viewer.showText("You have successfully solved the puzzle!");
+        handleProblemSolved(problem);
+        return;
+      case 2:
+        viewer.showText("You are trying to answer the question, "
+                + "but the answer is wrong.");
+        handleMonsterAttack(problem);
     }
   }
 
@@ -359,84 +433,6 @@ public class GameController {
     }
   }
 
-  //  private void handleProblemSolution(IProblem<?> problem, solution) {
-  //    viewer.showText("You have successfully solved the puzzle!");
-  //    // Unlock the exit of the room
-  //    unlockExits(room);
-  //    // Add the score to the player
-  //    player.addScore(problem.getValue());
-  //  }
-
-
-  private void handleProblemSolution<T>(IProblem<T> problem, String solutionAttempt) {
-
-    //useItem 逻辑
-            // 1 判断 solution 类型
-            //   getWhenUsed
-            //  调用solve 如果成功   handleAffectTarget
-            //  调用solve 如果失败  handleMonsterAttack
-            //   如果是0，viewer 显示
-
-    // Answer和Use共用逻辑
-
-
-    // 4 处理结果
-        //返回1，且affect_target,把房间打开，加分， viewer显示
-        //返回2，处理怪物攻击， viewer显示（getAttack）
-        // 返回0, 不处理，viewer显示
-  }
-
-
-    /**
-     * Answer a puzzle.
-     */
-  private void answerPuzzle(String objectName) {
-
-    if (objectName == null || objectName.isEmpty()) {
-      viewer.showText("Please provide an answer.");
-      return;
-    }
-
-    // get the current room
-    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    // get puzzle or moster in the room
-    IProblem<?> problem = currentRoom.getProblem();
-    if (problem == null) {
-      viewer.showText("There is no puzzle or monster in this room.");
-      return;
-    }
-    // check if the problem is a puzzle
-    if (!(problem instanceof Puzzle)) {
-      viewer.showText("There is no puzzle in this room.");
-      return;
-    }
-
-    Puzzle<?> puzzle = (Puzzle<?>) problem;
-
-    // check if the puzzle is solved
-    if (!puzzle.getActive()) {
-      viewer.showText("The puzzle is already solved.");
-      return;
-    }
-
-    // 确认puzzle类型
-    // check if the solution is a string
-    if (puzzle.getSolution() instanceof String) {
-      Puzzle<String> puzzleString = (Puzzle<String>) puzzle;
-      if (puzzleString.solve(objectName)) {
-        //handlePuzzleSolution(currentRoom, puzzleString);
-
-      } else {
-        viewer.showText("Your answer is not right.");
-      }
-    } else {
-      viewer.showText("Your answer is not right, try to use an item.");
-
-    }
-  }
-
-
-
 
   /**
    * Quit the game.
@@ -474,7 +470,16 @@ public class GameController {
   }
 
   // 处理成功时解开房间
-  private  void handleAffectTarget(IProblem<?> problem) {
+  private  void handleProblemSolved(IProblem<?> problem) {
+    viewer.showText("You have successfully solved"
+            + problem.getName());
+    problem.setActive(false); // set problem to inactive
+
+    // deal with score
+    int points = problem.getValue();
+    player.addScore(points); // update score
+    viewer.showText("+ " + points + ". Current Score is " + player.getScore());
+
     if (problem.getAffectsTarget()) {
       String problemTarget = problem.getTarget();
       String[] parts = problemTarget.split(":", 2);
@@ -487,7 +492,7 @@ public class GameController {
 
   //处理失败时怪物攻击
   private void handleMonsterAttack(IProblem<?> problem) {
-    if (problem instanceof Monster ) {
+    if (problem instanceof Monster) {
       Monster<?> monster = (Monster) problem;
       if (monster.getAffectsPlayer() && monster.getCanAttack()) {
         monster.attack(player);

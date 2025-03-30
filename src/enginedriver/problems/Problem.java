@@ -72,6 +72,10 @@ public abstract class Problem<T> extends IdentifiableEntity
   }
 
   @Override
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+  @Override
   public T getSolution() {
     return solution;
   }
@@ -85,7 +89,7 @@ public abstract class Problem<T> extends IdentifiableEntity
     }
     // if the solution is correct, the problem is solved.
     if (validator.validate(solution, input)) {
-      active = false;
+      //active = false; moved to cotroller handleProblemSolved
       return 1;
     }
     // if the solution is incorrect, the problem is not solved.
