@@ -16,6 +16,12 @@ public interface IProblem<T> extends IValuable {
   boolean getActive();
 
   /**
+   *  change probelm status to active or inactive.
+
+   */
+  void  setActive(boolean active);
+
+  /**
    * Returns the target of the problem.
 
    * @return String for target
@@ -31,8 +37,6 @@ public interface IProblem<T> extends IValuable {
    *                2 if the problem is not solved, solve failed.
    */
   int solve(T input);
-
-
 
 
   /**

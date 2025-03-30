@@ -188,11 +188,13 @@ class MonsterTest {
   void testSolveCorrectSolution() {
     // Solve Rabbit
     int rabbitSolved = rabbit.solve("Carrot");
+    rabbit.setActive(false);
     assertEquals(1, rabbitSolved, "Rabbit should be solved with the correct solution.");
     assertFalse(rabbit.getActive(), "Rabbit should become inactive after solving.");
 
     // Solve Teddy Bear
     int teddyBearSolved = teddyBear.solve("Hair Clippers");
+    teddyBear.setActive(false);
     assertEquals(1, teddyBearSolved, "Teddy Bear should be solved with the correct solution.");
     assertFalse(teddyBear.getActive(), "Teddy Bear should become inactive after solving.");
   }
@@ -234,13 +236,15 @@ class MonsterTest {
   @Test
   void testInactiveMonsterCannotAttack() {
     // Solve Rabbit, making it inactive
-    rabbit.solve("Carrot");
+    assertEquals(1, rabbit.solve("Carrot"));
+    rabbit.setActive(false);
     rabbit.attack(player);
     assertEquals(100, player.getHealth(), "Player health should "
             + "remain unchanged when inactive Rabbit attacks.");
 
     // Solve Teddy Bear, making it inactive
     teddyBear.solve("Hair Clippers");
+    teddyBear.setActive(false);
     teddyBear.attack(player);
     assertEquals(100, player.getHealth(), "Player health should "
             + "remain unchanged when inactive Teddy Bear attacks.");

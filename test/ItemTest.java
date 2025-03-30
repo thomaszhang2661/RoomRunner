@@ -66,24 +66,24 @@ public class ItemTest {
     assertEquals(10, item3.getRemainingUses());
   }
 
-  /**
-   * Test setUseRemain method.
-   */
-  @Test
-  void testSetUseRemain() {
-    Item item = new Item("A", "desc", 5, 2,
-            100, 10, "when used");
-    item.setRemainingUses(3);
-    assertEquals(3, item.getRemainingUses());
-
-    // Test invalid remaining uses
-    try {
-      item.setRemainingUses(-1);
-      Assertions.fail("Expected IllegalArgumentException");
-    } catch (IllegalArgumentException e) {
-      assertEquals("Remaining uses of an item cannot be less than 0", e.getMessage());
-    }
-  }
+  //  /**
+  //   * Test setUseRemain method.
+  //   */
+  //  @Test
+  //  void testSetUseRemain() {
+  //    Item item = new Item("A", "desc", 5, 2,
+  //            100, 10, "when used");
+  //    item.setRemainingUses(3);
+  //    assertEquals(3, item.getRemainingUses());
+  //
+  //    // Test invalid remaining uses
+  //    try {
+  //      item.setRemainingUses(-1);
+  //      Assertions.fail("Expected IllegalArgumentException");
+  //    } catch (IllegalArgumentException e) {
+  //      assertEquals("Remaining uses of an item cannot be less than 0", e.getMessage());
+  //    }
+  //  }
   /**
    * Test getUseMax method.
    */

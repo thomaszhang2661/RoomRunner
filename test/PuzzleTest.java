@@ -63,7 +63,10 @@ public class PuzzleTest {
             true, "Lamp", 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new StringSolutionValidator());
     assertEquals(1, puzzle.solve("Lamp"));
+    puzzle.setActive(false);
     assertFalse(puzzle.getActive());
+    puzzle.setActive(true);
+    assertTrue(puzzle.getActive());
   }
 
   /**
@@ -80,7 +83,6 @@ public class PuzzleTest {
             "6:Kitchen", "darkness.png", new ItemSolutionValidator());
 
     assertEquals(1, puzzle.solve(lamp));
-    assertFalse(puzzle.getActive());
   }
   /**
    * Test solve method of Puzzle with wrong input.

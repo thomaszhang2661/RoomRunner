@@ -107,20 +107,28 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
   }
 
   /**
-   * Method to use the item.
-
-   * @return
+   * Getter for whenUsed.
+   *
+   * @return string whenUsed
    */
-  public Map<Integer, String> getWhenUsed() {
+  public String getWhenUsed() {
+    return whenUsed;
+  }
+
+  /**
+   * Use the item.
+   * If the item can be used, the remaining uses are decremented by 1.
+   * If the item cannot be used, the remaining uses are not decremented.
+   */
+  public boolean use() {
     // 1. 不能用了 返回使用失败
     if (remainingUses <= 0) {
-      return Map.of(0,"This item is out of uses.");
+      return false;
     }
     // 2. 还可以用,处理remainingUses，返回 whenUsed
     remainingUses--;
-    return Map.of(1,whenUsed);
+    return true;
   }
-
   //  @Override
   //  public int getId() {
   //    return super.getId();

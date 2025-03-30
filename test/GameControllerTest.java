@@ -364,7 +364,12 @@ public class GameControllerTest {
   void testHandleMonster() {
     player.setRoomNumber(7); //get in monster room
     gameController.processCommand("look");
-    assertFalse(gameWorld.getRoom(3).getProblem().getActive());
+    // add item carrot to player
+    player.addItem(gameWorld.getRoom(8).getItem("Carrot"));
+    assertTrue(gameWorld.getRoom(7).getProblem().getActive());
+    player.setRoomNumber(7);
+    gameController.processCommand("USE Carrot");
+    assertFalse(gameWorld.getRoom(7).getProblem().getActive());
   }
 
   @Test
