@@ -1,0 +1,26 @@
+Scenario 1: Attempting to Enter the Guild
+The player starts at the Dungeon Entrance, which contains exits to the north (leading to the First Layer) and to the east (leading to the Guild).
+A Billboard is in the room. When the player uses the EXAMINE command on it, they receive a message warning about dungeon dangers and stating that entry to the Guild requires a Necklace.
+
+The player tries to move east using the E command.
+They are blocked by a Gatekeeper, implemented as a Puzzle named Nobleman’s Commission.
+The puzzle requires the player to have the Necklace item in their inventory to proceed.
+Since the Necklace is not in the player’s inventory, the puzzle cannot be solved, and the player is not allowed to enter the Guild.
+The player must explore elsewhere to find the required item.
+
+Scenario 2: Solving Puzzle and Entering the Guild
+The player moves north into the Second Layer, then east into the First Layer.
+In the First Layer, they encounter a Broken Staircase, which blocks further movement.
+The Broken Staircase is implemented as a Puzzle (or Fixture associated with a Puzzle).
+
+The player uses a Repair Tool item from their inventory.
+The solve() method is triggered, and the game checks that the item matches the puzzle’s solution and has remaining uses.
+The puzzle is solved, the staircase is repaired, and new exits are unlocked.
+
+The player then moves south back to the Dungeon Entrance.
+This time, the player has obtained the Necklace item.
+They attempt to enter the Guild again using the E command.
+
+The Nobleman’s Commission puzzle checks for the Necklace and is successfully solved.
+The Gatekeeper allows entry.
+Inside the Guild, the player meets the Guildmaster, who gives them a Gold Coin item as a reward.

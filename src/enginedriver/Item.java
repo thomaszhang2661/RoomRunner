@@ -39,6 +39,28 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
   }
 
   /**
+   * Constructor without pictureName.
+   */
+  public Item(String name, String description, int maxUses,
+              int remainingUses, int value,
+              int weight, String whenUsed) {
+    super(name, description, null);
+
+    if (remainingUses < 0) {
+      throw new IllegalArgumentException("Remaining uses of an item cannot be less than 0");
+    }
+    if (maxUses < 0) {
+      throw new IllegalArgumentException("Max uses of an item cannot be less than 0");
+    }
+    this.maxUses = maxUses;
+    this.remainingUses = remainingUses;
+    this.value = value;
+    this.weight = weight;
+    this.whenUsed = whenUsed;
+
+  }
+
+  /**
    * Constructor for an item with no max uses.
    */
   public void setRemainingUses(int remainingUses) {
