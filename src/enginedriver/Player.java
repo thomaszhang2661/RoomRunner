@@ -266,8 +266,7 @@ public class Player extends EntityContainer<Item> {
     return "{ "
             + "\"name\":\"" + getName() + "\","
             + "\"health\":\"" + getHealth() + "\","
-            + "\"inventory\":\"" + getEntities().keySet().stream().collect(
-                    Collectors.joining(", ")) + "\","
+            + "\"inventory\":\"" + String.join(", ", getEntities().keySet()) + "\","
             + "\"max_weight\":\"" + getMaxWeight() + "\","
             + "\"current_weight\":\"" + getCurrentWeight() + "\","
             + "\"room_number\":\"" + getRoomNumber() + "\","

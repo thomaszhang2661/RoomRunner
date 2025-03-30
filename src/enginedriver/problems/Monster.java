@@ -1,5 +1,6 @@
 package enginedriver.problems;
 
+import enginedriver.Item;
 import enginedriver.Player;
 
 /**
@@ -123,14 +124,24 @@ public class Monster<T> extends Problem<T> {
 
   @Override
   public String toString() {
+    String solutionStr;
+    Object solution = getSolution();
+    // is an Item
+    if (solution instanceof Item) {
+      solutionStr = ((Item) solution).getName();
+      // is a String or null
+    } else {
+      solutionStr = solution.toString();
+    }
+
     return "{ "
             + "\"name\":\"" + getName() + "\","
             + "\"active\":\"" + getActive() + "\","
             + "\"affects_target\":\"" + getAffects_target() + "\","
             + "\"affects_player\":\"" + getAffects_player() + "\","
-            + "\"solution\":\"" + getSolution() + "\","
+            + "\"solution\":\"" + solutionStr + "\","
             + "\"value\":\"" + getValue() + "\","
-            + "\"description\":\"" + getDescription() + "\","
+            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
             + "\"effects\":\"" + getEffects() + "\","
             + "\"damage\":\"" + getDamage() + "\","
             + "\"target\":\"" + getTarget() + "\","

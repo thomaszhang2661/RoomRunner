@@ -8,6 +8,7 @@ import java.util.Map;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
+import jsonreader.GameDataLoader;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -20,7 +21,6 @@ public class GameController {
 
   /**
    * Constructor for GameController.
-
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
@@ -39,6 +39,14 @@ public class GameController {
     actionMap.put("USE", "U");
     actionMap.put("INVENTORY", "I");
     actionMap.put("ANSWER", "A");
+  }
+
+  public GameWorld getGameWorld() {
+    return gameWorld;
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
   /*
