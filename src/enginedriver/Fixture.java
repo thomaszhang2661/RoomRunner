@@ -31,7 +31,7 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   }
 
   /**
-   * Constructor for a fixture with weight and puzzle.
+   * Constructor for a fixture with weight, puzzle, states and pictureName.
    */
   public Fixture(String name, String description, int weight,
                  Puzzle<?> puzzle, int states,
@@ -43,7 +43,7 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   }
 
   /**
-   * Constructor for a fixture with weight and puzzle.
+   * Constructor for a fixture with weight, puzzle and pictureName.
    */
   public Fixture(String name, String description, int weight,
                  Puzzle<?> puzzle,

@@ -2,7 +2,10 @@ import org.junit.jupiter.api.Test;
 
 import enginedriver.Fixture;
 import enginedriver.IdentifiableEntity;
+import enginedriver.problems.Puzzle;
+import enginedriver.problems.validator.StringSolutionValidator;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -31,6 +34,50 @@ public class FixtureTest {
     assertEquals("Desk", fixture.getName());
     assertEquals("An old wooden desk with a mess of papers.", fixture.getDescription());
     assertEquals(1000, fixture.getWeight());
+  }
+
+  /**
+   * Test for the Fixture class.
+   * This test checks the creation of a Fixture object with weight, puzzle, states and pictureName.
+   */
+  @Test
+  public void testFixtureCreation3() {
+    Puzzle<String> puzzle = new Puzzle<>("PuzzleName", "A puzzle description",
+            true, false, false, "Solution",
+            50, "puzzleEffects", "puzzleTarget", "puzzlePic"
+            , new StringSolutionValidator());
+    Fixture fixture = new Fixture("Desk", "An old wooden desk with a mess of papers."
+            , 1000, puzzle, 0, "desk.png");
+    // assertEquals(1, fixture.getId());
+    assertEquals("Desk", fixture.getName());
+    assertEquals("An old wooden desk with a mess of papers.", fixture.getDescription());
+    assertEquals(1000, fixture.getWeight());
+    assertEquals("desk.png", fixture.getPictureName());
+    assertTrue(puzzle.equals(fixture.getPuzzle()));
+    assertEquals(0, fixture.getStates());
+  }
+
+  /**
+   * Test for the Fixture class.
+   * This test checks the creation of a Fixture object with weight, puzzle and pictureName.
+   */
+  @Test
+  public void testFixtureCreation4() {
+    Puzzle<String> puzzle = new Puzzle<>("PuzzleName", "A puzzle description",
+            true, false, false, "Solution",
+            50, "puzzleEffects", "puzzleTarget", "puzzlePic"
+            , new StringSolutionValidator());
+    Fixture fixture = new Fixture("Desk", "An old wooden desk with a mess of papers."
+            , 1000, puzzle, "desk.png");
+    // assertEquals(1, fixture.getId());
+    assertEquals("Desk", fixture.getName());
+    assertEquals("An old wooden desk with a mess of papers.", fixture.getDescription());
+    assertEquals(1000, fixture.getWeight());
+    assertEquals("desk.png", fixture.getPictureName());
+    assertTrue(puzzle.equals(fixture.getPuzzle()));
+    assertEquals(-1, fixture.getStates());
+    fixture.setStates(0);
+    assertEquals(0, fixture.getStates());
   }
 
   @Test
