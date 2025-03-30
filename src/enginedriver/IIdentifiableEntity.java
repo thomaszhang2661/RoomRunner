@@ -1,6 +1,7 @@
 package enginedriver;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  * Interface for entities that have an ID, name, and description.
@@ -25,7 +26,7 @@ public interface IIdentifiableEntity {
   /**
    * Returns the picture of the entity.
    */
-  Image getPicture();
+  BufferedImage getPicture();
 
   /**
    * Returns the name of the picture of the entity.

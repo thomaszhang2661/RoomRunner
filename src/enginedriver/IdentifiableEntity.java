@@ -1,6 +1,7 @@
 package enginedriver;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -96,20 +97,33 @@ public abstract class IdentifiableEntity
 
    * @return  Image for picture
    */
-  @Override
-  public Image getPicture() {
+  public BufferedImage getPicture() {
     if (pictureName == null || pictureName.isEmpty()) {
-      return null; // 处理空文件名
+      return null;
     }
     try {
-      // 从文件系统加载图片（需指定图片路径）
       File imageFile = new File("data/images/" + pictureName);
-      return ImageIO.read(imageFile);
+      return ImageIO.read(imageFile);  // 返回 BufferedImage
     } catch (IOException e) {
       System.err.println("无法加载图片: " + pictureName);
-      return null; // 加载失败时返回 null
+      return null;
     }
   }
+  //  @Override
+  //  public Image getPicture() {
+  //    if (pictureName == null || pictureName.isEmpty()) {
+  //      return null; // 处理空文件名
+  //    }
+  //    try {
+  //      // 从文件系统加载图片（需指定图片路径）
+  //      File imageFile = new File("data/images/" + pictureName);
+  //
+  //      return ImageIO.read(imageFile);
+  //    } catch (IOException e) {
+  //      System.err.println("无法加载图片: " + pictureName);
+  //      return null; // 加载失败时返回 null
+  //    }
+  //  }
 
   public String getPictureName() {
     return pictureName;
