@@ -107,6 +107,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         Monster<?> monster = new Monster<>(monsterName, description, active,
                 affectsTarget, canAttack, affectsPlayer, solution, value,
                 damage, effects, target, pictureName, attack);
+        monsters.put(monster.getName(), monster);
       }
     }
 
@@ -134,6 +135,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
 
         Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
                 affectsPlayer, solution, value, effects, target, pictureName);
+        puzzles.put(puzzle.getName(), puzzle);
       }
     }
 
@@ -174,9 +176,9 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
 
         // parse problem (monster or puzzle)
         IProblem<?> problem = null;
-        if (roomNode.has("puzzle")) {
+        if (roomNode.has("puzzle") && !roomNode.get("puzzle").isNull()) {
           problem = puzzles.get(getNodeText(roomNode, "puzzle"));
-        } else if (roomNode.has("monster")) {
+        } else if (roomNode.has("monster") && !roomNode.get("monster").isNull()) {
           problem = monsters.get(getNodeText(roomNode, "monster"));
         }
 
