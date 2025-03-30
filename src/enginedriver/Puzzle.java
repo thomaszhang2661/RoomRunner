@@ -71,7 +71,7 @@ public class Puzzle<T> extends Problem<T>{
             "\"name\":\"" + getName() + "\"," +
             "\"active\":\"" + getActive() + "\"," +
             "\"affects_target\":\"" + getAffects_target() + "\"," +
-            "\"affects_player\":\"" + getAffect_player() + "\"," +
+            "\"affects_player\":\"" + getAffects_player() + "\"," +
             "\"solution\":\"" + getSolution() + "\"," +
             "\"value\":\"" + getValue() + "\"," +
             "\"description\":\"" + getDescription() + "\"," +
