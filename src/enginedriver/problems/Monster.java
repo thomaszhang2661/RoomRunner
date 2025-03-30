@@ -1,13 +1,13 @@
-package enginedriver;
+package enginedriver.problems;
 
-import java.awt.Image;
+import enginedriver.Player;
 
 /**
  * Class for monsters in the game.
  */
 public class Monster<T> extends Problem<T> {
-  private int damage;
-  private String attack;
+  private final int damage;
+  private final String attack;
   private boolean canAttack;
 
   /**
@@ -33,45 +33,45 @@ public class Monster<T> extends Problem<T> {
   }
 
 
-  @Override
-  public int getId() {
-    return super.getId();
-  }
-
-  @Override
-  public String getName() {
-    return super.getName();
-  }
-
-  @Override
-  public String getDescription() {
-    return super.getDescription();
-  }
-
-  @Override
-  public Image getPicture() {
-    return super.getPicture();
-  }
-
-  @Override
-  public boolean getActive() {
-    return super.getActive();
-  }
-
-  @Override
-  public boolean solve(T input) {
-    return super.solve(input);
-  }
-
-  @Override
-  public int getValue() {
-    return super.getValue();
-  }
-
-  @Override
-  public String getEffects() {
-    return super.getEffects();
-  }
+  //  @Override
+  //  public int getId() {
+  //    return super.getId();
+  //  }
+  //
+  //  @Override
+  //  public String getName() {
+  //    return super.getName();
+  //  }
+  //
+  //  @Override
+  //  public String getDescription() {
+  //    return super.getDescription();
+  //  }
+  //
+  //  @Override
+  //  public Image getPicture() {
+  //    return super.getPicture();
+  //  }
+  //
+  //  @Override
+  //  public boolean getActive() {
+  //    return super.getActive();
+  //  }
+  //
+  //  @Override
+  //  public boolean solve(T input) {
+  //    return super.solve(input);
+  //  }
+  //
+  //  @Override
+  //  public int getValue() {
+  //    return super.getValue();
+  //  }
+  //
+  //  @Override
+  //  public String getEffects() {
+  //    return super.getEffects();
+  //  }
 
   /**
    * Retrieves the damage.
@@ -99,8 +99,15 @@ public class Monster<T> extends Problem<T> {
 
    * @return boolean for attack.
    */
-  public boolean canAttack() {
-    return canAttack;
+  public boolean getCanAttack() {
+    return  canAttack;
+  }
+
+  /**
+   * Setter for canAttack.
+   */
+  public void setCantAttack(boolean input) {
+    canAttack = input;
   }
 
   /**
@@ -111,6 +118,8 @@ public class Monster<T> extends Problem<T> {
   public String getAttack() {
     return attack;
   }
+
+
 
   @Override
   public String toString() {
@@ -135,7 +144,7 @@ public class Monster<T> extends Problem<T> {
             + "\"effects\":\"" + getEffects() + "\","
             + "\"damage\":\"" + getDamage() + "\","
             + "\"target\":\"" + getTarget() + "\","
-            + "\"can_attack\":\"" + canAttack() + "\","
+            + "\"can_attack\":\"" + getCanAttack() + "\","
             + "\"attack\":\"" + getAttack() + "\","
             + "\"picture\":\"" + getPictureName() + "\""
             + " }";

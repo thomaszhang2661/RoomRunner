@@ -1,6 +1,6 @@
 package enginedriver;
 
-import java.awt.Image;
+import enginedriver.problems.Puzzle;
 
 /**
  * Class for fixtures in the game.

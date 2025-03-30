@@ -2,6 +2,9 @@ package enginedriver;
 
 import java.util.Map;
 
+import enginedriver.problems.Monster;
+import enginedriver.problems.Puzzle;
+
 
 /**
  * Class representing the game world, read from json file.
@@ -54,14 +57,12 @@ public class GameWorld {
     return rooms;
   }
 
-
   /**
-   * Get the room by id.
-
-   * @param id the id of the room
-   * @return the room with the given id
+   * Get a room by its ID.
+   * @param id The ID of the room.
+   * @return The room with the specified ID.
    */
-  public Room getRoom(int id) {
+  public Room<?> getRoom(int id) {
     //id starts from 1 but index st
     return rooms.get(id);
   }
