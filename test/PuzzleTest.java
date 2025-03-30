@@ -1,7 +1,5 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import enginedriver.Item;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.validator.SolutionValidator;
