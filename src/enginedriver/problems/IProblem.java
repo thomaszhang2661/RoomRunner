@@ -1,4 +1,6 @@
-package enginedriver;
+package enginedriver.problems;
+
+import enginedriver.IValuable;
 
 /**
   * Interface for problems that can be solved.

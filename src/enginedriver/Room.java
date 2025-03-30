@@ -2,6 +2,9 @@ package enginedriver;
 
 import java.util.Map;
 
+import enginedriver.problems.Monster;
+import enginedriver.problems.IProblem;
+
 /**
  * class for a room in the game.
  */
@@ -84,10 +87,17 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
   }
 
   /**
-   *  Check if the room has an entity.
+   *  Check if the room has an entity, check by object.
    */
   public Boolean  hasEntity(IdentifiableEntity entity) {
     return super.hasEntity(entity);
+  }
+
+  /**
+   *  Check if the room has an entity check by name.
+   */
+  public Boolean  hasEntity(String entityName) {
+    return super.hasEntity(entityName);
   }
 
   /**
@@ -97,6 +107,12 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
           String entityName, Class<U> clazz) {
     return super.getEntity(entityName, clazz);
   }
+
+  public  Map<String, IdentifiableEntity > getEntities() {
+    return super.getEntities();
+  }
+
+
 
   /**
    *  get an Item from the room.

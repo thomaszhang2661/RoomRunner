@@ -1,6 +1,9 @@
-package enginedriver;
+package enginedriver.problems;
 
 import java.awt.Image;
+import java.util.Map;
+
+import enginedriver.Player;
 
 /**
  * Class for monsters in the game.
@@ -112,6 +115,15 @@ public class Monster<T> extends Problem<T> {
     return attack;
   }
 
+
+  public Map<Integer,String> getTarget() {
+    return super.getTarget();
+  }
+
+
+    public boolean getAffect_player() {
+    return super.getAffect_player();
+  }
   @Override
   public String toString() {
     return "{ "

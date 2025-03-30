@@ -1,6 +1,7 @@
-package enginedriver;
+package enginedriver.problems;
 
 import java.awt.Image;
+import java.util.Map;
 
 /**
  * Class for puzzles in the game.
@@ -61,8 +62,18 @@ public class Puzzle<T> extends Problem<T> {
   }
 
   @Override
+  public Map<Integer,String> getTarget() {
+    return super.getTarget();
+  }
+
+  @Override
   public String getEffects() {
     return super.getEffects();
+  }
+
+  @Override
+  public T getSolution() {
+    return super.getSolution();
   }
 
   @Override
