@@ -373,9 +373,9 @@ public class GameController {
 //  }
 
 
-    /**
-     * Answer a puzzle.
-     */
+  /**
+   * Answer a puzzle.
+   */
   private void answerPuzzle(String objectName) {
 
     if (objectName == null || objectName.isEmpty()) {

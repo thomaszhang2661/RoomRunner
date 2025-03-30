@@ -1,8 +1,7 @@
 package enginedriver.problems;
 
-import java.util.Map;
-
 import enginedriver.IValuable;
+import java.util.Map;
 
 /**
   * Interface for problems that can be solved.
