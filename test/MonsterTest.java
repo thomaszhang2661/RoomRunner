@@ -2,14 +2,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import enginedriver.problems.Monster;
-import enginedriver.problems.validator.SolutionValidator;
-import enginedriver.problems.validator.StringSolutionValidator;
-import  enginedriver.problems.validator.ItemSolutionValidator;
 import enginedriver.Player;
+import enginedriver.problems.Monster;
+import enginedriver.problems.validator.StringSolutionValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 
 
 class MonsterTest {
@@ -92,7 +94,7 @@ class MonsterTest {
    * Test the getID method of Monster.
    */
   @Test
-  void testMonsterGetID() {
+  void testMonsterGetId() {
     // Validate Rabbit ID
     assertEquals(-1, rabbit.getId());
 
@@ -118,24 +120,67 @@ class MonsterTest {
   @Test
   void testMonsterGetEffects() {
     // Validate Rabbit Effects
-    assertEquals("A monster Rabbit moves towards you! He's blocking the way north.\n" +
-            "I think you might be dinner!", rabbit.getEffects());
+    assertEquals("A monster Rabbit moves towards you! He's blocking the way north.\n"
+            + "I think you might be dinner!", rabbit.getEffects());
 
     // Validate Teddy Bear Effects
     assertEquals("A monster Teddy Bear growls at you! You cannot get past!",
             teddyBear.getEffects());
   }
 
+
+  // 图片比对方法（逐像素比对）
+  private boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
+    if (imgA.getWidth() != imgB.getWidth() || imgA.getHeight() != imgB.getHeight()) {
+      return false;
+    }
+
+    for (int x = 0; x < imgA.getWidth(); x++) {
+      for (int y = 0; y < imgA.getHeight(); y++) {
+        if (imgA.getRGB(x, y) != imgB.getRGB(x, y)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
   /**
    * Test getPicture method of Monster.
    */
+
   @Test
   void testMonsterGetPicture() {
-    // Validate Rabbit Picture
-    assertEquals(null, rabbit.getPicture());
 
+
+    // Validate Rabbit Picture
+    // read Image from file
+    String imageName = "monster-rabbit.png";
+    File imageFile = new File("data/images/" + imageName);
+    BufferedImage expectedImage = null;
+    // show picture
+    try {
+      expectedImage = ImageIO.read(imageFile);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    assertTrue(compareImages(expectedImage, rabbit.getPicture()), "图片内容不匹配！");
+
+
+
+    // Validate Rabbit Picture
+    // read Image from file
+    imageName = "monster-teddy.png";
+    imageFile = new File("data/images/" + imageName);
+    expectedImage = null;
+    // show picture
+    try {
+      expectedImage = ImageIO.read(imageFile);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     // Validate Teddy Bear Picture
-    assertEquals(null, teddyBear.getPicture());
+    assertTrue(compareImages(expectedImage, teddyBear.getPicture()), "图片内容不匹配！");
   }
 
   // Test Solve with Correct Solution
