@@ -85,10 +85,6 @@ public class Monster<T> extends Problem<T> {
     }
   }
 
-  public void setCanAttack(boolean canAttack) {
-    this.canAttack = canAttack;
-  }
-
   /**
    * Retrieves the damage.
 
@@ -122,7 +118,7 @@ public class Monster<T> extends Problem<T> {
   /**
    * Setter for canAttack.
    */
-  public void setCantAttack(boolean input) {
+  public void setCanAttack(boolean input) {
     canAttack = input;
   }
 
