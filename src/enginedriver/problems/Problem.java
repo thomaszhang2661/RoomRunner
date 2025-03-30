@@ -25,7 +25,7 @@ public abstract class Problem<T> extends IdentifiableEntity
   private final SolutionValidator<T> validator;
   private final int value;
   private final String effects;
-  private final Map<Integer, String>  target;
+  private final String  target;
 
 
 
@@ -44,11 +44,11 @@ public abstract class Problem<T> extends IdentifiableEntity
     this.effects = effects;
 
     // parse target
-    String[] parts = target.split(":", 2);
-    int roomNumber = Integer.parseInt(parts[0].trim());
-    String roomName = parts[1].trim();
-    this.target = Map.of(roomNumber, roomName);
-
+    //    String[] parts = target.split(":", 2);
+    //    int roomNumber = Integer.parseInt(parts[0].trim());
+    //    String roomName = parts[1].trim();
+    //    this.target = Map.of(roomNumber, roomName);
+    this.target =  target;
     this.solution = solution;
     this.validator = validator;
   }
@@ -64,7 +64,7 @@ public abstract class Problem<T> extends IdentifiableEntity
   }
 
   @Override
-  public Map<Integer, String> getTarget() {
+  public String getTarget() {
     // target to map
     return target;
   }

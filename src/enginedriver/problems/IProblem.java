@@ -53,6 +53,6 @@ public interface IProblem<T> extends IValuable {
   /**
    * Returns the target of the problem.
    */
-  Map<Integer, String> getTarget();
+  String getTarget();
 
 }
