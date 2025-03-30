@@ -37,8 +37,8 @@ public class PuzzleTest {
     assertEquals("Lamp", puzzle.getSolution());
     assertEquals(150, puzzle.getValue());
     assertEquals("You cannot see!", puzzle.getEffects());
-    //assertEquals("6:Kitchen", puzzle.getTarget());
-    assertEquals(Map.of(6,"Kitchen"), puzzle.getTarget());
+    assertEquals("6:Kitchen", puzzle.getTarget());
+    // assertEquals(Map.of(6,"Kitchen"), puzzle.getTarget());
 
   }
 
