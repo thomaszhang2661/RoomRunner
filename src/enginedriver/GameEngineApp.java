@@ -9,26 +9,61 @@ import java.util.Scanner;
 
 import jsonreader.GameDataLoader;
 
+/**
+ * The GameEngineApp class is the main entry point for the game engine application.
+ * It initializes the game world and player, and starts the game loop.
+ */
 public class GameEngineApp {
   private GameController gameController;
   private Readable source;
   private Appendable output;
 
+  /**
+   * Constructor for the GameEngineApp class.
+
+   * @param gameFileName the name of the game file
+   * @param source the input source
+   * @param output the output destination
+   * @throws IOException if an error occurs during input/output
+   */
   public GameEngineApp(String gameFileName, Readable source, Appendable output) throws IOException {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
-    // 解析游戏文件（JSON），加载游戏世界和玩家
+    //    // create ObjectMapper
+    //    ObjectMapper mapper = new ObjectMapper();
+    //    SimpleModule module = new SimpleModule();
+    //    // register GameWorldDeserializer
+    //    module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
+    //    mapper.registerModule(module);
+    //    // parse gameWorld
+    //    GameWorld gameWorld = mapper.readValue(new File(gameFileName), GameWorld.class);
+    //
+    //    // register PlayerDeserializer
+    //    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
+    //    mapper.registerModule(module);
+    //    // parse player
+    //    Player player = mapper.readValue(new File(gameFileName), Player.class);
+
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
-    // 创建玩家
-    // 提示用户输入名字
+    Player player = GameDataLoader.loadPlayer(gameFileName, gameWorld);
+
+    // if player is null, create a new player from input
     // TODO： 检测是否存在同名文件，有重名要提示不能用
-    String playerName = getPlayerName();
-    Player player = new Player(playerName, 100, 13, 0); // 提示玩家输入名字
+    if (player == null) {
+      String playerName = getPlayerName();
+      player = new Player(playerName, 100, 20, 0); // 提示玩家输入名字
+    }
 
     this.gameController = new GameController(gameWorld, player);
   }
 
+
+  /**
+   * Starts the game engine application.
+
+   * @throws IOException if an error occurs during input/output
+   */
   public void start() throws IOException {
     BufferedReader reader = new BufferedReader((Reader) source);
 
@@ -42,6 +77,12 @@ public class GameEngineApp {
     }
   }
 
+  /**
+   * Main method to start the game.
+
+   * @param args command line arguments
+   * @throws IOException if an error occurs during input/output
+   */
   public static void main(String[] args) throws IOException {
     String s = "Sir Mix-A-Lot\nT NOTEBOOK\nN\nT HAIR CLIPPERS\nT KEY\nD NOTEBOOK\nQuit";
     BufferedReader stringReader = new BufferedReader(new StringReader(s));

@@ -1,6 +1,14 @@
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import enginedriver.Puzzle;
+import org.junit.jupiter.api.Test;
+
+
+/**
+ * Test class for Puzzle.
+ */
 public class PuzzleTest {
 
   @Test
@@ -14,7 +22,7 @@ public class PuzzleTest {
     assertEquals("It's dark!", puzzle.getDescription());
     assertTrue(puzzle.getActive());
     assertTrue(puzzle.getAffects_target());
-    assertTrue(puzzle.getAffect_player());
+    assertTrue(puzzle.getAffects_player());
     assertEquals("Lamp", puzzle.getSolution());
     assertEquals(150, puzzle.getValue());
     assertEquals("You cannot see!", puzzle.getEffects());
@@ -37,10 +45,10 @@ public class PuzzleTest {
             "It's dark!", true, true,
             true, "Lamp", 150,
             "You cannot see!", "6:Kitchen", "null");
-    String expected = "{ \"name\":\"Darkness\",\"active\":\"true\",\"affects_target\":\"true\"," +
-            "\"affects_player\":\"true\",\"solution\":\"Lamp\",\"value\":\"150\"," +
-            "\"description\":\"It's dark!\",\"effects\":\"You cannot see!\"," +
-            "\"target\":\"6:Kitchen\",\"picture\":\"null\" }";
+    String expected = "{ \"name\":\"Darkness\",\"active\":\"true\",\"affects_target\":\"true\","
+            + "\"affects_player\":\"true\",\"solution\":\"Lamp\",\"value\":\"150\","
+            + "\"description\":\"It's dark!\",\"effects\":\"You cannot see!\","
+            + "\"target\":\"6:Kitchen\",\"picture\":\"null\" }";
     // print tostring
     //System.out.println(puzzle.toString());
     assertEquals(expected, puzzle.toString());

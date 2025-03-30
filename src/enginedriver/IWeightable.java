@@ -7,6 +7,7 @@ public interface IWeightable extends IIdentifiableEntity {
 
   /**
    * Returns the weight of the entity.
+
    * @return int for weight
    */
   int getWeight();

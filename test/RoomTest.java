@@ -1,20 +1,21 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import enginedriver.Fixture;
-import enginedriver.IProblem;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
+import enginedriver.problems.Monster;
+import enginedriver.problems.Puzzle;
 import enginedriver.Room;
-import enginedriver.Puzzle;
-import enginedriver.Monster;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
+
 
 
 /**
- * Tests for the Room class. 
+ * Tests for the Room class.
  * One test method per public method in Room.
  */
 public class RoomTest {
@@ -31,7 +32,7 @@ public class RoomTest {
 
     Puzzle<String> puzzle = new Puzzle<>(
             "PuzzleName", "A puzzle description",
-            true,false, false, "Solution",
+            true, false, false, "Solution",
             50, "puzzleEffects", "puzzleTarget", "puzzlePic"
     );
 
@@ -60,9 +61,9 @@ public class RoomTest {
     Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("itemA", new Item("itemA", "descA", 1, 1,
             10, 5, "used"));
-    entities.put("fixtureB", new Fixture(11, "fixtureB", "fixtureDesc", 1000));
+    entities.put("fixtureB", new Fixture("fixtureB", "fixtureDesc", 1000));
 
-    Room room = new Room(10, "C", "descC", exits, entities);
+    Room<?> room = new Room(10, "C", "descC", exits, entities);
     assertEquals(10, room.getId());
     assertEquals("C", room.getName());
     assertEquals("descC", room.getDescription());
@@ -89,7 +90,7 @@ public class RoomTest {
     // Initialize an entity map
     Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("itemB", new Item("B", "descB", 2, 2, 20, 10, "used"));
-    entities.put("fixtureY", new Fixture(12, "Y", "fixtureDescY", 1000));
+    entities.put("fixtureY", new Fixture("Y", "fixtureDescY", 1000));
 
     // Create Monster
     Monster<String> monster = new Monster<>(
@@ -218,7 +219,7 @@ public class RoomTest {
 
     Room room = new Room(7, "G", "descG", exits, elements);
 
-    Fixture fixtureX = new Fixture(7, "fixtureX", "fixtureX");
+    Fixture fixtureX = new Fixture("fixtureX", "fixtureX", 1000);
     room.addEntity(fixtureX);
 
     // Retrieve as Item
@@ -249,7 +250,7 @@ public class RoomTest {
     // Create a Puzzle
     Puzzle<String> puzzle = new Puzzle<>(
             "PuzzleName", "A puzzle description",
-            true,false, false, "Solution",
+            true, false, false, "Solution",
             50, "puzzleEffects", "puzzleTarget", "puzzlePic"
     );
 
@@ -268,12 +269,12 @@ public class RoomTest {
             10, 5, "used");
     Item itemB = new Item("itemB", "descB", 2, 2,
             20, 10, "used");
-    Fixture fixtureX = new Fixture(9, "fixtureX", "fixtureX");
+    Fixture fixtureX = new Fixture("fixtureX", "fixtureX", 9);
     entities.put(itemA.getName(), itemA);
     entities.put(itemB.getName(), itemB);
     entities.put(fixtureX.getName(), fixtureX);
 
-    Room room = new Room(10, "J", "descJ", exits, entities);
+    Room<?> room = new Room(10, "J", "descJ", exits, entities);
 
     // Get items' names
     String itemNames = room.getElementNames(Item.class);

@@ -1,4 +1,8 @@
-package enginedriver;
+package enginedriver.problems;
+
+import java.util.Map;
+
+import enginedriver.IValuable;
 
 /**
   * Interface for problems that can be solved.
@@ -7,18 +11,21 @@ public interface IProblem<T> extends IValuable {
 
   /**
    * check if the problem is solved.
+
    * @return true if solved, false otherwise
    */
   boolean getActive();
 
   /**
    * Returns the target of the problem.
+
    * @return String for target
    */
   T getSolution();
 
   /**
    * Solve the problem by using a String.
+
    * @param input the string to solve the problem
    */
   boolean solve(T input);
@@ -26,10 +33,26 @@ public interface IProblem<T> extends IValuable {
 
 
 
-/**
- * Returns the effect of the problem.
- * @return String for effect
- */
-String getEffects();
+  /**
+   * Returns the effect of the problem.
+
+   * @return String for effect
+   */
+  String getEffects();
+
+  /**
+   * Returns AffectsPlayer.
+   */
+  boolean getAffectsPlayer();
+
+  /**
+   * Returns AffectsPlayer.
+   */
+  boolean getAffectsTarget();
+
+  /**
+   * Returns the target of the problem.
+   */
+  Map<Integer, String> getTarget();
 
 }

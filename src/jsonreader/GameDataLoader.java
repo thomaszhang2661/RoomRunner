@@ -2,33 +2,49 @@ package jsonreader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import enginedriver.GameWorld;
 import enginedriver.Player;
+import java.io.File;
+import java.io.IOException;
 
+/**
+ * The GameDataLoader class is responsible for loading and saving game data.
+ * It uses Jackson to read and write JSON files representing the game world.
+ */
 public class GameDataLoader {
-  private static final ObjectMapper mapper = new ObjectMapper();
 
-  static {
+  /**
+   * Load the game world from a JSON file.
+
+   * @param gameFileName the name of the file to load
+   * @return the GameWorld object
+   * @throws IOException if an error occurs during loading
+   */
+  public static GameWorld loadGameWorld(String gameFileName) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
+
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
-    module.addDeserializer(Player.class, new PlayerDeserializer());
     mapper.registerModule(module);
+
+    return mapper.readValue(new File(gameFileName), GameWorld.class);
   }
 
-  public static GameWorld loadGameWorld(String fileName) throws IOException {
-    return mapper.readValue(new File(fileName), GameWorld.class);
-  }
+  /**
+   * Load the player from a JSON file.
 
-  public static void saveGameWorld(GameWorld gameWorld, String fileName) {
-    try (FileWriter fileWriter = new FileWriter(fileName)) {
-      fileWriter.write(gameWorld.toString());
-    } catch (IOException e) {
-      System.err.println("Error saving the game file: " + e.getMessage());
-    }
+   * @param gameFileName the name of the file to load
+   * @param gameWorld    the GameWorld object
+   * @return the Player object
+   * @throws IOException if an error occurs during loading
+   */
+  public static Player loadPlayer(String gameFileName, GameWorld gameWorld) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+
+    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
+    mapper.registerModule(module);
+
+    return mapper.readValue(new File(gameFileName), Player.class);
   }
 }

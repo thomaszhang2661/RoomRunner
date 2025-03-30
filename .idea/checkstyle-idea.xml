@@ -5,6 +5,7 @@
     <scanScope>AllSourcesWithTests</scanScope>
     <option name="thirdPartyClasspath" />
     <option name="activeLocationIds">
+      <option value="bundled-google-checks" />
       <option value="ee213541-efde-4f91-9415-a291c29a6e3c" />
     </option>
     <option name="locations">
