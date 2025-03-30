@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import enginedriver.problems.Monster;
+import enginedriver.problems.Puzzle;
+import enginedriver.problems.IProblem;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -13,6 +16,7 @@ public class GameController {
   private Player player;
   private GameWorld gameWorld;
   private Viewer viewer;
+  private Map<String, String> actionMap = new HashMap<>();
 
   /**
    * Constructor for GameController.
@@ -22,6 +26,19 @@ public class GameController {
     this.gameWorld = gameWorld;
     this.player = player;
     this.viewer = Viewer.getInstance();
+    // Action abbreviations map
+    // TODO：这里应该设计为一个配置文件直接读进来
+    actionMap.put("NORTH", "N");
+    actionMap.put("SOUTH", "S");
+    actionMap.put("EAST", "E");
+    actionMap.put("WEST", "W");
+    actionMap.put("TAKE", "T");
+    actionMap.put("DROP", "D");
+    actionMap.put("EXAMINE", "X");
+    actionMap.put("LOOK", "L");
+    actionMap.put("USE", "U");
+    actionMap.put("INVENTORY", "I");
+    actionMap.put("ANSWER", "A");
   }
 
   /*
@@ -43,20 +60,8 @@ public class GameController {
     String[] commandParts = command.split("\\s+");
 
 
-    // Action abbreviations map
-    // TODO：这里应该设计为一个配置文件直接读进来
-    Map<String, String> actionMap = new HashMap<>();
-    actionMap.put("NORTH", "N");
-    actionMap.put("SOUTH", "S");
-    actionMap.put("EAST", "E");
-    actionMap.put("WEST", "W");
-    actionMap.put("TAKE", "T");
-    actionMap.put("DROP", "D");
-    actionMap.put("EXAMINE", "X");
-    actionMap.put("LOOK", "L");
-    actionMap.put("USE", "U");
-    actionMap.put("INVENTORY", "I");
-    actionMap.put("ANSWER", "A");
+
+
 
     // Default action is the first part of the command (converted to uppercase)
     String action = commandParts[0].toUpperCase();
@@ -128,8 +133,9 @@ public class GameController {
     //check player's current room
     int currentRoom = player.getRoomNumber();
 
+    Room<?> currentRoomObj = gameWorld.getRoom(currentRoom);
     //get room's exists
-    Map<String, Integer> exits = gameWorld.getRoom(currentRoom).getExits();
+    Map<String, Integer> exits = currentRoomObj.getExits();
 
     //check if the direction is valid
     if (exits.containsKey(direction)) {
@@ -145,13 +151,6 @@ public class GameController {
         Room enteredRoom = gameWorld.getRoom(attempRoomNum);
         //move player to the new room
         player.setRoomNumber(attempRoomNum);
-
-        // deal with monster attack
-        // get problem from the room,get prloblem clas
-
-        IProblem<?> problem  =  enteredRoom.getProblem();
-        handleMonsterAttack(problem);
-
         //show the enter discription
         viewer.showText("You are moving to the derection "
                 + direction + ",enterred " + enteredRoom.getName()
@@ -159,8 +158,17 @@ public class GameController {
 
         // room description
         viewer.showText(enteredRoom.getDescription());
-      }
 
+        // get problem from the room,get prloblem clas
+        IProblem<?> problem = enteredRoom.getProblem();
+
+        if (problem != null && problem.getActive()) {
+          // show the problem effect on Entering
+          viewer.showText(problem.getEffects());
+          // deal with monster attack
+          handleMonsterAttack(problem);
+        }
+      }
     } else {
       viewer.showText("Invalid direction.");
     }
@@ -215,15 +223,16 @@ public class GameController {
 
   private void lookAround() {
     // Logic to look around
-    //TODO check if need to show what is inside the room, print names?
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    // check if room has
+    viewer.showText("You are currently standing in the" + currentRoom.getName());
+    viewer.showText(currentRoom.getDescription());
+
     // deal with monster attack
     IProblem<?> problem  =  currentRoom.getProblem();
     handleMonsterAttack(problem);
 
-    // check if room has
-    viewer.showText("You are currently standing in the" + currentRoom.getName());
-    viewer.showText(currentRoom.getDescription());
+
     //get items keys from the room
     List<String> itemNames = currentRoom.getEntities().keySet().stream()
             .toList();
@@ -249,7 +258,16 @@ public class GameController {
    */
   private void useItem(String itemName) {
     // get room
-    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    boolean hasItem = player.hasEntity(itemName);
+
+    if (!hasItem) {
+      viewer.showText("You don't have " + itemName + " in your bag.");
+      // deal with monster attack
+      handleMonsterAttack(currentRoom.getProblem());
+      return;
+    }
+
     Item itemAttempt = player.getEntity(itemName, Item.class);
     IProblem<?> problem  =  currentRoom.getProblem();
 
@@ -267,6 +285,9 @@ public class GameController {
       boolean flag = itemproblem.solve(itemAttempt);
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
+        if (itemproblem.getAffects_target()) {
+          itemproblem.affectPlayer(player);
+        }
         unlockExits(currentRoom); // update room exits
 
         int points = itemproblem.getValue();
@@ -330,18 +351,21 @@ public class GameController {
     }
   }
 
-  private void handlePuzzleSolution(Room<?> room, IProblem<?> problem) {
-    viewer.showText("You have successfully solved the puzzle!");
-    // Unlock the exit of the room
-    unlockExits(room);
-    // Add the score to the player
-    player.addScore(problem.getValue());
-  }
+//  private void handleProblemSolution(IProblem<?> problem, solution) {
+//    viewer.showText("You have successfully solved the puzzle!");
+//    // Unlock the exit of the room
+//    unlockExits(room);
+//    // Add the score to the player
+//    player.addScore(problem.getValue());
+//  }
 
 
-  /**
-   * Answer a puzzle.
-   */
+  private void handleProblemSolution(IProblem<?> problem, solution) {
+
+
+    /**
+     * Answer a puzzle.
+     */
   private void answerPuzzle(String objectName) {
 
     if (objectName == null || objectName.isEmpty()) {
@@ -376,7 +400,7 @@ public class GameController {
     if (puzzle.getSolution() instanceof String) {
       Puzzle<String> puzzleString = (Puzzle<String>) puzzle;
       if (puzzleString.solve(objectName)) {
-        handlePuzzleSolution(currentRoom, puzzle);
+        handlePuzzleSolution(currentRoom, puzzleString);
       } else {
         viewer.showText("Your answer is not right.");
       }
@@ -426,11 +450,12 @@ public class GameController {
 
 
 
-  private void handleMonsterAttack(IProblem<?> problem) {
+  private void handleMonsterAttack(IProblem problem) {
     if (problem instanceof Monster && problem.getActive()) {
-      Monster monster = (Monster) problem;
-      monster.attack(player);
-      //TODO 这里好像要说话，需要完善
+      Monster<?> monster = (Monster) problem;
+      if (monster.getAffect_player() && monster.canAttack())
+        monster.attack(player);
+        viewer.showText(monster.getAttack());
     }
   }
 

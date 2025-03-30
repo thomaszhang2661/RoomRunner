@@ -1,6 +1,12 @@
-package enginedriver;
+package enginedriver.problems;
 
 import java.awt.Image;
+import java.util.Map;
+
+
+import enginedriver.IValuable;
+import enginedriver.IdentifiableEntity;
+import enginedriver.problems.validator.SolutionValidator;
 
 /**
  * Class for problems in the game.
@@ -9,14 +15,15 @@ import java.awt.Image;
  * @param <T> the type of the solution
  */
 public abstract class Problem<T> extends IdentifiableEntity
-        implements IProblem<T>, IValuable {
+        implements  IValuable, IProblem<T> {
   private Boolean active;
-  private Boolean affects_target;
-  private Boolean affects_player;
-  private T solution;
-  private int value;
-  private String effects;
-  private String target;
+  private final Boolean affects_target;
+  private final Boolean affects_player;
+  private final T solution;
+  private SolutionValidator<T> validator;
+  private final int value;
+  private final String effects;
+  private Map<Integer,String >  target;
   private String pictureName;
 
 
@@ -28,15 +35,26 @@ public abstract class Problem<T> extends IdentifiableEntity
                  Boolean affects_target, Boolean affects_player,
                  T solution, int value, String effects,
                  String target, String pictureName) {
-    super(name, description);
+    super(name, description, pictureName);
     this.active = active;
     this.affects_target = affects_target;
     this.affects_player = affects_player;
     this.value = value;
     this.effects = effects;
-    this.target = target;
+
+    // parse target
+    String[] parts = target.split(":", 2);
+    int roomNumber = Integer.parseInt(parts[0].trim());
+    String roomName = parts[1].trim();
+    this.target = Map.of(roomNumber, roomName);
+
     this.pictureName = pictureName;
     this.solution = solution;
+
+    //get the type of solution
+    Class<?> solutionClass = solution.getClass();
+
+    this.validator = new SolutionValidator<>();
 
   }
 
@@ -45,11 +63,12 @@ public abstract class Problem<T> extends IdentifiableEntity
     return affects_player;
   }
 
-  public Boolean getAffects_target() {
+  protected boolean getAffects_target() {
     return affects_target;
   }
 
-  public String getTarget() {
+  protected Map<Integer,String> getTarget() {
+    // target to map
     return target;
   }
 
@@ -63,34 +82,15 @@ public abstract class Problem<T> extends IdentifiableEntity
     return solution;
   }
 
-  public boolean isSolved() {
-    return !active;
-  }
 
   @Override
   public boolean solve(T input) {
-    // if input is String
-    if (input instanceof String) {
-      if (input.equals(solution)) {
-        active = false;
-        return true;
-      }
-    }
-    // if input is Item
-    if (input instanceof Item) {
-      //conver input to Item
-      Item item = (Item) input;
-      if (item.equals(solution)
-              && item.getRemainingUses() > 0) {
-        active = false;
-
-        item.setRemainingUses(item.getRemainingUses() - 1);
-        return true;
-      }
+    if (validator.validate(solution, input)) {
+      active = false;
+      return true;
     }
     return false;
   }
-
 
 
   @Override
@@ -98,25 +98,6 @@ public abstract class Problem<T> extends IdentifiableEntity
     return value;
   }
 
-  @Override
-  public int getId() {
-    return super.getId();
-  }
-
-  @Override
-  public String getName() {
-    return super.getName();
-  }
-
-  @Override
-  public String getDescription() {
-    return super.getDescription();
-  }
-
-  @Override
-  public Image getPicture() {
-    return null;
-  }
 
   @Override
   public String getPictureName() {
@@ -124,7 +105,7 @@ public abstract class Problem<T> extends IdentifiableEntity
   }
 
   @Override
-  public String getEffects() {
+   public String getEffects() {
     return effects;
   }
 }

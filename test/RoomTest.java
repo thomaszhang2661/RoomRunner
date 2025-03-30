@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import enginedriver.Fixture;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
-import enginedriver.Monster;
-import enginedriver.Puzzle;
+import enginedriver.problems.Monster;
+import enginedriver.problems.Puzzle;
 import enginedriver.Room;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class RoomTest {
             10, 5, "used"));
     entities.put("fixtureB", new Fixture("fixtureB", "fixtureDesc", 1000));
 
-    Room room = new Room(10, "C", "descC", exits, entities);
+    Room<?> room = new Room(10, "C", "descC", exits, entities);
     assertEquals(10, room.getId());
     assertEquals("C", room.getName());
     assertEquals("descC", room.getDescription());
