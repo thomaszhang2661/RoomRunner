@@ -89,9 +89,9 @@ public class Monster<T> extends Problem<T>{
    * Determines if the monster can attack.
    * @return boolean.
    */
-  public boolean canAttack() {
-    return super.isSolved();
-  }
+//  public boolean canAttack() {
+////    return this.can_attack;
+//  }
 
   /**
    * Retrieves the attack description.
@@ -105,7 +105,7 @@ public class Monster<T> extends Problem<T>{
   public String toString() {
     return "{ " +
             "\"name\":\"" + getName() + "\"," +
-            "\"active\":\"" + isSolved() + "\"," +
+            "\"active\":\"" + getActive() + "\"," +
             "\"affects_target\":\"" + getAffects_target() + "\"," +
             "\"affects_player\":\"" + getAffect_player() + "\"," +
             "\"solution\":\"" + getSolution() + "\"," +
@@ -114,7 +114,7 @@ public class Monster<T> extends Problem<T>{
             "\"effects\":\"" + getEffects() + "\"," +
             "\"damage\":\"" + getDamage() + "\"," +
             "\"target\":\"" + getTarget() + "\"," +
-            "\"can_attack\":\"" + canAttack() + "\"," +
+//            "\"can_attack\":\"" + canAttack() + "\"," +
             "\"attack\":\"" + getAttack() + "\"," +
             "\"picture\":\"" + getPicture() + "\"" +
             " }";

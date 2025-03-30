@@ -78,6 +78,44 @@ class MonsterTest {
             teddyBear.getAttack());
   }
 
+  /**
+   * Test the getID method of Monster.
+   */
+  @Test
+  void testMonsterGetID() {
+    // Validate Rabbit ID
+    assertEquals(-1, rabbit.getId());
+
+    // Validate Teddy Bear ID
+    assertEquals(-1, teddyBear.getId());
+  }
+
+  /**
+   * Test the getName method of Monster.
+   */
+  @Test
+  void testMonsterGetName() {
+    // Validate Rabbit Name
+    assertEquals("Rabbit", rabbit.getName());
+
+    // Validate Teddy Bear Name
+    assertEquals("Teddy Bear", teddyBear.getName());
+  }
+
+  /**
+   * Test the getEffects method of Monster.
+   */
+  @Test
+  void testMonsterGetEffects() {
+    // Validate Rabbit Effects
+    assertEquals("A monster Rabbit moves towards you! He's blocking the way north.\n" +
+            "I think you might be dinner!", rabbit.getEffects());
+
+    // Validate Teddy Bear Effects
+    assertEquals("A monster Teddy Bear growls at you! You cannot get past!",
+            teddyBear.getEffects());
+  }
+
   // Test Solve with Correct Solution
   @Test
   void testSolveCorrectSolution() {
@@ -140,4 +178,17 @@ class MonsterTest {
     assertEquals(100, player.getHealth(), "Player health should " +
             "remain unchanged when inactive Teddy Bear attacks.");
   }
+
+//  /**
+//   * Test the toString method of Monster.
+//   */
+//  @Test
+//  void testMonsterToString() {
+////    String expected = "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\"," +
+////            "\"affects_player\":\"true\",\"solution\":\"Carrot\",\"value\":\"300\"," +
+////            "\"effects\":\"A monster Rabbit moves towards you! He's blocking the way north.\n" +
+////            "I think you might be dinner!\",\"target\":\"7:Dining Room\"," +
+////            "\"pictureName\":\"monster-rabbit.png\"}";
+////    assertEquals(expected, rabbit.toString());
+//  }
 }
