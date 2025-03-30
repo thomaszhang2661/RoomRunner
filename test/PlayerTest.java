@@ -252,8 +252,8 @@ public class PlayerTest {
   @Test
   public void testToString() {
     String expected = "{ \"name\":\"Hero\",\"health\":\"100\",\"inventory\":\"Thumb Drive, Lamp\"," +
-            "\"maxWeight\":\"50\",\"currentWeight\":\"4\"," +
-            "\"roomNumber\":\"0\",\"score\":\"0\" }";
+            "\"max_weight\":\"50\",\"current_weight\":\"4\"," +
+            "\"room_number\":\"0\",\"score\":\"0\" }";
     assertEquals(expected, player.toString());
   }
 

@@ -1,7 +1,5 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import enginedriver.Item;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.validator.SolutionValidator;
@@ -37,8 +35,8 @@ public class PuzzleTest {
     assertEquals("Lamp", puzzle.getSolution());
     assertEquals(150, puzzle.getValue());
     assertEquals("You cannot see!", puzzle.getEffects());
-    //assertEquals("6:Kitchen", puzzle.getTarget());
-    assertEquals(Map.of(6,"Kitchen"), puzzle.getTarget());
+    assertEquals("6:Kitchen", puzzle.getTarget());
+    // assertEquals(Map.of(6,"Kitchen"), puzzle.getTarget());
 
   }
 
@@ -60,12 +58,15 @@ public class PuzzleTest {
    */
   @Test
   public void testPuzzleSolve() {
-    Puzzle<String> puzzle = new Puzzle<>("Darkness",
+    Puzzle<String> puzzle = new Puzzle<String>("Darkness",
             "It's dark!", true, true,
             true, "Lamp", 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new StringSolutionValidator());
-    assertTrue(puzzle.solve("Lamp"));
+    assertEquals(1, puzzle.solve("Lamp"));
+    puzzle.setActive(false);
     assertFalse(puzzle.getActive());
+    puzzle.setActive(true);
+    assertTrue(puzzle.getActive());
   }
 
   /**
@@ -81,8 +82,7 @@ public class PuzzleTest {
             true, lamp, 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new ItemSolutionValidator());
 
-    assertTrue(puzzle.solve(lamp));
-    assertFalse(puzzle.getActive());
+    assertEquals(1, puzzle.solve(lamp));
   }
   /**
    * Test solve method of Puzzle with wrong input.
@@ -93,7 +93,7 @@ public class PuzzleTest {
             "It's dark!", true, true,
             true, "Lamp", 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new StringSolutionValidator());
-    assertFalse(puzzle.solve("WrongInput"));
+    assertEquals(2,puzzle.solve("WrongInput"));
     assertTrue(puzzle.getActive());
   }
 

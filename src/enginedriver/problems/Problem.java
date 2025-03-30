@@ -1,9 +1,6 @@
 package enginedriver.problems;
 
-import java.util.Map;
-
 import enginedriver.IValuable;
-import enginedriver.Item;
 import enginedriver.IdentifiableEntity;
 import enginedriver.problems.validator.SolutionValidator;
 
@@ -25,7 +22,7 @@ public abstract class Problem<T> extends IdentifiableEntity
   private final SolutionValidator<T> validator;
   private final int value;
   private final String effects;
-  private final Map<Integer, String>  target;
+  private final String  target;
 
 
 
@@ -44,11 +41,11 @@ public abstract class Problem<T> extends IdentifiableEntity
     this.effects = effects;
 
     // parse target
-    String[] parts = target.split(":", 2);
-    int roomNumber = Integer.parseInt(parts[0].trim());
-    String roomName = parts[1].trim();
-    this.target = Map.of(roomNumber, roomName);
-
+    //    String[] parts = target.split(":", 2);
+    //    int roomNumber = Integer.parseInt(parts[0].trim());
+    //    String roomName = parts[1].trim();
+    //    this.target = Map.of(roomNumber, roomName);
+    this.target =  target;
     this.solution = solution;
     this.validator = validator;
   }
@@ -64,7 +61,7 @@ public abstract class Problem<T> extends IdentifiableEntity
   }
 
   @Override
-  public Map<Integer, String> getTarget() {
+  public String getTarget() {
     // target to map
     return target;
   }
@@ -75,18 +72,28 @@ public abstract class Problem<T> extends IdentifiableEntity
   }
 
   @Override
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+  @Override
   public T getSolution() {
     return solution;
   }
 
 
   @Override
-  public boolean solve(T input) {
-    if (validator.validate(solution, input)) {
-      active = false;
-      return true;
+  public int solve(T input) {
+    // if the problem is not active, no need to solve.
+    if (!active) {
+      return 0;
     }
-    return false;
+    // if the solution is correct, the problem is solved.
+    if (validator.validate(solution, input)) {
+      //active = false; moved to cotroller handleProblemSolved
+      return 1;
+    }
+    // if the solution is incorrect, the problem is not solved.
+    return 2;
   }
 
 

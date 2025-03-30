@@ -76,6 +76,19 @@ public class Monster<T> extends Problem<T> {
   //    return super.getEffects();
   //  }
 
+
+  @Override
+  public void setActive(boolean active) {
+    super.setActive(active);
+    if (!active) {
+      canAttack = active;
+    }
+  }
+
+  public void setCanAttack(boolean canAttack) {
+    this.canAttack = canAttack;
+  }
+
   /**
    * Retrieves the damage.
 
@@ -122,6 +135,17 @@ public class Monster<T> extends Problem<T> {
     return attack;
   }
 
+  /**
+   *  Override solve deal with can attack.
+   */
+  @Override
+  public int solve(T input) {
+    int result = super.solve(input);
+    if (result == 1) {
+      canAttack = false;
+    }
+    return result;
+  }
 
 
   @Override

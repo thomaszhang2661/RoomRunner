@@ -1,6 +1,7 @@
 package enginedriver;
 
 import java.awt.Image;
+import java.util.Map;
 
 
 /**
@@ -66,17 +67,17 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
 
 
 
-  /**
-   * Constructor for an item with no max uses.
-   */
-  public void setRemainingUses(int remainingUses) {
-    if (remainingUses >= 0) {
-      this.remainingUses = remainingUses;
-    } else {
-      throw new IllegalArgumentException(
-              "Remaining uses of an item cannot be less than 0");
-    }
-  }
+  //  /**
+  //   * Constructor for an item with no max uses.
+  //   */
+  //  public void setRemainingUses(int remainingUses) {
+  //    if (remainingUses >= 0) {
+  //      this.remainingUses = remainingUses;
+  //    } else {
+  //      throw new IllegalArgumentException(
+  //              "Remaining uses of an item cannot be less than 0");
+  //    }
+  //  }
 
   public int getRemainingUses() {
     return remainingUses;
@@ -96,10 +97,29 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
     return weight;
   }
 
-  public String  getWhenUsed() {
+  /**
+   * Getter for whenUsed.
+   *
+   * @return string whenUsed
+   */
+  public String getWhenUsed() {
     return whenUsed;
   }
 
+  /**
+   * Use the item.
+   * If the item can be used, the remaining uses are decremented by 1.
+   * If the item cannot be used, the remaining uses are not decremented.
+   */
+  public boolean use() {
+    // 1. 不能用了 返回使用失败
+    if (remainingUses <= 0) {
+      return false;
+    }
+    // 2. 还可以用,处理remainingUses，返回 whenUsed
+    remainingUses--;
+    return true;
+  }
   //  @Override
   //  public int getId() {
   //    return super.getId();
