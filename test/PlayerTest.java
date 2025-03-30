@@ -2,7 +2,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import enginedriver.HEALTH_STATUS;
 import enginedriver.Item;
 import enginedriver.Player;
 import java.util.HashMap;

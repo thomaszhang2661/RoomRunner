@@ -2,15 +2,17 @@ package enginedriver;
 
 import java.util.Map;
 
-import enginedriver.problems.Monster;
 import enginedriver.problems.IProblem;
+import enginedriver.problems.Monster;
+
+
 
 /**
  * class for a room in the game.
  */
-public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEntity> {
+public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
-  private T problem;
+  private final T problem;
 
 
   /**
@@ -72,45 +74,45 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
     exits.put(key, Math.abs(exits.get(key)));
   }
 
-  /**
-   * adds an entity to the room.
-   */
-  public boolean addEntity(IdentifiableEntity entity) {
-    return super.addEntity(entity);
-  }
+  //  /**
+  //   * adds an entity to the room.
+  //   */
+  //  public boolean addEntity(IdentifiableEntity entity) {
+  //    return super.addEntity(entity);
+  //  }
 
-  /**
-   * removes an entity from the room.
-   */
-  public boolean removeEntity(IdentifiableEntity entity) {
-    return super.removeEntity(entity);
-  }
+  //  /**
+  //   * removes an entity from the room.
+  //   */
+  //  public boolean removeEntity(IdentifiableEntity entity) {
+  //    return super.removeEntity(entity);
+  //  }
 
-  /**
-   *  Check if the room has an entity, check by object.
-   */
-  public Boolean  hasEntity(IdentifiableEntity entity) {
-    return super.hasEntity(entity);
-  }
+  //  /**
+  //   *  Check if the room has an entity, check by object.
+  //   */
+  //  public Boolean  hasEntity(IdentifiableEntity entity) {
+  //    return super.hasEntity(entity);
+  //  }
 
-  /**
-   *  Check if the room has an entity check by name.
-   */
-  public Boolean  hasEntity(String entityName) {
-    return super.hasEntity(entityName);
-  }
+  //  /**
+  //   *  Check if the room has an entity check by name.
+  //   */
+  //  public Boolean  hasEntity(String entityName) {
+  //    return super.hasEntity(entityName);
+  //  }
 
-  /**
-   *  get an Entity from the room.
-   */
-  public <U extends IdentifiableEntity> U getEntity(
-          String entityName, Class<U> clazz) {
-    return super.getEntity(entityName, clazz);
-  }
-
-  public  Map<String, IdentifiableEntity > getEntities() {
-    return super.getEntities();
-  }
+  //  /**
+  //   *  get an Entity from the room.
+  //   */
+  //  public <U extends IdentifiableEntity> U getEntity(
+  //          String entityName, Class<U> clazz) {
+  //    return super.getEntity(entityName, clazz);
+  //  }
+  //
+  //  public  Map<String, IdentifiableEntity> getEntities() {
+  //    return super.getEntities();
+  //  }
 
 
 

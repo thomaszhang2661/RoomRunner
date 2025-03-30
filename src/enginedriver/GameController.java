@@ -286,7 +286,7 @@ public class GameController {
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
         if (itemproblem.getAffects_target()) {
-          itemproblem.affectPlayer(player);
+          itemproblem.getAffects_player(player);
         }
         unlockExits(currentRoom); // update room exits
 
@@ -351,16 +351,18 @@ public class GameController {
     }
   }
 
-//  private void handleProblemSolution(IProblem<?> problem, solution) {
-//    viewer.showText("You have successfully solved the puzzle!");
-//    // Unlock the exit of the room
-//    unlockExits(room);
-//    // Add the score to the player
-//    player.addScore(problem.getValue());
-//  }
+  //  private void handleProblemSolution(IProblem<?> problem, solution) {
+  //    viewer.showText("You have successfully solved the puzzle!");
+  //    // Unlock the exit of the room
+  //    unlockExits(room);
+  //    // Add the score to the player
+  //    player.addScore(problem.getValue());
+  //  }
 
 
   private void handleProblemSolution(IProblem<?> problem, solution) {
+
+  }
 
 
     /**

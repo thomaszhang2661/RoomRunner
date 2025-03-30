@@ -1,7 +1,7 @@
 package enginedriver;
 
 import java.awt.Image;
-import java.util.Objects;
+
 
 /**
  * Class for items in the game.
@@ -70,29 +70,29 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
     return weight;
   }
 
-  public String getWhenUsed() {
+  public String  getWhenUsed() {
     return whenUsed;
   }
 
-  @Override
-  public int getId() {
-    return super.getId();
-  }
-
-  @Override
-  public String getName() {
-    return super.getName();
-  }
-
-  @Override
-  public String getDescription() {
-    return super.getDescription();
-  }
-
-  @Override
-  public Image getPicture() {
-    return null;
-  }
+  //  @Override
+  //  public int getId() {
+  //    return super.getId();
+  //  }
+  //
+  //  @Override
+  //  public String getName() {
+  //    return super.getName();
+  //  }
+  //
+  //  @Override
+  //  public String getDescription() {
+  //    return super.getDescription();
+  //  }
+  //
+  //  @Override
+  //  public Image getPicture() {
+  //    return null;
+  //  }
 
   @Override
   public String toString() {

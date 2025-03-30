@@ -9,8 +9,7 @@ import enginedriver.problems.Puzzle;
 public class Fixture extends IdentifiableEntity implements IWeightable {
   private final int weight;
   private Puzzle<?> puzzle;
-  private Object states;
-  private String pictureName;
+  private int states;
   //TODO: accomposition for weightable
 
   /**
@@ -19,6 +18,7 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   public Fixture(String name, String description) {
     super(name, description);
     this.weight = 1000; //TODO move to config file
+    this.states = -1;
   }
 
   /**
@@ -27,23 +27,49 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   public Fixture(String name, String description, int weight) {
     super(name, description);
     this.weight = weight;
+    this.states = -1;
   }
 
   /**
    * Constructor for a fixture with weight and puzzle.
    */
-  public Fixture(String name, String description, int weight, Puzzle puzzle, Object states,
+  public Fixture(String name, String description, int weight,
+                 Puzzle<?> puzzle, int states,
                  String pictureName) {
-    super(name, description);
+    super(name, description, pictureName);
     this.weight = weight;
     this.puzzle = puzzle;
     this.states = states;
-    this.pictureName = pictureName;
   }
 
-  public Object getStates() {
-    return null;
+  /**
+   * Constructor for a fixture with weight and puzzle.
+   */
+  public Fixture(String name, String description, int weight,
+                 Puzzle<?> puzzle,
+                 String pictureName) {
+    super(name, description, pictureName);
+    this.weight = weight;
+    this.puzzle = puzzle;
+    this.states = -1;
   }
+
+  /**
+   * getter of states.
+
+   * @return int states
+   */
+  public int getStates() {
+    return states;
+  }
+
+  /**
+   * setter of states.
+   */
+  public void setStates(int input) {
+    this.states = input;
+  }
+
 
   public Puzzle<?> getPuzzle() {
     return puzzle;

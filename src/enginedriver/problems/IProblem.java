@@ -1,5 +1,7 @@
 package enginedriver.problems;
 
+import java.util.Map;
+
 import enginedriver.IValuable;
 
 /**
@@ -37,5 +39,20 @@ public interface IProblem<T> extends IValuable {
    * @return String for effect
    */
   String getEffects();
+
+  /**
+   * Returns AffectsPlayer.
+   */
+  boolean getAffectsPlayer();
+
+  /**
+   * Returns AffectsPlayer.
+   */
+  boolean getAffectsTarget();
+
+  /**
+   * Returns the target of the problem.
+   */
+  Map<Integer, String> getTarget();
 
 }

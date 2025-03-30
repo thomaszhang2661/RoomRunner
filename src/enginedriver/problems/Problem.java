@@ -1,12 +1,14 @@
 package enginedriver.problems;
 
-import java.awt.Image;
 import java.util.Map;
 
-
 import enginedriver.IValuable;
+import enginedriver.Item;
 import enginedriver.IdentifiableEntity;
 import enginedriver.problems.validator.SolutionValidator;
+
+
+
 
 /**
  * Class for problems in the game.
@@ -16,15 +18,15 @@ import enginedriver.problems.validator.SolutionValidator;
  */
 public abstract class Problem<T> extends IdentifiableEntity
         implements  IValuable, IProblem<T> {
-  private Boolean active;
-  private final Boolean affects_target;
-  private final Boolean affects_player;
+  private boolean active;
+  private final boolean affectsTarget;
+  private final boolean affectsPlayer;
   private final T solution;
-  private SolutionValidator<T> validator;
+  private final SolutionValidator<T> validator;
   private final int value;
   private final String effects;
-  private Map<Integer,String >  target;
-  private String pictureName;
+  private final Map<Integer, String>  target;
+  private final String pictureName;
 
 
 
@@ -32,13 +34,13 @@ public abstract class Problem<T> extends IdentifiableEntity
    * Constructor for a problem.
    */
   public Problem(String name, String description, Boolean active,
-                 Boolean affects_target, Boolean affects_player,
+                 Boolean affectsTarget, Boolean affectsPlayer,
                  T solution, int value, String effects,
-                 String target, String pictureName) {
+                 String target, String pictureName, SolutionValidator<T> validator) {
     super(name, description, pictureName);
     this.active = active;
-    this.affects_target = affects_target;
-    this.affects_player = affects_player;
+    this.affectsTarget = affectsTarget;
+    this.affectsPlayer = affectsPlayer;
     this.value = value;
     this.effects = effects;
 
@@ -50,24 +52,21 @@ public abstract class Problem<T> extends IdentifiableEntity
 
     this.pictureName = pictureName;
     this.solution = solution;
-
-    //get the type of solution
-    Class<?> solutionClass = solution.getClass();
-
-    this.validator = new SolutionValidator<>();
-
+    this.validator = validator;
   }
 
-
-  public boolean getAffects_player() {
-    return affects_player;
+  @Override
+  public boolean getAffectsPlayer() {
+    return affectsPlayer;
   }
 
-  protected boolean getAffects_target() {
-    return affects_target;
+  @Override
+  public boolean  getAffectsTarget() {
+    return affectsTarget;
   }
 
-  protected Map<Integer,String> getTarget() {
+  @Override
+  public Map<Integer, String> getTarget() {
     // target to map
     return target;
   }
