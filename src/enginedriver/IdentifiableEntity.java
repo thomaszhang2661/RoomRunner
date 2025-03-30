@@ -24,7 +24,7 @@ public abstract class IdentifiableEntity
   /**
    * Constructor for an identifiable entity, without ID.
    */
-  public IdentifiableEntity( String name, String description) {
+  public IdentifiableEntity(String name, String description) {
     this.id = -1;
     this.name = name;
     this.description = description;
@@ -42,6 +42,7 @@ public abstract class IdentifiableEntity
 
   /**
    * Returns the name of the entity.
+
    * @return String for name
    */
   @Override
@@ -51,6 +52,7 @@ public abstract class IdentifiableEntity
 
   /**
    *  Returns the description of the entity.
+
    * @return  String for description
    */
   @Override
@@ -62,10 +64,15 @@ public abstract class IdentifiableEntity
 
   /**
    * Returns the picture of the entity.
+
    * @return  Image for picture
    */
   @Override
   public Image getPicture() {
+    return null;
+  }
+
+  public String getPictureName() {
     return null;
   }
 
@@ -81,9 +88,9 @@ public abstract class IdentifiableEntity
       return false;
     }
     IdentifiableEntity that = (IdentifiableEntity) obj;
-    return id == that.id &&
-            name.equals(that.name) &&
-            description.equals(that.description);
+    return id == that.id
+            && name.equals(that.name)
+            && description.equals(that.description);
   }
 
   /**

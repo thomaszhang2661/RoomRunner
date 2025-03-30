@@ -1,6 +1,6 @@
 package enginedriver;
 
-import java.awt.*;
+import java.awt.Image;
 
 /**
  * Class for fixtures in the game.
@@ -12,12 +12,13 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   private Object states;
   private String pictureName;
   //TODO: accomposition for weightable
+
   /**
-   * Simple constructor for fixture without weight
+   * Simple constructor for fixture without weight.
    */
   public Fixture(String name, String description) {
     super(name, description);
-    this.weight = 1000;//TODO move to config file
+    this.weight = 1000; //TODO move to config file
   }
 
   /**
@@ -28,6 +29,9 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
     this.weight = weight;
   }
 
+  /**
+   * Constructor for a fixture with weight and puzzle.
+   */
   public Fixture(String name, String description, int weight, Puzzle puzzle, Object states,
                  String pictureName) {
     super(name, description);
@@ -52,13 +56,13 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
 
   @Override
   public String toString() {
-    return "{ " +
-            "\"name\":\"" + getName() + "\"," +
-            "\"weight\":\"" + getWeight() + "\"," +
-            "\"puzzle\":\"" + getPuzzle() + "\"," +
-            "\"state\":\"" + getStates() + "\"," +
-            "\"description\":\"" + getDescription() + "\"," +
-            "\"picture\":\"" + getPicture() + "\"" +
-            " }";
+    return "{ "
+            + "\"name\":\"" + getName() + "\","
+            + "\"weight\":\"" + getWeight() + "\","
+            + "\"puzzle\":\"" + getPuzzle() + "\","
+            + "\"states\":\"" + getStates() + "\","
+            +  "\"description\":\"" + getDescription() + "\","
+            + "\"picture\":\"" + getPicture() + "\""
+            + " }";
   }
 }

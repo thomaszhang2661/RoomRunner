@@ -1,16 +1,17 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import enginedriver.Fixture;
-import enginedriver.IProblem;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
-import enginedriver.Room;
-import enginedriver.Puzzle;
 import enginedriver.Monster;
+import enginedriver.Puzzle;
+import enginedriver.Room;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
+
 
 
 /**
@@ -31,7 +32,7 @@ public class RoomTest {
 
     Puzzle<String> puzzle = new Puzzle<>(
             "PuzzleName", "A puzzle description",
-            true,false, false, "Solution",
+            true, false, false, "Solution",
             50, "puzzleEffects", "puzzleTarget", "puzzlePic"
     );
 
@@ -249,7 +250,7 @@ public class RoomTest {
     // Create a Puzzle
     Puzzle<String> puzzle = new Puzzle<>(
             "PuzzleName", "A puzzle description",
-            true,false, false, "Solution",
+            true, false, false, "Solution",
             50, "puzzleEffects", "puzzleTarget", "puzzlePic"
     );
 

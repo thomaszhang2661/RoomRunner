@@ -1,21 +1,24 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import enginedriver.GameWorld;
 import enginedriver.Player;
+import java.io.File;
+import java.io.IOException;
 import jsonreader.GameWorldDeserializer;
 import jsonreader.PlayerDeserializer;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.File;
-import java.io.IOException;
 
 class DeserializationTest {
 
   @Test
   void testDeserializeGameWorld() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new SimpleModule().addDeserializer(GameWorld.class, new GameWorldDeserializer()));
+    mapper.registerModule(new SimpleModule().addDeserializer(GameWorld.class,
+            new GameWorldDeserializer()));
 
     GameWorld gameWorld = mapper.readValue(new File("test/TestGameWorld.json"), GameWorld.class);
 

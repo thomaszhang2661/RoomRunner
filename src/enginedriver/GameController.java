@@ -169,6 +169,7 @@ public class GameController {
   /**
    * Controller method to call the player's addItem method.
    * Print message based on the result.
+
    * @param itemName the name of the item that needs to be taken.
    */
   private void takeItem(String itemName) {
@@ -178,7 +179,7 @@ public class GameController {
     Item itemAttempt = currentRoom.getItem(itemName);
 
     if (itemAttempt != null) {
-      if(player.addItem(itemAttempt)) {
+      if (player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
         viewer.showText(itemName + "added to your inventory!");
         player.setScore(player.getScore() + itemAttempt.getValue());
@@ -194,6 +195,7 @@ public class GameController {
 
   /**
    * Controller method to call the player's delete method.
+
    * @param itemName the name of the item that needs to be dropped.
    */
   private void dropItem(String itemName) {
@@ -308,15 +310,16 @@ public class GameController {
       entity = currentRoom.getEntity(entityName, Fixture.class);
     }
     if (entity == null) {
-      viewer.showText(entityName +" is not in the room.");
+      viewer.showText(entityName + " is not in the room.");
     } else {
       viewer.showText(entity.getDescription());
     }
   }
 
   /**
-   * Unlocks room
-   * @param room
+   * Unlocks room.
+
+   * @param room the room to unlock exits
    */
   private void unlockExits(Room<?> room) {
     for (String key : room.getExits().keySet()) {
@@ -377,7 +380,7 @@ public class GameController {
       } else {
         viewer.showText("Your answer is not right.");
       }
-    }else {
+    } else {
       viewer.showText("Your answer is not right, try to use an item.");
 
     }
@@ -433,9 +436,9 @@ public class GameController {
 
   @Override
   public String toString() {
-    return "{ " +
-            "\"gameWorld\":" + gameWorld.toString() + "," +
-            "\"player\":" + player.toString() +
-            " }";
+    return "{ "
+            + gameWorld.toString() + ","
+            + "\"player\":" + player.toString()
+            + " }";
   }
 }
