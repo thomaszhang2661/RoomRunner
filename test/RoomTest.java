@@ -1,7 +1,7 @@
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import enginedriver.Fixture;
 import enginedriver.IdentifiableEntity;
@@ -9,8 +9,12 @@ import enginedriver.Item;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 import enginedriver.Room;
+import enginedriver.problems.validator.StringSolutionValidator;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
@@ -34,7 +38,7 @@ public class RoomTest {
     Puzzle<String> puzzle = new Puzzle<>(
             "PuzzleName", "A puzzle description",
             true, false, false, "Solution",
-            50, "puzzleEffects", "puzzleTarget", "puzzlePic"
+            50, "puzzleEffects", "puzzleTarget", "puzzlePic", new StringSolutionValidator()
     );
 
     // Normal usage
@@ -96,13 +100,13 @@ public class RoomTest {
     // Create Monster
     Monster<String> monster = new Monster<>(
             "MonsterName", "A monster description",
-            true, true, true, true,"MonsterSolution",
+            true, true, true,  true,"MonsterSolution",
             100, 10, "monsterEffects", "monsterTarget",
-            "monsterPic", "BiteAttack"
+            "monsterPic", "BiteAttack", new StringSolutionValidator()
     );
 
     // Construct with a puzzle
-    Room roomPuzzle = new Room(20, "D", "descD", exits, entities, monster);
+    Room roomPuzzle = new Room(20, "D", "descD", exits, entities, monster,"");
     assertEquals(20, roomPuzzle.getId());
     assertEquals("D", roomPuzzle.getName());
     assertEquals("descD", roomPuzzle.getDescription());
@@ -165,10 +169,10 @@ public class RoomTest {
 
     // Remove existing entity
     assertTrue(room.removeEntity(itemA));
-    assertFalse(room.hasEntity(itemA));
+    Assertions.assertFalse(room.hasEntity(itemA));
 
     assertTrue(room.removeEntity(itemB));
-    assertFalse(room.hasEntity(itemB));
+    Assertions.assertFalse(room.hasEntity(itemB));
   }
 
   /**
@@ -252,10 +256,12 @@ public class RoomTest {
     Puzzle<String> puzzle = new Puzzle<>(
             "PuzzleName", "A puzzle description",
             true, false, false, "Solution",
-            50, "puzzleEffects", "puzzleTarget", "puzzlePic"
+            50, "puzzleEffects", "puzzleTarget", "puzzlePic",
+            new StringSolutionValidator()
     );
 
-    Room<?> puzzleRoom = new Room(8, "H", "descH", exits, entities, puzzle);
+    Room<Puzzle<String>> puzzleRoom = new Room<Puzzle<String>>(8, "H", "descH", exits, entities, puzzle,
+            "");
     assertEquals(puzzle, puzzleRoom.getProblem());
   }
 

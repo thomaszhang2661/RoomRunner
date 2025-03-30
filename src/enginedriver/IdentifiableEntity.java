@@ -20,11 +20,22 @@ public abstract class IdentifiableEntity
    * Constructor for an identifiable entity.
    * Room can use field of id.
    */
+  public IdentifiableEntity(int id, String name, String description, String pictureName) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.pictureName = pictureName;
+  }
+
+  /**
+   * Constructor for an identifiable entity.
+   * Room can use field of id.
+   */
   public IdentifiableEntity(int id, String name, String description) {
     this.id = id;
     this.name = name;
     this.description = description;
-    this.pictureName = null;
+    this.pictureName = "";
   }
 
   /**

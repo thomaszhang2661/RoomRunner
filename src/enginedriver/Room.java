@@ -4,13 +4,14 @@ import java.util.Map;
 
 import enginedriver.problems.Monster;
 import enginedriver.problems.IProblem;
+import enginedriver.problems.Puzzle;
 
 /**
  * class for a room in the game.
  */
-public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEntity> {
+public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
-  private T problem;
+  private final T problem;
 
 
   /**
@@ -50,8 +51,8 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
               Map<String, IdentifiableEntity> entityNames,
-              T problem) {
-    super(id, name, description, entityNames);
+              T problem, String pictureName) {
+    super(id, name, description, entityNames, pictureName);
     this.exits = exits;
     this.problem = problem;
   }
@@ -72,45 +73,45 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
     exits.put(key, Math.abs(exits.get(key)));
   }
 
-  /**
-   * adds an entity to the room.
-   */
-  public boolean addEntity(IdentifiableEntity entity) {
-    return super.addEntity(entity);
-  }
+  //  /**
+  //   * adds an entity to the room.
+  //   */
+  //  public boolean addEntity(IdentifiableEntity entity) {
+  //    return super.addEntity(entity);
+  //  }
 
-  /**
-   * removes an entity from the room.
-   */
-  public boolean removeEntity(IdentifiableEntity entity) {
-    return super.removeEntity(entity);
-  }
+  //  /**
+  //   * removes an entity from the room.
+  //   */
+  //  public boolean removeEntity(IdentifiableEntity entity) {
+  //    return super.removeEntity(entity);
+  //  }
 
-  /**
-   *  Check if the room has an entity, check by object.
-   */
-  public Boolean  hasEntity(IdentifiableEntity entity) {
-    return super.hasEntity(entity);
-  }
+  //  /**
+  //   *  Check if the room has an entity, check by object.
+  //   */
+  //  public Boolean  hasEntity(IdentifiableEntity entity) {
+  //    return super.hasEntity(entity);
+  //  }
 
-  /**
-   *  Check if the room has an entity check by name.
-   */
-  public Boolean  hasEntity(String entityName) {
-    return super.hasEntity(entityName);
-  }
+  //  /**
+  //   *  Check if the room has an entity check by name.
+  //   */
+  //  public Boolean  hasEntity(String entityName) {
+  //    return super.hasEntity(entityName);
+  //  }
 
-  /**
-   *  get an Entity from the room.
-   */
-  public <U extends IdentifiableEntity> U getEntity(
-          String entityName, Class<U> clazz) {
-    return super.getEntity(entityName, clazz);
-  }
-
-  public  Map<String, IdentifiableEntity > getEntities() {
-    return super.getEntities();
-  }
+  //  /**
+  //   *  get an Entity from the room.
+  //   */
+  //  public <U extends IdentifiableEntity> U getEntity(
+  //          String entityName, Class<U> clazz) {
+  //    return super.getEntity(entityName, clazz);
+  //  }
+  //
+  //  public  Map<String, IdentifiableEntity> getEntities() {
+  //    return super.getEntities();
+  //  }
 
 
 
@@ -141,26 +142,38 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
 
   @Override
   public String toString() {
-    return "{ "
-            + "\"room_name\":\"" + getName() + "\","
-            + "\"room_number\":\"" + getId() + "\","
-            + "\"description\":\"" + getDescription() + "\","
-            + "\"N\":\"" + getExits().get("N") + "\","
-            + "\"S\":\"" + getExits().get("S") + "\","
-            + "\"E\":\"" + getExits().get("E") + "\","
-            + "\"W\":\"" + getExits().get("W") + "\","
-            + (getProblem() instanceof Monster
-                    // is a monster
-                    ? "\"puzzle\":null,\"monster\":\"" + getProblem() + "\","
-                    : (getProblem() != null
-                    // is a puzzle
-                    ? "\"puzzle\":\"" + getProblem() + "\",\"monster\":null,"
-                    // both is null
-                    : "\"puzzle\":null,\"monster\":null,"))
-            + "\"items\":\"" + getElementNames(Item.class) + "\","
-            + "\"fixtures\":\"" + getElementNames(Fixture.class) + "\","
-            + "\"picture\":\"" + getPicture() + "\""
-            + " }";
-  }
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
 
+    sb.append("\"room_name\":\"").append(getName()).append("\",");
+    sb.append("\"room_number\":\"").append(getId()).append("\",");
+    sb.append("\"description\":\"").append(getDescription()).append("\",");
+
+    sb.append("\"N\":\"").append(exits.get("N")).append("\",");
+    sb.append("\"S\":\"").append(exits.get("S")).append("\",");
+    sb.append("\"E\":\"").append(exits.get("E")).append("\",");
+    sb.append("\"W\":\"").append(exits.get("W")).append("\",");
+
+    if (problem instanceof Puzzle) {
+      sb.append("\"puzzle\":\"").append(problem.getName()).append("\",");
+      sb.append("\"monster\":null,");
+    } else if (problem instanceof Monster) {
+      sb.append("\"puzzle\":null,");
+      sb.append("\"monster\":\"").append(problem.getName()).append("\",");
+    } else {
+      sb.append("\"puzzle\":null,");
+      sb.append("\"monster\":null,");
+    }
+
+    String items = getElementNames(Item.class);
+    sb.append("\"items\":").append(items.isEmpty() ? "null" : "\"" + items + "\"").append(",");
+
+    String fixtures = getElementNames(Fixture.class);
+    sb.append("\"fixtures\":").append(fixtures.isEmpty() ? "null" : "\"" + fixtures + "\"").append(",");
+
+    sb.append("\"picture\":").append(getPictureName());
+
+    sb.append("}");
+    return sb.toString();
+  }
 }

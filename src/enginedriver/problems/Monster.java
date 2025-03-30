@@ -1,6 +1,8 @@
 package enginedriver.problems;
 
+import enginedriver.Item;
 import enginedriver.Player;
+import enginedriver.problems.validator.SolutionValidator;
 
 /**
  * Class for monsters in the game.
@@ -16,17 +18,18 @@ public class Monster<T> extends Problem<T> {
   public Monster(String name,
                 String description,
                 Boolean active,
-                Boolean affects_target,
+                Boolean affectsTarget,
                 Boolean canAttack,
-                Boolean affects_player,
+                Boolean affectsPlayer,
                 T solution,
                 int value,
                 int damage,
                 String effects,
-                String target, String pictureName, String attack) {
-    super(name, description, active, affects_target,
-            affects_player, solution, value, effects, target,
-            pictureName);
+                String target, String pictureName, String attack,
+                 SolutionValidator<T> validator) {
+    super(name, description, active, affectsTarget,
+            affectsPlayer, solution, value, effects, target,
+            pictureName, validator);
     this.attack = attack;
     this.damage = damage;
     this.canAttack = canAttack;
@@ -89,7 +92,7 @@ public class Monster<T> extends Problem<T> {
    */
   public void attack(Player player) {
     // Attack the player
-    if (super.getActive() && super.getAffects_player()) {
+    if (super.getActive() && super.getAffectsPlayer()) {
       player.gainOrLoseHealth(-Math.abs(damage));
     }
   }
@@ -123,14 +126,24 @@ public class Monster<T> extends Problem<T> {
 
   @Override
   public String toString() {
+    String solutionStr;
+    Object solution = getSolution();
+    // is an Item
+    if (solution instanceof Item) {
+      solutionStr = ((Item) solution).getName();
+      // is a String or null
+    } else {
+      solutionStr = solution.toString();
+    }
+
     return "{ "
             + "\"name\":\"" + getName() + "\","
             + "\"active\":\"" + getActive() + "\","
-            + "\"affects_target\":\"" + getAffects_target() + "\","
-            + "\"affects_player\":\"" + getAffects_player() + "\","
-            + "\"solution\":\"" + getSolution() + "\","
+            + "\"affects_target\":\"" + getAffectsTarget() + "\","
+            + "\"affects_player\":\"" + getAffectsPlayer() + "\","
+            + "\"solution\":\"" + solutionStr + "\","
             + "\"value\":\"" + getValue() + "\","
-            + "\"description\":\"" + getDescription() + "\","
+            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
             + "\"effects\":\"" + getEffects() + "\","
             + "\"damage\":\"" + getDamage() + "\","
             + "\"target\":\"" + getTarget() + "\","

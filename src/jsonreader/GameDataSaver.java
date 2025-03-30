@@ -1,7 +1,6 @@
 package jsonreader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import enginedriver.GameController;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,7 +8,7 @@ import java.io.IOException;
 
 /**
  * The GameDataSaver class is responsible for saving game data to a JSON file.
- * It uses Jackson to write the game controller state to a file.
+ * It uses the toString() method of GameController to write the game controller state to a file.
  */
 public class GameDataSaver {
   /**
@@ -19,19 +18,40 @@ public class GameDataSaver {
    * @param fileName   the name of the file to save to
    * @throws IOException if an error occurs during saving
    */
-  public static void saveGameJson(GameController controller, String fileName)
-          throws IOException {
-    // Check if the file already exists
-    File file = new File(fileName);
-    if (file.exists()) {
-      throw new IOException("File already exists: " + fileName);
+  public static void saveGameJson(GameController controller, String fileName) throws IOException {
+    // generate gameWorld part of JSON
+    String gameWorldJson = controller.getGameWorld().toString().replace("\"null\"", "null");
+
+    // generate player part of JSON
+    String playerJson = controller.getPlayer().toString().replace("\"null\"", "null");
+
+    // combine gameWorld and player JSON strings
+    String fullJson = gameWorldJson.substring(0, gameWorldJson.length() - 1) // 去掉最后的 }
+            + ",\"player\":" + playerJson + "}";
+
+    // check if the JSON is valid
+    if (!isValidJson(fullJson)) {
+      throw new IOException("Generated invalid JSON: " + fullJson);
     }
 
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
-
+    // write the JSON to a file
     try (FileWriter writer = new FileWriter(fileName)) {
-      writer.write(mapper.writeValueAsString(controller));
+      writer.write(fullJson);
+    }
+  }
+
+  /**
+   * Validate if a string is a valid JSON format.
+   *
+   * @param jsonString the string to validate
+   * @return true if the string is valid JSON, false otherwise
+   */
+  private static boolean isValidJson(String jsonString) {
+    try {
+      new ObjectMapper().readTree(jsonString); // Try to parse the string
+      return true;
+    } catch (IOException e) {
+      return false; // If parsing fails, it's not valid JSON
     }
   }
 }

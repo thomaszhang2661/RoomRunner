@@ -8,6 +8,7 @@ import java.util.Map;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
+import jsonreader.GameDataLoader;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -20,7 +21,6 @@ public class GameController {
 
   /**
    * Constructor for GameController.
-
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
@@ -39,6 +39,14 @@ public class GameController {
     actionMap.put("USE", "U");
     actionMap.put("INVENTORY", "I");
     actionMap.put("ANSWER", "A");
+  }
+
+  public GameWorld getGameWorld() {
+    return gameWorld;
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
   /*
@@ -285,8 +293,8 @@ public class GameController {
       boolean flag = itemproblem.solve(itemAttempt);
       if (flag) {
         viewer.showText("You have successfully solved the problem with " + itemName);
-        if (itemproblem.getAffects_target()) {
-          itemproblem.affectPlayer(player);
+        if (itemproblem.getAffectsTarget()) {
+          itemproblem.getAffectsPlayer();
         }
         unlockExits(currentRoom); // update room exits
 
@@ -351,16 +359,18 @@ public class GameController {
     }
   }
 
+  //  private void handleProblemSolution(IProblem<?> problem, solution) {
+  //    viewer.showText("You have successfully solved the puzzle!");
+  //    // Unlock the exit of the room
+  //    unlockExits(room);
+  //    // Add the score to the player
+  //    player.addScore(problem.getValue());
+  //  }
+
+
 //  private void handleProblemSolution(IProblem<?> problem, solution) {
-//    viewer.showText("You have successfully solved the puzzle!");
-//    // Unlock the exit of the room
-//    unlockExits(room);
-//    // Add the score to the player
-//    player.addScore(problem.getValue());
+//
 //  }
-
-
-  private void handleProblemSolution(IProblem<?> problem, solution) {
 
 
     /**
@@ -400,7 +410,8 @@ public class GameController {
     if (puzzle.getSolution() instanceof String) {
       Puzzle<String> puzzleString = (Puzzle<String>) puzzle;
       if (puzzleString.solve(objectName)) {
-        handlePuzzleSolution(currentRoom, puzzleString);
+        //handlePuzzleSolution(currentRoom, puzzleString);
+
       } else {
         viewer.showText("Your answer is not right.");
       }
@@ -453,7 +464,7 @@ public class GameController {
   private void handleMonsterAttack(IProblem problem) {
     if (problem instanceof Monster && problem.getActive()) {
       Monster<?> monster = (Monster) problem;
-      if (monster.getAffect_player() && monster.canAttack())
+      if (monster.getAffectsPlayer() && monster.getCanAttack())
         monster.attack(player);
         viewer.showText(monster.getAttack());
     }

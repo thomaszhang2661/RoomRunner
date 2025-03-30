@@ -14,10 +14,18 @@ import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
 import enginedriver.Player;
 
+/**
+ * Test class for Player.
+ */
 public class PlayerTest {
   private Player player;
-  private Item lamp, thumbDrive, carrot;
+  private Item lamp;
+  private Item thumbDrive;
+  private Item carrot;
 
+  /**
+   * Set up the test environment.
+   */
   @Before
   public void setUp() {
     // Test creation without score
@@ -30,10 +38,10 @@ public class PlayerTest {
     thumbDrive = new Item("Thumb Drive", "A USB thumb drive for computers",
             1000, 1000, 150, 1,
             "You insert the thumb drive.");
-    carrot = new Item("Carrot", "A carrot. But not just any carrot, " +
-            "but a HUGE carrot! Bigger than you've seen before.", 1, 1,
-            5, 50, "You apply the Mod 2 operator " +
-            "and take note of the remainder.");
+    carrot = new Item("Carrot", "A carrot. But not just any carrot, "
+            + "but a HUGE carrot! Bigger than you've seen before.", 1, 1,
+            5, 50, "You apply the Mod 2 operator "
+            + "and take note of the remainder.");
 
     // Initialize player with a starting inventory
     Map<String, Item> items = new HashMap<>();

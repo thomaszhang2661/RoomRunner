@@ -1,9 +1,12 @@
 package enginedriver.problems;
 
+import enginedriver.Item;
+import enginedriver.problems.validator.SolutionValidator;
+
 /**
  * Class for puzzles in the game.
  */
-public class Puzzle<T> extends Problem<T>{
+public class Puzzle<T> extends Problem<T> {
 
   /**
    * Constructor for Puzzle.
@@ -11,15 +14,16 @@ public class Puzzle<T> extends Problem<T>{
   public Puzzle(String name,
                 String description,
                 Boolean active,
-                Boolean affects_target,
-                Boolean affects_player,
+                Boolean affectsTarget,
+                Boolean affectsPlayer,
                 T solution,
                 int value,
                 String effects,
-                String target, String pictureName) {
-    super(name, description, active, affects_target,
-            affects_player, solution, value, effects, target,
-            pictureName);
+                String target, String pictureName, SolutionValidator<T> validator) {
+
+    super(name, description, active, affectsTarget,
+            affectsPlayer, solution, value, effects, target,
+            pictureName, validator);
   }
 
 
@@ -75,17 +79,27 @@ public class Puzzle<T> extends Problem<T>{
 
   @Override
   public String toString() {
-    return "{ " +
-            "\"name\":\"" + getName() + "\"," +
-            "\"active\":\"" + getActive() + "\"," +
-            "\"affects_target\":\"" + getAffects_target() + "\"," +
-            "\"affects_player\":\"" + getAffects_player() + "\"," +
-            "\"solution\":\"" + getSolution() + "\"," +
-            "\"value\":\"" + getValue() + "\"," +
-            "\"description\":\"" + getDescription() + "\"," +
-            "\"effects\":\"" + getEffects() + "\"," +
-            "\"target\":\"" + getTarget() + "\"," +
-            "\"picture\":\"" + getPicture() + "\"" +
-            " }";
+    String solutionStr;
+    Object solution = getSolution();
+    // is an Item
+    if (solution instanceof Item) {
+      solutionStr = ((Item) solution).getName();
+    // is a String or null
+    } else {
+      solutionStr = solution.toString();
+    }
+
+    return "{ "
+            + "\"name\":\"" + getName() + "\","
+            + "\"active\":\"" + getActive() + "\","
+            + "\"affects_target\":\"" + getAffectsTarget() + "\","
+            + "\"affects_player\":\"" + getAffectsPlayer() + "\","
+            + "\"solution\":\"" + solutionStr + "\","
+            + "\"value\":\"" + getValue() + "\","
+            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
+            + "\"effects\":\"" + getEffects() + "\","
+            + "\"target\":\"" + getTarget() + "\","
+            + "\"picture\":\"" + getPictureName() + "\""
+            + " }";
   }
 }

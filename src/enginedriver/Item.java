@@ -1,7 +1,7 @@
 package enginedriver;
 
 import java.awt.Image;
-import java.util.Objects;
+
 
 /**
  * Class for items in the game.
@@ -20,11 +20,11 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
    * Constructor for an item.
    */
   public Item(String name, String description, int maxUses,
-                                         int remainingUses,
-                                         int value,
-                                         int weight,
-              String whenUsed) {
-    super(name, description);
+              int remainingUses, int value,
+              int weight, String whenUsed, String pictureName) {
+    super(name, description, pictureName);
+
+
 
     if (remainingUses < 0) {
       throw new IllegalArgumentException("Remaining uses of an item cannot be less than 0");
@@ -39,6 +39,32 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
     this.whenUsed = whenUsed;
 
   }
+
+  /**
+   * Constructor for an item.
+   */
+  public Item(String name, String description, int maxUses,
+              int remainingUses, int value,
+              int weight, String whenUsed) {
+    super(name, description);
+
+
+
+    if (remainingUses < 0) {
+      throw new IllegalArgumentException("Remaining uses of an item cannot be less than 0");
+    }
+    if (maxUses < 0) {
+      throw new IllegalArgumentException("Max uses of an item cannot be less than 0");
+    }
+    this.maxUses = maxUses;
+    this.remainingUses = remainingUses;
+    this.value = value;
+    this.weight = weight;
+    this.whenUsed = whenUsed;
+
+  }
+
+
 
   /**
    * Constructor for an item with no max uses.
@@ -70,29 +96,29 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
     return weight;
   }
 
-  public String getWhenUsed() {
+  public String  getWhenUsed() {
     return whenUsed;
   }
 
-  @Override
-  public int getId() {
-    return super.getId();
-  }
-
-  @Override
-  public String getName() {
-    return super.getName();
-  }
-
-  @Override
-  public String getDescription() {
-    return super.getDescription();
-  }
-
-  @Override
-  public Image getPicture() {
-    return null;
-  }
+  //  @Override
+  //  public int getId() {
+  //    return super.getId();
+  //  }
+  //
+  //  @Override
+  //  public String getName() {
+  //    return super.getName();
+  //  }
+  //
+  //  @Override
+  //  public String getDescription() {
+  //    return super.getDescription();
+  //  }
+  //
+  //  @Override
+  //  public Image getPicture() {
+  //    return null;
+  //  }
 
   @Override
   public String toString() {
@@ -103,8 +129,8 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
             + "\"uses_remaining\":\"" + getRemainingUses() + "\","
             + "\"value\":\"" + getValue() + "\","
             + "\"when_used\":\"" + getWhenUsed() + "\","
-            + "\"description\":\"" + getDescription() + "\","
-            + "\"picture\":\"" + getPicture() + "\""
+            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
+            + "\"picture\":\"" + getPictureName() + "\""
             + " }";
   }
 

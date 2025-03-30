@@ -12,6 +12,10 @@ import jsonreader.GameWorldDeserializer;
 import jsonreader.PlayerDeserializer;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for deserialization of GameWorld and Player objects.
+ * This test class also works as GameDataLoaderTest.
+ */
 class DeserializationTest {
 
   @Test
@@ -28,6 +32,7 @@ class DeserializationTest {
     assertEquals(5, gameWorld.getRooms().size());
     assertTrue(gameWorld.getRooms().containsKey(1));
     assertTrue(gameWorld.getRooms().containsKey(5));
+    assertNotNull(gameWorld.getRooms().get(1).getProblem());
   }
 
   @Test
