@@ -9,6 +9,8 @@ import enginedriver.problems.Monster;
 import enginedriver.problems.Problem;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
+import jsonreader.GameDataLoader;
+import jsonreader.GameDataSaver;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -438,24 +440,35 @@ public class GameController {
    * Quit the game.
    */
   private void quit() {
-    // Logic to quit the game
-    //TODO
+    viewer.showText("Quitting...");
+    System.exit(0);
   }
 
   /**
    * Save the game state.
    */
   private void save() {
-    // Logic to save the game state
-    //TODO
+    try {
+      String fileName = gameWorld.getName() + ".json";
+      GameDataSaver.saveGameJson(this, fileName);
+      viewer.showText("Game saved successfully as " + fileName);
+    } catch (Exception e) {
+      viewer.showText("Failed to save game: " + e.getMessage());
+    }
   }
 
   /**
    * Restore the game state.
    */
   private void restore() {
-    // Logic to restore the game state
-    //TODO
+    try {
+      String fileName = gameWorld.getName() + ".json";
+      this.gameWorld = GameDataLoader.loadGameWorld(fileName);
+      this.player = GameDataLoader.loadPlayer(fileName, this.gameWorld);
+      viewer.showText("Game restored successfully from " + fileName);
+    } catch (Exception e) {
+      viewer.showText("Failed to restore game: " + e.getMessage());
+    }
   }
 
   /**
