@@ -187,13 +187,13 @@ class MonsterTest {
   @Test
   void testSolveCorrectSolution() {
     // Solve Rabbit
-    boolean rabbitSolved = rabbit.solve("Carrot");
-    assertTrue(rabbitSolved, "Rabbit should be solved with the correct solution.");
+    int rabbitSolved = rabbit.solve("Carrot");
+    assertEquals(1, rabbitSolved, "Rabbit should be solved with the correct solution.");
     assertFalse(rabbit.getActive(), "Rabbit should become inactive after solving.");
 
     // Solve Teddy Bear
-    boolean teddyBearSolved = teddyBear.solve("Hair Clippers");
-    assertTrue(teddyBearSolved, "Teddy Bear should be solved with the correct solution.");
+    int teddyBearSolved = teddyBear.solve("Hair Clippers");
+    assertEquals(1, teddyBearSolved, "Teddy Bear should be solved with the correct solution.");
     assertFalse(teddyBear.getActive(), "Teddy Bear should become inactive after solving.");
   }
 
@@ -201,13 +201,13 @@ class MonsterTest {
   @Test
   void testSolveIncorrectSolution() {
     // Incorrect solution for Rabbit
-    boolean rabbitSolved = rabbit.solve("WrongSolution");
-    assertFalse(rabbitSolved, "Rabbit should not be solved with an incorrect solution.");
+    int rabbitSolved = rabbit.solve("WrongSolution");
+    assertEquals(2, rabbitSolved, "Rabbit should not be solved with an incorrect solution.");
     assertTrue(rabbit.getActive(), "Rabbit should remain active after failed solution.");
 
     // Incorrect solution for Teddy Bear
-    boolean teddyBearSolved = teddyBear.solve("WrongSolution");
-    assertFalse(teddyBearSolved, "Teddy Bear should not be "
+    int teddyBearSolved = teddyBear.solve("WrongSolution");
+    assertEquals(2, teddyBearSolved, "Teddy Bear should not be "
             + "solved with an incorrect solution.");
     assertTrue(teddyBear.getActive(), "Teddy Bear should "
             + "remain active after failed solution.");

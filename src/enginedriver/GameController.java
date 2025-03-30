@@ -290,8 +290,8 @@ public class GameController {
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
     if (solutionClass == Item.class) {
       IProblem<Item> itemproblem = (IProblem<Item>) problem;
-      boolean flag = itemproblem.solve(itemAttempt);
-      if (flag) {
+      int flag = itemproblem.solve(itemAttempt);
+      if (flag == 1) {
         viewer.showText("You have successfully solved the problem with " + itemName);
         if (itemproblem.getAffectsTarget()) {
           itemproblem.getAffectsPlayer();
@@ -368,9 +368,14 @@ public class GameController {
   //  }
 
 
-//  private void handleProblemSolution(IProblem<?> problem, solution) {
-//
-//  }
+  private void handleProblemSolution<T>(IProblem<T> problem, String solutionAttempt) {
+    // 1 判断solution是不是item
+
+    // 2 确定 solution类型
+
+    // 3调用solve
+
+  }
 
 
     /**
