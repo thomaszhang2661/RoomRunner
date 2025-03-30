@@ -4,6 +4,7 @@ import java.util.Map;
 
 import enginedriver.problems.Monster;
 import enginedriver.problems.IProblem;
+import enginedriver.problems.Puzzle;
 
 /**
  * class for a room in the game.
@@ -50,7 +51,7 @@ public class Room<T extends IProblem>  extends  EntityContainer<IdentifiableEnti
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
               Map<String, IdentifiableEntity> entityNames,
-              T problem) {
+              T problem, String pictureName) {
     super(id, name, description, entityNames);
     this.exits = exits;
     this.problem = problem;

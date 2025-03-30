@@ -1,5 +1,6 @@
 package enginedriver.problems;
 
+import enginedriver.Item;
 import enginedriver.Player;
 
 /**

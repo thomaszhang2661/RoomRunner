@@ -1,5 +1,7 @@
 package enginedriver.problems;
 
+import enginedriver.Item;
+
 /**
  * Class for puzzles in the game.
  */

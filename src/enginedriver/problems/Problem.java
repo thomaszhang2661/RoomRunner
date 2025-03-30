@@ -24,7 +24,6 @@ public abstract class Problem<T> extends IdentifiableEntity
   private final int value;
   private final String effects;
   private Map<Integer,String >  target;
-  private String pictureName;
 
 
 
@@ -48,7 +47,6 @@ public abstract class Problem<T> extends IdentifiableEntity
     String roomName = parts[1].trim();
     this.target = Map.of(roomNumber, roomName);
 
-    this.pictureName = pictureName;
     this.solution = solution;
 
     //get the type of solution
@@ -96,12 +94,6 @@ public abstract class Problem<T> extends IdentifiableEntity
   @Override
   public int getValue() {
     return value;
-  }
-
-
-  @Override
-  public String getPictureName() {
-    return pictureName;
   }
 
   @Override

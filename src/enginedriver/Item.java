@@ -20,11 +20,9 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
    * Constructor for an item.
    */
   public Item(String name, String description, int maxUses,
-                                         int remainingUses,
-                                         int value,
-                                         int weight,
-              String whenUsed) {
-    super(name, description);
+              int remainingUses, int value,
+              int weight, String whenUsed, String pictureName) {
+    super(name, description, pictureName);
 
     if (remainingUses < 0) {
       throw new IllegalArgumentException("Remaining uses of an item cannot be less than 0");
