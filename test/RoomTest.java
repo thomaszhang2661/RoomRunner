@@ -96,7 +96,7 @@ public class RoomTest {
     // Create Monster
     Monster<String> monster = new Monster<>(
             "MonsterName", "A monster description",
-            true, true, true, "MonsterSolution",
+            true, true, true, true,"MonsterSolution",
             100, 10, "monsterEffects", "monsterTarget",
             "monsterPic", "BiteAttack"
     );
