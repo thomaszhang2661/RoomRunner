@@ -26,6 +26,7 @@ class MonsterTest {
                     + "Makes you want to pet him",
             true, // Active
             true, // Affects target
+            true, // Can attack
             true, // Affects player
             "Carrot", // Solution
             300, // Value
@@ -43,6 +44,7 @@ class MonsterTest {
             "A peaceful, cute-looking teddy bear with its hair clipped sits on the floor",
             true, // Active
             true, // Affects target
+            true, // Can attack
             true, // Affects player
             "Hair Clippers", // Solution
             200, // Value
@@ -79,6 +81,56 @@ class MonsterTest {
     assertEquals("3:Foyer", teddyBear.getTarget());
     assertEquals("hits you with soft, fluffy paws! You might sneeze!",
             teddyBear.getAttack());
+  }
+
+  /**
+   * Test the getID method of Monster.
+   */
+  @Test
+  void testMonsterGetID() {
+    // Validate Rabbit ID
+    assertEquals(-1, rabbit.getId());
+
+    // Validate Teddy Bear ID
+    assertEquals(-1, teddyBear.getId());
+  }
+
+  /**
+   * Test the getName method of Monster.
+   */
+  @Test
+  void testMonsterGetName() {
+    // Validate Rabbit Name
+    assertEquals("Rabbit", rabbit.getName());
+
+    // Validate Teddy Bear Name
+    assertEquals("Teddy Bear", teddyBear.getName());
+  }
+
+  /**
+   * Test the getEffects method of Monster.
+   */
+  @Test
+  void testMonsterGetEffects() {
+    // Validate Rabbit Effects
+    assertEquals("A monster Rabbit moves towards you! He's blocking the way north.\n" +
+            "I think you might be dinner!", rabbit.getEffects());
+
+    // Validate Teddy Bear Effects
+    assertEquals("A monster Teddy Bear growls at you! You cannot get past!",
+            teddyBear.getEffects());
+  }
+
+  /**
+   * Test getPicture method of Monster.
+   */
+  @Test
+  void testMonsterGetPicture() {
+    // Validate Rabbit Picture
+    assertEquals(null, rabbit.getPicture());
+
+    // Validate Teddy Bear Picture
+    assertEquals(null, teddyBear.getPicture());
   }
 
   // Test Solve with Correct Solution
@@ -142,5 +194,21 @@ class MonsterTest {
     teddyBear.attack(player);
     assertEquals(100, player.getHealth(), "Player health should "
             + "remain unchanged when inactive Teddy Bear attacks.");
+  }
+
+  /**
+   * Test the toString method of Monster.
+   */
+  @Test
+  void testMonsterToString() {
+    String expected = "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\","
+            + "\"affects_player\":\"true\",\"solution\":\"Carrot\",\"value\":\"300\","
+            + "\"description\":\"Awww. A furry rabbit twitching its nose and eating a carrot. "
+            + "Makes you want to pet him\",\"effects\":\"A monster Rabbit moves towards you! "
+            + "He's blocking the way north.\nI think you might be dinner!\","
+            + "\"damage\":\"-15\",\"target\":\"7:Dining Room\",\"can_attack\":\"false\","
+            + "\"attack\":\"licks you with a giant tongue!\",\"picture\":\"monster-rabbit.png\" }";
+
+    assertEquals(expected, rabbit.toString());
   }
 }

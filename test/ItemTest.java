@@ -61,6 +61,24 @@ public class ItemTest {
   }
 
   /**
+   * Test setUseRemain method.
+   */
+  @Test
+  void testSetUseRemain() {
+    Item item = new Item("A", "desc", 5, 2,
+            100, 10, "when used");
+    item.setRemainingUses(3);
+    assertEquals(3, item.getRemainingUses());
+
+    // Test invalid remaining uses
+    try {
+      item.setRemainingUses(-1);
+      fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Remaining uses of an item cannot be less than 0", e.getMessage());
+    }
+  }
+  /**
    * Test getUseMax method.
    */
   @Test
@@ -160,6 +178,25 @@ public class ItemTest {
     Item item = new Item("A", "desc", 5, 2,
             100, 10, "when used");
     assertNull(item.getPicture());
+  }
+
+  /**
+   * Test equals method.
+   */
+  @Test
+  void testEquals() {
+    Item item1 = new Item("A", "desc", 5, 2,
+            100, 10, "when used");
+    Item item2 = new Item("A", "desc", 5, 2,
+            100, 10, "when used");
+    Item item3 = new Item("B", "desc", 5, 2,
+            100, 10, "when used");
+
+    assertTrue(item1.equals(item2));
+    assertFalse(item1.equals(item3));
+    assertFalse(item1.equals(null));
+    assertFalse(item1.equals("Not an Item"));
+    assertEquals(item1.hashCode(), item2.hashCode());
   }
 
   /**
