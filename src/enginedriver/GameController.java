@@ -450,7 +450,9 @@ public class GameController {
   private void save() {
     try {
       String fileName = gameWorld.getName() + ".json";
+
       GameDataSaver.saveGameJson(this, fileName);
+
       viewer.showText("Game saved successfully as " + fileName);
     } catch (Exception e) {
       viewer.showText("Failed to save game: " + e.getMessage());
@@ -463,8 +465,13 @@ public class GameController {
   private void restore() {
     try {
       String fileName = gameWorld.getName() + ".json";
-      this.gameWorld = GameDataLoader.loadGameWorld(fileName);
-      this.player = GameDataLoader.loadPlayer(fileName, this.gameWorld);
+
+      GameWorld newGameWorld = GameDataLoader.loadGameWorld(fileName);
+      Player newPlayer = GameDataLoader.loadPlayer(fileName, newGameWorld);
+
+      this.gameWorld = newGameWorld;
+      this.player = newPlayer;
+
       viewer.showText("Game restored successfully from " + fileName);
     } catch (Exception e) {
       viewer.showText("Failed to restore game: " + e.getMessage());
