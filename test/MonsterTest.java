@@ -5,13 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import enginedriver.Player;
 import enginedriver.problems.Monster;
 import enginedriver.problems.validator.StringSolutionValidator;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import javax.imageio.ImageIO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit Test for Monster class.
@@ -136,7 +134,7 @@ class MonsterTest {
   }
 
 
-  // 图片比对方法（逐像素比对）
+  // Method to compare two images
   private boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
     if (imgA.getWidth() != imgB.getWidth() || imgA.getHeight() != imgB.getHeight()) {
       return false;
