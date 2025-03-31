@@ -2,7 +2,6 @@ package jsonreader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import enginedriver.GameController;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 

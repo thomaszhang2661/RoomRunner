@@ -2,20 +2,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import enginedriver.problems.validator.SolutionValidator;
-import enginedriver.problems.validator.StringSolutionValidator;
-import  enginedriver.problems.validator.ItemSolutionValidator;
 import enginedriver.Fixture;
 import enginedriver.GameController;
 import enginedriver.GameWorld;
+import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
 import enginedriver.Player;
 import enginedriver.Room;
-import java.util.HashMap;
-import java.util.Map;
-import enginedriver.*;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
+import enginedriver.problems.validator.ItemSolutionValidator;
+import enginedriver.problems.validator.StringSolutionValidator;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +24,8 @@ import org.junit.jupiter.api.Test;
  */
 public class GameControllerTest {
 
-  private GameWorld gameWorld;
-  private Player player;
+  private GameWorld tempGameWorld;
+  private Player tempPlayer;
   private GameController gameController;
 
 
@@ -144,7 +143,7 @@ public class GameControllerTest {
 
     Item currentItem = items.get("Hair Clippers");
     Fixture currentFixture = fixtures.get("Billboard");
-    Map<String,IdentifiableEntity> entities = new HashMap<>();
+    Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("Hair Clippers", currentItem);
     entities.put("Billboard", currentFixture);
 
@@ -303,38 +302,38 @@ public class GameControllerTest {
 
 
     // Initialize game world
-    gameWorld = new GameWorld("Align Quest", "1.0.9", rooms);
+    tempGameWorld = new GameWorld("Align Quest", "1.0.9", rooms);
 
     // Initialize player
-    player = new Player("TestPlayer", 100, 10, 0);
-    player.setRoomNumber(1);
+    tempPlayer = new Player("TestPlayer", 100, 10, 0);
+    tempPlayer.setRoomNumber(1);
 
     // Initialize game controller
-    gameController = new GameController(gameWorld, player);
+    gameController = new GameController(tempGameWorld, tempPlayer);
   }
 
   @Test
   void testMoveNorth() {
     gameController.processCommand("N");
-    assertEquals(2, player.getRoomNumber());
+    assertEquals(2, tempPlayer.getRoomNumber());
   }
 
   @Test
   void testTakeItem() {
     gameController.processCommand("TAKE Hair Clippers");
-    assertTrue(player.getEntities().containsKey("Hair Clippers"));
+    assertTrue(tempPlayer.getEntities().containsKey("Hair Clippers"));
   }
 
   @Test
   void testDropItem() {
     gameController.processCommand("TAKE Hair Clippers");
     gameController.processCommand("DROP Hair Clippers");
-    assertFalse(player.getEntities().containsKey("Hair Clippers"));
-    assertTrue(gameWorld.getRoom(1).getEntities().containsKey("Hair Clippers"));
-    player.addItem(gameWorld.getRoom(8).getItem("Carrot"));
+    assertFalse(tempPlayer.getEntities().containsKey("Hair Clippers"));
+    assertTrue(tempGameWorld.getRoom(1).getEntities().containsKey("Hair Clippers"));
+    tempPlayer.addItem(tempGameWorld.getRoom(8).getItem("Carrot"));
     gameController.processCommand("DROP Carrot");
-    assertFalse(player.getEntities().containsKey("Carrot"));
-    assertTrue(gameWorld.getRoom(1).getEntities().containsKey("Carrot"));
+    assertFalse(tempPlayer.getEntities().containsKey("Carrot"));
+    assertTrue(tempGameWorld.getRoom(1).getEntities().containsKey("Carrot"));
   }
 
   @Test
@@ -356,14 +355,14 @@ public class GameControllerTest {
 
   @Test
   void testHandleMonster() {
-    player.setRoomNumber(7); //get in monster room
+    tempPlayer.setRoomNumber(7); //get in monster room
     gameController.processCommand("look");
     // add item carrot to player
-    player.addItem(gameWorld.getRoom(8).getItem("Carrot"));
-    assertTrue(gameWorld.getRoom(7).getProblem().getActive());
-    player.setRoomNumber(7);
+    tempPlayer.addItem(tempGameWorld.getRoom(8).getItem("Carrot"));
+    assertTrue(tempGameWorld.getRoom(7).getProblem().getActive());
+    tempPlayer.setRoomNumber(7);
     gameController.processCommand("USE Carrot");
-    assertFalse(gameWorld.getRoom(7).getProblem().getActive());
+    assertFalse(tempGameWorld.getRoom(7).getProblem().getActive());
   }
 
   @Test
@@ -377,17 +376,17 @@ public class GameControllerTest {
   @Test
   void testSaveAndRestore() {
     // initial state for checking
-    int initialRoom = player.getRoomNumber();
-    int initialScore = player.getScore();
+    int initialRoom = gameController.getPlayer().getRoomNumber();
+    int initialScore = gameController.getPlayer().getScore();
 
     // save, modify state, then restore
     gameController.processCommand("SAVE");
-    player.setRoomNumber(initialRoom + 1);
-    player.setScore(initialScore + 100);
+    gameController.getPlayer().setRoomNumber(initialRoom + 1);
+    gameController.getPlayer().setScore(initialScore + 100);
     gameController.processCommand("RESTORE");
 
     // ensure original state is restored
-    assertEquals(initialRoom, player.getRoomNumber());
-    assertEquals(initialScore, player.getScore());
+    assertEquals(initialRoom, gameController.getPlayer().getRoomNumber());
+    assertEquals(initialScore, gameController.getPlayer().getScore());
   }
 }

@@ -10,14 +10,13 @@ import enginedriver.Fixture;
 import enginedriver.GameWorld;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
+import enginedriver.Room;
 import enginedriver.problems.IProblem;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.validator.ItemSolutionValidator;
 import enginedriver.problems.validator.SolutionValidator;
 import enginedriver.problems.validator.StringSolutionValidator;
-
-import enginedriver.Room;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -161,7 +160,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
           Item solutionItem = items.getOrDefault(solutionText, null);
           SolutionValidator<Item> validator = new ItemSolutionValidator();
           Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
-                  affectsPlayer, solutionItem, value, effects, target, pictureName,validator);
+                  affectsPlayer, solutionItem, value, effects, target, pictureName, validator);
           puzzles.put(puzzle.getName(), puzzle);
         }
       }
