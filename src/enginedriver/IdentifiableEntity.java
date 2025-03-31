@@ -1,9 +1,9 @@
 package enginedriver;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 
@@ -20,6 +20,11 @@ public abstract class IdentifiableEntity
   /**
    * Constructor for an identifiable entity.
    * Room can use field of id.
+
+   * @param id the id of the entity
+   * @param name the name of the game entity
+   * @param description the description of the entity
+   * @param pictureName the picture name of the entity
    */
   public IdentifiableEntity(int id, String name, String description, String pictureName) {
     this.id = id;
@@ -31,6 +36,10 @@ public abstract class IdentifiableEntity
   /**
    * Constructor for an identifiable entity.
    * Room can use field of id.
+
+   * @param id the id of the entity
+   * @param name the name of the game entity
+   * @param description the description of the entity
    */
   public IdentifiableEntity(int id, String name, String description) {
     this.id = id;
@@ -41,6 +50,9 @@ public abstract class IdentifiableEntity
 
   /**
    * Constructor for an identifiable entity, without ID.
+
+   * @param name the name of the game entity
+   * @param description the description of the entity
    */
   public IdentifiableEntity(String name, String description) {
     this.id = -1;
@@ -52,6 +64,10 @@ public abstract class IdentifiableEntity
 
   /**
    * Constructor for an identifiable entity, without ID.
+
+   * @param name the name of the game entity
+   * @param description the description of the entity
+   * @param pictureName the picture name of the entity
    */
   public IdentifiableEntity(String name, String description, String pictureName) {
     this.id = -1;
@@ -103,34 +119,27 @@ public abstract class IdentifiableEntity
     }
     try {
       File imageFile = new File("data/images/" + pictureName);
-      return ImageIO.read(imageFile);  // 返回 BufferedImage
+      return ImageIO.read(imageFile);  // return BufferedImage
     } catch (IOException e) {
-      System.err.println("无法加载图片: " + pictureName);
+      System.err.println("Failed to load picture: " + pictureName);
       return null;
     }
   }
-  //  @Override
-  //  public Image getPicture() {
-  //    if (pictureName == null || pictureName.isEmpty()) {
-  //      return null; // 处理空文件名
-  //    }
-  //    try {
-  //      // 从文件系统加载图片（需指定图片路径）
-  //      File imageFile = new File("data/images/" + pictureName);
-  //
-  //      return ImageIO.read(imageFile);
-  //    } catch (IOException e) {
-  //      System.err.println("无法加载图片: " + pictureName);
-  //      return null; // 加载失败时返回 null
-  //    }
-  //  }
 
+  /**
+   * Returns the name of the picture of the entity.
+
+   * @return  String for pictureName
+   */
   public String getPictureName() {
     return pictureName;
   }
 
   /**
-   *  equals method for IdentifiableEntity.
+   * equals method for IdentifiableEntity.
+
+   * @param obj the object to compare with
+   * @return true if the objects are equal, false otherwise
    */
   @Override
   public boolean equals(Object obj) {
@@ -147,7 +156,9 @@ public abstract class IdentifiableEntity
   }
 
   /**
-   *  hashCode method for IdentifiableEntity.
+   * hashCode method for IdentifiableEntity.
+
+   * @return the hash code of the entity
    */
   @Override
   public int hashCode() {
