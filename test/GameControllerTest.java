@@ -157,8 +157,7 @@ public class GameControllerTest {
                     + "both sides of the stone walkway. "
                     + "\nThe walkway leads north. A billboard is in the "
                     + "distance.",
-            exits,entities,
-            puzzles.get("DARKNESS"),""));
+            exits,entities,null,""));
 
     //update exits
     exits = new HashMap<>();
@@ -277,7 +276,6 @@ public class GameControllerTest {
     exits.put("W", -9);
     //update entities
     entities = new HashMap<>();
-    entities.put("Professor Keith", fixtures.get("Professor Keith"));
     rooms.put(10, new Room<Puzzle<?>>(10, "Recursive Study",
             "A study/office room. A fake mirror has been shattered showing an opening to the east.",
             exits, entities, puzzles.get("RECURSION-PUZZLE"),""));
@@ -378,5 +376,22 @@ public class GameControllerTest {
     gameController.processCommand("INVENTORY");
     // Assuming viewer.showText() prints to console or logs, we can't assert its output directly
     // We can check if the method runs without exceptions
+  }
+
+  @Test
+  void testSaveAndRestore() {
+    // initial state for checking
+    int initialRoom = player.getRoomNumber();
+    int initialScore = player.getScore();
+
+    // save, modify state, then restore
+    gameController.processCommand("SAVE");
+    player.setRoomNumber(initialRoom + 1);
+    player.setScore(initialScore + 100);
+    gameController.processCommand("RESTORE");
+
+    // ensure original state is restored
+    assertEquals(initialRoom, player.getRoomNumber());
+    assertEquals(initialScore, player.getScore());
   }
 }

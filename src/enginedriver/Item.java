@@ -117,7 +117,9 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
             + "\"uses_remaining\":\"" + getRemainingUses() + "\","
             + "\"value\":\"" + getValue() + "\","
             + "\"when_used\":\"" + getWhenUsed() + "\","
-            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
+            + "\"description\":\"" + getDescription()
+                                       .replace("\"", "\\\"")
+                                       .replace("\n", "\\n") + "\","
             + "\"picture\":\"" + getPictureName() + "\""
             + " }";
   }

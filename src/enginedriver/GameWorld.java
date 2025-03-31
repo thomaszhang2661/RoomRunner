@@ -75,66 +75,66 @@ public class GameWorld {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("{");
-    sb.append("\"name\":\"").append(name).append("\",");
-    sb.append("\"version\":\"").append(version).append("\",");
+    sb.append("{\n");
+    sb.append("\"name\":\"").append(name).append("\",\n");
+    sb.append("\"version\":\"").append(version).append("\",\n\n");
 
-    sb.append("\"rooms\":[");
+    sb.append("\"rooms\":[\n");
     boolean firstRoom = true;
     for (Room<?> room : rooms.values()) {
       if (!firstRoom) {
-        sb.append(",");
+        sb.append(",\n");
       }
       sb.append(room.toString());
       firstRoom = false;
     }
-    sb.append("],");
+    sb.append("],\n\n");
 
-    sb.append("\"items\":[");
+    sb.append("\"items\":[\n");
     boolean firstItem = true;
     for (Room<?> room : rooms.values()) {
       for (Item item : room.getEntitiesByType(Item.class)) {
         if (!firstItem) {
-          sb.append(",");
+          sb.append(",\n");
         }
         sb.append(item.toString());
         firstItem = false;
       }
     }
-    sb.append("],");
+    sb.append("],\n\n");
 
-    sb.append("\"fixtures\":[");
+    sb.append("\"fixtures\":[\n");
     boolean firstFixture = true;
     for (Room<?> room : rooms.values()) {
       for (Fixture fixture : room.getEntitiesByType(Fixture.class)) {
         if (!firstFixture) {
-          sb.append(",");
+          sb.append(",\n");
         }
         sb.append(fixture.toString());
         firstFixture = false;
       }
     }
-    sb.append("],");
+    sb.append("],\n\n");
 
-    sb.append("\"monsters\":[");
+    sb.append("\"monsters\":[\n");
     boolean firstMonster = true;
     for (Room<?> room : rooms.values()) {
       if (room.getProblem() instanceof Monster) {
         if (!firstMonster) {
-          sb.append(",");
+          sb.append(",\n");
         }
         sb.append(((Monster<?>) room.getProblem()).toString());
         firstMonster = false;
       }
     }
-    sb.append("],");
+    sb.append("],\n\n");
 
-    sb.append("\"puzzles\":[");
+    sb.append("\"puzzles\":[\n");
     boolean firstPuzzle = true;
     for (Room<?> room : rooms.values()) {
       if (room.getProblem() instanceof Puzzle) {
         if (!firstPuzzle) {
-          sb.append(",");
+          sb.append(",\n");
         }
         sb.append(((Puzzle<?>) room.getProblem()).toString());
         firstPuzzle = false;

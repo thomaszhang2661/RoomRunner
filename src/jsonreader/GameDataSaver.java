@@ -19,15 +19,10 @@ public class GameDataSaver {
    * @throws IOException if an error occurs during saving
    */
   public static void saveGameJson(GameController controller, String fileName) throws IOException {
-    // generate gameWorld part of JSON
-    String gameWorldJson = controller.getGameWorld().toString().replace("\"null\"", "null");
+    String fullJson = controller.toString();
 
-    // generate player part of JSON
-    String playerJson = controller.getPlayer().toString().replace("\"null\"", "null");
-
-    // combine gameWorld and player JSON strings
-    String fullJson = gameWorldJson.substring(0, gameWorldJson.length() - 1) // 去掉最后的 }
-            + ",\"player\":" + playerJson + "}";
+    // necessary character escaping
+    fullJson = fullJson.replace("\"null\"", "null");
 
     // check if the JSON is valid
     if (!isValidJson(fullJson)) {

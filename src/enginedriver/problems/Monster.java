@@ -167,8 +167,12 @@ public class Monster<T> extends Problem<T> {
             + "\"affects_player\":\"" + getAffectsPlayer() + "\","
             + "\"solution\":\"" + solutionStr + "\","
             + "\"value\":\"" + getValue() + "\","
-            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
-            + "\"effects\":\"" + getEffects() + "\","
+            + "\"description\":\"" + getDescription()
+                                       .replace("\"", "\\\"")
+                                       .replace("\n", "\\n") + "\","
+            + "\"effects\":\"" + getEffects()
+                                   .replace("\"", "\\\"")
+                                   .replace("\n", "\\n") + "\","
             + "\"damage\":\"" + getDamage() + "\","
             + "\"target\":\"" + getTarget() + "\","
             + "\"can_attack\":\"" + getCanAttack() + "\","
