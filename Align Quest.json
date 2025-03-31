@@ -3,7 +3,7 @@
 "version":"1.0.9",
 
 "rooms":[
-{"room_name":"Courtyard","room_number":"1","description":"A beautiful courtyard with flowers on both sides of the stone walkway. \nThe walkway leads north. A billboard is in the distance.","N":"2","S":"0","E":"0","W":"0","puzzle":null,"monster":null,"items":"Hair Clippers","fixtures":"Billboard","picture":"courtyard.png"},
+{"room_name":"Courtyard","room_number":"1","description":"A beautiful courtyard with flowers on both sides of the stone walkway. \nThe walkway leads north. A billboard is in the distance.","N":"2","S":"0","E":"0","W":"0","puzzle":null,"monster":null,"items":null,"fixtures":"Billboard","picture":"courtyard.png"},
 {"room_name":"Mansion Entrance","room_number":"2","description":"Entrance to an old, musty-smelling mansion. Some people have entered, to never return. \nThe door to the north is open. The courtyard is to your south and a foyer to your north. A chandelier hangs from the ceiling.","N":"3","S":"1","E":"0","W":"0","puzzle":null,"monster":null,"items":"Thumb Drive, Modulo 2","fixtures":"Chandelier","picture":"entrance.png"},
 {"room_name":"Foyer","room_number":"3","description":"The foyer of the mansion. A staircase leads upstairs but it is dilapidated and unusable. Therefore, the only exits to the south and east. \nA strange breeze moves through the room. Eastward is a small room that looks like a library. A teddy bear lies on the floor with its hair shaved","N":"0","S":"2","E":"4","W":"0","puzzle":null,"monster":"Teddy Bear","items":"Lamp","fixtures":null,"picture":"foyer.png"},
 {"room_name":"Spooky Library","room_number":"4","description":"You walked into this eerie library FROM the west. Another room is north. \nBooks now on the floor revealing a secret passage to the East!","N":"6","S":"0","E":"-5","W":"3","puzzle":"MOD-SPOOKY-VOICE","monster":null,"items":"Key","fixtures":"Bookshelf","picture":"library.png"},
@@ -18,7 +18,6 @@
 {"room_name":"Bridge Exit","room_number":"13","description":"Congratulations on all you've achieved! You're at the end of the road with the Bridge.\nBest wishes as you proceed to the MSCS/MSDS!\n *** THE END *** (of this adventure...the START of a new one for YOU! :-))","N":"0","S":"12","E":"0","W":"0","puzzle":null,"monster":null,"items":"Note","fixtures":null,"picture":"congratulations.png"}],
 
 "items":[
-{ "name":"Hair Clippers","weight":"2","max_uses":"10","uses_remaining":"4","value":"5","when_used":"You activate the clippers. It makes a loud buzzing sound as you use them!","description":"Cordless Wahl hair clippers for pets or humans. The battery low light is blinking.","picture":"hair-clippers.png" },
 { "name":"Thumb Drive","weight":"1","max_uses":"1000","uses_remaining":"1000","value":"150","when_used":"You insert the thumb drive.","description":"A USB thumb drive for computers","picture":null },
 { "name":"Modulo 2","weight":"1","max_uses":"10","uses_remaining":"10","value":"500","when_used":"You apply the Mod 2 operator and take note of the remainder.","description":"A old school floppy disk. The kind your parents used. \nIt has \"Computer Science (number mod 2) operator. Use in case of emergencies\" inscribed on it. Wait - it just morphed into a cloud. Hold on - it just turned back into a disk. Weird!","picture":null },
 { "name":"Lamp","weight":"3","max_uses":"100","uses_remaining":"20","value":"100","when_used":"You light the lamp with the flint.","description":"An old oil lamp with flint to spark.","picture":"lamp.png" },
@@ -54,10 +53,10 @@
 "player":{
 "name":"Caith",
 "health":"100",
-"inventory":"",
+"inventory":"Hair Clippers",
 "max_weight":"20",
-"current_weight":"0",
+"current_weight":"2",
 "room_number":"1",
-"score":"0"
+"score":"5"
 }
 }
