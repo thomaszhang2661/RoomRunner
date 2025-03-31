@@ -6,9 +6,6 @@ import enginedriver.problems.Puzzle;
 import enginedriver.problems.validator.StringSolutionValidator;
 import org.junit.jupiter.api.Test;
 
-
-
-
 /**
  * Test class for the Fixture class.
  * This test class contains unit tests for the Fixture class.

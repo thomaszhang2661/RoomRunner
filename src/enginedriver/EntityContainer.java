@@ -22,7 +22,6 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    */
   protected EntityContainer(int id, String name, String description, String pictureName) {
     super(id, name, description, pictureName);
-    //分配一个新的 HashMap 实例，用于存储实体
     this.stringEntityMap = new java.util.HashMap<>();
   }
 
