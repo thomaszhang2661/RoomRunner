@@ -12,6 +12,10 @@ import enginedriver.problems.IProblem;
 
 /**
  * GameEngine class to handle game logic and player commands.
+ * This class is responsible for processing
+ * player commands and updating the game state.
+ * It interacts with the GameWorld, Player, and Viewer classes.
+ * It also handles the game loop and user input.
  */
 public class GameController {
   private Player player;
@@ -21,6 +25,9 @@ public class GameController {
 
   /**
    * Constructor for GameController.
+
+   * @param gameWorld the game world
+   * @param player the player
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
@@ -41,24 +48,29 @@ public class GameController {
     actionMap.put("ANSWER", "A");
   }
 
+  /**
+   * Get the game world.
+
+   * @return the game world
+   */
   public GameWorld getGameWorld() {
     return gameWorld;
   }
 
+  /**
+   * Get the player.
+
+   * @return the player
+   */
   public Player getPlayer() {
     return player;
   }
 
-  /*
-  (N)orth, (S)outh, (E)ast, (W)est,
-   (T)ake, (D)rop,
-   e(X)amine, (L)ook,
-    (U)se, (I)nventory, (A)nswer,
-     Save and Restore.
-   */
-
   /**
-   * Process the command entered by the player.
+   * Standardize the command entered by the player.
+
+   * @param command the command entered by the player
+   * @return the standardized command
    */
   private String[] standardizeCommand(String command) {
     // Remove leading and trailing white spaces
@@ -87,7 +99,9 @@ public class GameController {
 
 
   /**
-   * Process the command entered by the player.
+   * Process the command after it has been standardized.
+
+   * @param command the command standardized by standardizeCommand
    */
   public void processCommand(String command) {
     // Standardize the command
@@ -132,10 +146,10 @@ public class GameController {
     }
   }
 
-
-
   /**
-   * Move the player north.
+   * Move the player to a new room based on the direction.
+
+   * @param direction the direction to move (N, S, E, W)
    */
   private void move(String direction) {
     //check player's current room
@@ -194,6 +208,7 @@ public class GameController {
     //get item
     Item itemAttempt = currentRoom.getItem(itemName);
 
+    // check if the item is in the room
     if (itemAttempt != null) {
       if (player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
@@ -229,6 +244,11 @@ public class GameController {
 
   }
 
+  /**
+   * Look around the current room.
+
+   * @return the description of the current room
+   */
   private void lookAround() {
     // Logic to look around
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
@@ -264,6 +284,8 @@ public class GameController {
 
   /**
    * Use an item.
+   *
+   * @param itemName the name of the item to use
    */
   private void useItem(String itemName) {
 
@@ -333,6 +355,8 @@ public class GameController {
 
   /**
    * Answer a puzzle.
+
+   * @param objectName the answer to the puzzle
    */
   private void answer(String objectName) {
 
@@ -388,6 +412,8 @@ public class GameController {
 
   /**
    * Check the player's inventory.
+
+   * @return the items in the player's inventory
    */
   private void checkInventory() {
     // Logic to check inventory
@@ -403,11 +429,14 @@ public class GameController {
 
   /**
    * Examine an item.
+
+   * @param entityName the name of the item to examine
    */
   private void examine(String entityName) {
-    // Logic to examine item
     // get current room
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
+
+    // check if the entity is in the room
     IIdentifiableEntity entity = currentRoom.getEntity(entityName, Item.class);
     if (entity == null) {
       entity = currentRoom.getEntity(entityName, Fixture.class);
@@ -469,7 +498,13 @@ public class GameController {
     //TODO
   }
 
-  // 处理成功时解开房间
+  /**
+   * Handle the problem solved event.
+   * This method updates the game state when a problem is solved.
+   * It updates the player's score, unlocks exits if necessary,and shows a message to the player.
+
+   * @param problem the problem that was solved
+   */
   private  void handleProblemSolved(IProblem<?> problem) {
     viewer.showText("You have successfully solved"
             + problem.getName());
@@ -490,7 +525,13 @@ public class GameController {
     }
   }
 
-  //处理失败时怪物攻击
+  /**
+   * Handle monster attack.
+   * This method checks if the problem is a monster and if it can attack the player.
+   * If so, it performs the attack and shows the attack message to the player.
+
+   * @param problem the problem to check
+   */
   private void handleMonsterAttack(IProblem<?> problem) {
     if (problem instanceof Monster) {
       Monster<?> monster = (Monster) problem;
@@ -501,6 +542,13 @@ public class GameController {
     }
   }
 
+  /**
+   * Get the game controller as a string.
+   * This method returns a string representation of the game controller,
+   * including the game world and player information.
+
+   * @return the string representation of the game controller
+   */
   @Override
   public String toString() {
     return "{ "
