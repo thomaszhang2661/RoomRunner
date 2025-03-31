@@ -48,7 +48,8 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    * @param entityNames the map of entities
    * @param pictureName the picture name of the entity
    */
-  protected EntityContainer(int id, String name, String description, Map<String, T> entityNames, String pictureName) {
+  protected EntityContainer(int id, String name, String description,
+          Map<String, T> entityNames, String pictureName) {
     super(id, name, description, pictureName);
     this.stringEntityMap = entityNames;
   }
@@ -79,7 +80,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Get all entities from the container.
 
-   * @return Map<String, T> the map of entities
+   * @return Map&ltString, T&gt the map of entities
    */
   public Map<String, T> getEntities() {
     if (stringEntityMap == null) {
@@ -107,7 +108,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    * Get the list of entities from the container according to the type.
 
    * @param clazz the class of the entity
-   * @return List<U> the list of entities
+   * @return List&lt;U&gt; the list of entities
    */
   public  <U> List<U> getEntitiesByType(Class<U> clazz) {
     List<U> result = new ArrayList<>();
