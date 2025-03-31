@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import enginedriver.problems.IProblem;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Problem;
 import enginedriver.problems.Puzzle;
-import enginedriver.problems.IProblem;
 
 /**
  * GameEngine class to handle game logic and player commands.
