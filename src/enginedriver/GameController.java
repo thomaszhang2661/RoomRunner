@@ -516,9 +516,9 @@ public class GameController {
 
   @Override
   public String toString() {
-    return "{ "
-            + gameWorld.toString() + ","
-            + "\"player\":" + player.toString()
-            + " }";
+    String gameWorldJson = gameWorld.toString();
+    String playerJson = player.toString();
+    return gameWorldJson.substring(0, gameWorldJson.length() - 1) + ",\n\n"
+            + "\"player\":" + playerJson + "\n}";
   }
 }
