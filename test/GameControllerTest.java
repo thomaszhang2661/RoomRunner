@@ -375,4 +375,21 @@ public class GameControllerTest {
     // Assuming viewer.showText() prints to console or logs, we can't assert its output directly
     // We can check if the method runs without exceptions
   }
+
+  @Test
+  void testSaveAndRestore() {
+    // initial state for checking
+    int initialRoom = player.getRoomNumber();
+    int initialScore = player.getScore();
+
+    // save, modify state, then restore
+    gameController.processCommand("SAVE");
+    player.setRoomNumber(initialRoom + 1);
+    player.setScore(initialScore + 100);
+    gameController.processCommand("RESTORE");
+
+    // ensure original state is restored
+    assertEquals(initialRoom, player.getRoomNumber());
+    assertEquals(initialScore, player.getScore());
+  }
 }
