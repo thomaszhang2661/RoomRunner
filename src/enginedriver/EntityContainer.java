@@ -32,7 +32,8 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   /**
    * Constructor for an identifiable entity: container with entities.
    */
-  protected EntityContainer(int id, String name, String description, Map<String, T> entityNames, String pictureName) {
+  protected EntityContainer(int id, String name, String description, Map<String, T> entityNames,
+                            String pictureName) {
     super(id, name, description, pictureName);
     this.stringEntityMap = entityNames;
   }

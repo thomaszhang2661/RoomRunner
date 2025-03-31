@@ -60,7 +60,11 @@ public class GameControllerTest {
     fixtures.put("Professor Keith", new Fixture("Professor Keith", "Professor Keith, Faculty Director of Align Boston. He smiles at you and gives a thumb's up. \"Great job! You can do this!\"", 1000));
     fixtures.put("Billboard", new Fixture("Billboard", "A large billboard looms in the distance. \nIt's hard to read but seems to say 'Welcome to Align Quest, adventurer! Enjoy the exploration! - Prof. K'", 1000));
     fixtures.put("Chandelier", new Fixture("Chandelier", "A large and heavy chandelier hangs from the ceiling. \nThe light from it is dim, and it is too high to reach without using a mechanical lift.", 1000));
-    fixtures.put("Bookshelf", new Fixture("Bookshelf", "A tall black oak bookshelf in the corner of the room. \nIt's much too heavy to move...but there's something weird about it and the books seem to tremble on their own", 1000));
+    fixtures.put("Bookshelf", new Fixture("Bookshelf",
+            "A tall black oak bookshelf in the corner of the room. "
+                    + "\nIt's much too heavy to move...but there's something weird about "
+                    + "it and the books seem to tremble on their own",
+            1000));
     fixtures.put("Monitor", new Fixture("Monitor", "A large and heavy video monitor (one of many, actually). \nIt's replaying your success here at Khoury/NU in your Align studies. Bravo!", 1000));
     fixtures.put("Monitors", new Fixture("Monitors", "A large and heavy video monitor (one of many, actually). \nIt's replaying your success here at Khoury/NU in your Align studies. Bravo!", 1000));
     fixtures.put("Stove", new Fixture("Stove", "A large propane stove. You like electric ones, but this wasn't your decision, obviously.", 1000));
