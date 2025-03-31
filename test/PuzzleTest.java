@@ -1,15 +1,13 @@
-import org.junit.jupiter.api.Test;
-
-import enginedriver.Item;
-import enginedriver.problems.Puzzle;
-import enginedriver.problems.validator.SolutionValidator;
-import enginedriver.problems.validator.StringSolutionValidator;
-import enginedriver.problems.validator.ItemSolutionValidator;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import enginedriver.Item;
+import enginedriver.problems.Puzzle;
+import enginedriver.problems.validator.ItemSolutionValidator;
+import enginedriver.problems.validator.SolutionValidator;
+import enginedriver.problems.validator.StringSolutionValidator;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit Test for Puzzle class.
@@ -84,6 +82,7 @@ public class PuzzleTest {
 
     assertEquals(1, puzzle.solve(lamp));
   }
+
   /**
    * Test solve method of Puzzle with wrong input.
    */
@@ -93,7 +92,7 @@ public class PuzzleTest {
             "It's dark!", true, true,
             true, "Lamp", 150, "You cannot see!",
             "6:Kitchen", "darkness.png", new StringSolutionValidator());
-    assertEquals(2,puzzle.solve("WrongInput"));
+    assertEquals(2, puzzle.solve("WrongInput"));
     assertTrue(puzzle.getActive());
   }
 
@@ -106,10 +105,10 @@ public class PuzzleTest {
             "It's dark!", true, true,
             true, "Lamp", 150,
             "You cannot see!", "6:Kitchen", "null", new StringSolutionValidator());
-    String expected = "{ \"name\":\"Darkness\",\"active\":\"true\",\"affects_target\":\"true\"," +
-            "\"affects_player\":\"true\",\"solution\":\"Lamp\",\"value\":\"150\"," +
-            "\"description\":\"It's dark!\",\"effects\":\"You cannot see!\"," +
-            "\"target\":\"6:Kitchen\",\"picture\":\"null\" }";
+    String expected = "{ \"name\":\"Darkness\",\"active\":\"true\",\"affects_target\":\"true\","
+            + "\"affects_player\":\"true\",\"solution\":\"Lamp\",\"value\":\"150\","
+            + "\"description\":\"It's dark!\",\"effects\":\"You cannot see!\","
+            + "\"target\":\"6:Kitchen\",\"picture\":\"null\" }";
 
     assertEquals(expected, puzzle.toString());
   }
