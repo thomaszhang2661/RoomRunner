@@ -1,11 +1,9 @@
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import enginedriver.Item;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -82,24 +80,7 @@ public class ItemTest {
     assertFalse(itemNoUses.use());
     assertEquals(0, itemNoUses.getRemainingUses());
   }
-  //  /**
-  //   * Test setUseRemain method.
-  //   */
-  //  @Test
-  //  void testSetUseRemain() {
-  //    Item item = new Item("A", "desc", 5, 2,
-  //            100, 10, "when used");
-  //    item.setRemainingUses(3);
-  //    assertEquals(3, item.getRemainingUses());
-  //
-  //    // Test invalid remaining uses
-  //    try {
-  //      item.setRemainingUses(-1);
-  //      Assertions.fail("Expected IllegalArgumentException");
-  //    } catch (IllegalArgumentException e) {
-  //      assertEquals("Remaining uses of an item cannot be less than 0", e.getMessage());
-  //    }
-  //  }
+
   /**
    * Test getUseMax method.
    */
