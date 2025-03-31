@@ -18,6 +18,13 @@ import org.junit.jupiter.api.Test;
  */
 class DeserializationTest {
 
+  /**
+   * Test the deserialization of GameWorld and Player objects from JSON files.
+   * The test checks if the objects are correctly deserialized and if their properties match
+   * the expected values.
+
+   * @throws IOException if an error occurs during deserialization
+   */
   @Test
   void testDeserializeGameWorld() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
@@ -35,6 +42,13 @@ class DeserializationTest {
     assertNotNull(gameWorld.getRooms().get(1).getProblem());
   }
 
+  /**
+   * Test the deserialization of Player object from JSON file.
+   * The test checks if the Player object is correctly deserialized and if its properties match
+   * the expected values.
+
+   * @throws IOException if an error occurs during deserialization
+   */
   @Test
   void testDeserializePlayer() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
