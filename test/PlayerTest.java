@@ -1,18 +1,15 @@
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import enginedriver.HEALTH_STATUS;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
 import enginedriver.Player;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class for Player.
@@ -53,7 +50,7 @@ public class PlayerTest {
     // Test creation with items and no score
     player = new Player("Hero", 100, 50, items);
     // Test creation for existing player
-    player = new Player("Hero", 100, 50, 4, 0,items, 0);
+    player = new Player("Hero", 100, 50, 4, 0, items, 0);
   }
 
   /**
@@ -209,8 +206,8 @@ public class PlayerTest {
   @Test
   public void testAddItemWithinWeightLimit() {
     // Create an item
-    Item key = new Item("Key", "A medium-sized key. Looks like it may " +
-            "unlock a cabinet or desk.", 3, 3, 5, 1,
+    Item key = new Item("Key", "A medium-sized key. Looks like it may "
+            + "unlock a cabinet or desk.", 3, 3, 5, 1,
             "You insert the key and turn it. 'Click!'");
 
     // Add the item to inventory
@@ -221,8 +218,8 @@ public class PlayerTest {
     assertTrue(player.getEntities().containsKey("Key"), "Inventory should contain the Key.");
 
     // Verify the current weight is updated
-    assertEquals(5, player.getCurrentWeight(), "Current weight should " +
-                                                      "include the weight of the Key (1).");
+    assertEquals(5, player.getCurrentWeight(), "Current weight should "
+            + "include the weight of the Key (1).");
   }
 
   /**
@@ -251,9 +248,15 @@ public class PlayerTest {
    */
   @Test
   public void testToString() {
-    String expected = "{ \"name\":\"Hero\",\"health\":\"100\",\"inventory\":\"Thumb Drive, Lamp\","
-            + "\"max_weight\":\"50\",\"current_weight\":\"4\","
-            + "\"room_number\":\"0\",\"score\":\"0\" }";
+    String expected = "{\n"
+            + "\"name\":\"Hero\",\n"
+            + "\"health\":\"100\",\n"
+            + "\"inventory\":\"Thumb Drive, Lamp\",\n"
+            + "\"max_weight\":\"50\",\n"
+            + "\"current_weight\":\"4\",\n"
+            + "\"room_number\":\"0\",\n"
+            + "\"score\":\"0\"\n"
+            + "}";
     assertEquals(expected, player.toString());
   }
 

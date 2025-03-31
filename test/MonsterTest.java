@@ -255,11 +255,12 @@ class MonsterTest {
    */
   @Test
   void testMonsterToString() {
-    String expected = "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\","
+    String expected =
+            "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\","
             + "\"affects_player\":\"true\",\"solution\":\"Carrot\",\"value\":\"300\","
             + "\"description\":\"Awww. A furry rabbit twitching its nose and eating a carrot. "
             + "Makes you want to pet him\",\"effects\":\"A monster Rabbit moves towards you! "
-            + "He's blocking the way north.\nI think you might be dinner!\","
+            + "He's blocking the way north.\\nI think you might be dinner!\","
             + "\"damage\":\"-15\",\"target\":\"7:Dining Room\",\"can_attack\":\"true\","
             + "\"attack\":\"licks you with a giant tongue!\",\"picture\":\"monster-rabbit.png\" }";
 
