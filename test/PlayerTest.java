@@ -1,18 +1,15 @@
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import enginedriver.HEALTH_STATUS;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
 import enginedriver.Player;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class for Player.
