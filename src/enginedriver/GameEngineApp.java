@@ -30,26 +30,10 @@ public class GameEngineApp {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
-    //    // create ObjectMapper
-    //    ObjectMapper mapper = new ObjectMapper();
-    //    SimpleModule module = new SimpleModule();
-    //    // register GameWorldDeserializer
-    //    module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
-    //    mapper.registerModule(module);
-    //    // parse gameWorld
-    //    GameWorld gameWorld = mapper.readValue(new File(gameFileName), GameWorld.class);
-    //
-    //    // register PlayerDeserializer
-    //    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
-    //    mapper.registerModule(module);
-    //    // parse player
-    //    Player player = mapper.readValue(new File(gameFileName), Player.class);
-
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
     Player player = GameDataLoader.loadPlayer(gameFileName, gameWorld);
 
     // if player is null, create a new player from input
-    // TODO： 检测是否存在同名文件，有重名要提示不能用
     if (player == null) {
       String playerName = getPlayerName();
       player = new Player(playerName, 100, 20, 0); // 提示玩家输入名字
@@ -90,24 +74,27 @@ public class GameEngineApp {
             "./resources/align_quest_game_elements.json",
             stringReader,
             System.out);
-
-    gameEngineApp.start();
   }
 
+  /**
+   * Gets the player's name from input.
+
+   * @return the player's name
+   */
   private String getPlayerName() {
-    // 创建 Scanner 对象以读取用户输入
+    // Create a Scanner object to read user input
     Scanner scanner = new Scanner(System.in);
 
-    // 提示用户输入姓名
+    // Ask the user for their name
     System.out.print("Enter your name: ");
 
-    // 读取用户输入的字符串
+    // Read the user input
     String playerName = scanner.nextLine();
 
-    // 输出用户输入的姓名
+    // Print the player's name
     System.out.println("Your name is: " + playerName);
 
-    // 关闭 Scanner 对象
+    // Close the scanner
     scanner.close();
     return playerName;
   }
