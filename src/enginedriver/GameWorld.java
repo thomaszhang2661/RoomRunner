@@ -28,24 +28,32 @@ public class GameWorld {
    */
   public GameWorld(String name, String version,
                    Map<Integer, Room> rooms) {
-    this.name = name; // ？？？need name TODO
+    this.name = name;
     this.version = version;
     this.rooms = rooms;
-    //  this.player = player;
-    //  this.score = score;
 
   }
 
-
-  // Getters and Setters
+  /**
+   * Retrieve the name of the GameWorld.
+   * @return the name of the world
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Retrieve the version of the GameWorld.
+   * @return the version of the world
+   */
   public String getVersion() {
     return version;
   }
 
+  /**
+   * Retrieve the rooms of the GameWorld.
+   * @return the rooms of the world
+   */
   public Map<Integer, Room> getRooms() {
     return rooms;
   }

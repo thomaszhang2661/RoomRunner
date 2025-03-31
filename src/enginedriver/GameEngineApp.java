@@ -43,7 +43,6 @@ public class GameEngineApp {
     this.gameController = new GameController(gameWorld, player);
   }
 
-
   /**
    * Starts the game engine application.
 
@@ -94,17 +93,16 @@ public class GameEngineApp {
     gameEngineApp.start();
   }
 
+  /**
+   * Set player's name for the whole game.
+   */
   private String getPlayerName() {
-    // 创建 Scanner 对象以读取用户输入
     Scanner scanner = new Scanner(System.in);
 
-    // 提示用户输入姓名
     System.out.print("Enter your name: ");
 
-    // 读取用户输入的字符串
     String playerName = scanner.nextLine();
 
-    // 输出用户输入的姓名
     System.out.println("Your name is: " + playerName);
 
     return playerName;

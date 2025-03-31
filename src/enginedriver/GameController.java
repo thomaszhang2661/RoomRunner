@@ -123,6 +123,9 @@ public class GameController {
     return new String[]{action, objectName};
   }
 
+  /**
+   * Capitalize the word to align with the JSON style.
+   */
   private static String capitalizeWords(String phrase) {
     if (phrase == null || phrase.isEmpty()) {
       return phrase;
@@ -140,7 +143,6 @@ public class GameController {
     }
     return capitalized.toString().trim();
   }
-
 
   /**
    * Move the player north.
@@ -328,7 +330,6 @@ public class GameController {
     }
   }
 
-
   /**
    * Answer a puzzle.
    */
@@ -472,7 +473,11 @@ public class GameController {
     }
   }
 
-  private  void handleProblemSolved(IProblem<?> problem) {
+  /**
+   * Handle the situation when the problem is successfully solved.
+   * @param problem the problem that will be solved
+   */
+  private void handleProblemSolved(IProblem<?> problem) {
     viewer.showText("You have successfully"
             + (problem instanceof Puzzle<?> ? " solved " : " killed ")
             + problem.getName());
@@ -493,7 +498,11 @@ public class GameController {
     }
   }
 
-  //处理失败时怪物攻击
+  /**
+   * Handle situation when monster attacks the player by checking its attack effect and dealing
+   * with the damage.
+   * @param problem the puzzle/monster that might attack player
+   */
   private void handleMonsterAttack(IProblem<?> problem) {
     if (problem instanceof Monster) {
       Monster<?> monster = (Monster) problem;

@@ -70,7 +70,11 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
     this.states = input;
   }
 
+  /**
+   * Get the puzzle of the fixture.
 
+   * @return the puzzle contained by the fixture
+   */
   public Puzzle<?> getPuzzle() {
     return puzzle;
   }
