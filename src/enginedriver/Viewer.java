@@ -3,12 +3,16 @@ package enginedriver;
 /**
  * Text that can be viewed for hw8.
  * This part will support pictures in hw9.
- *  Use singleton pattern.
+ * Use singleton pattern.
  */
 public class Viewer {
 
   private static Viewer instance = null;
 
+  /**
+   * Constructor for the viewer.
+   * This constructor is private to prevent instantiation.
+   */
   private Viewer() {
   }
 
