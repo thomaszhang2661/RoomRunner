@@ -2,20 +2,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import enginedriver.problems.validator.SolutionValidator;
-import enginedriver.problems.validator.StringSolutionValidator;
-import  enginedriver.problems.validator.ItemSolutionValidator;
 import enginedriver.Fixture;
 import enginedriver.GameController;
 import enginedriver.GameWorld;
+import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
 import enginedriver.Player;
 import enginedriver.Room;
-import java.util.HashMap;
-import java.util.Map;
-import enginedriver.*;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
+import enginedriver.problems.validator.ItemSolutionValidator;
+import enginedriver.problems.validator.StringSolutionValidator;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +28,10 @@ public class GameControllerTest {
   private Player player;
   private GameController gameController;
 
-
+  /**
+   * Set up the test environment.
+   * This method initializes the game world, player, and game controller.
+   */
   @BeforeEach
   void setUp() {
     // Initialize items
@@ -39,41 +41,87 @@ public class GameControllerTest {
     items.put("Thumb Drive", new Item("Thumb Drive",
             "A USB thumb drive for computers", 1000, 1000, 150, 1, "You insert the thumb drive."));
     items.put("Algorithms Book", new Item("Algorithms Book",
-            "A book on computer algorithms, signed by Professor Keith. \nThe inscription reads: \"You'll need this in CS5800. Best wishes to you, Aligner!\n P.S.: Don't forget: a recursive solution needs a base case!", 1000, 1000, 500, 2, "You read the Algo Book and make note of computational theories."));
+            """
+                    A book on computer algorithms, signed by Professor Keith.\s
+                    The inscription \
+                    reads: "You'll need this in CS5800. Best wishes to you, Aligner!
+                     P.S.: Don't forget: a recursive solution needs a base case!""",
+            1000, 1000, 500, 2,
+            "You read the Algo Book and make note of computational theories."));
     items.put("Hair Clippers", new Item("Hair Clippers",
-            "Cordless Wahl hair clippers for pets or humans. The battery low light is blinking.", 10, 4, 5, 2, "You activate the clippers. It makes a loud buzzing sound as you use them!"));
+            "Cordless Wahl hair clippers for pets or humans. The battery low light is "
+                    + "blinking.", 10, 4, 5, 2,
+            "You activate the clippers. It makes a loud buzzing sound as you use them!"));
     items.put("Carrot", new Item("Carrot",
-            "A carrot. But not just any carrot, but a HUGE carrot! Bigger than you've seen before.", 1, 1, 5, 10, "You take a small bite the carrot and then share it."));
+            "A carrot. But not just any carrot, but a HUGE carrot! Bigger than "
+                    + "you've seen before.", 1, 1, 5, 10,
+            "You take a small bite the carrot and then share it."));
     items.put("Modulo 2", new Item("Modulo 2",
-            "A old school floppy disk. The kind your parents used. \nIt has \"Computer Science (number mod 2) operator. Use in case of emergencies\" inscribed on it. Wait - it just morphed into a cloud. Hold on - it just turned back into a disk. Weird!",
+            "A old school floppy disk. The kind your parents used. \nIt has \"Computer "
+                    + "Science (number mod 2) operator. Use in case of emergencies\" inscribed "
+                    + "on it. Wait - it just morphed into a cloud. Hold on - "
+                    + "it just turned back into a disk. Weird!",
             10, 10, 500, 1,
             "You apply the Mod 2 operator and take note of the remainder."));
-    items.put("Golden Ticket", new Item("Golden Ticket", "A Golden Ticket inviting your team to the Architectural Review and Code Walk with our TA Team.", 1, 1, 5, 10, "You read the Golden Ticket and mark your calendar. 'We cannot miss our code review!', you happily shout as you place it in the slot."));
-    items.put("Key", new Item("Key", "A medium-sized key. Looks like it may unlock a cabinet or desk.", 3, 3, 5, 1, "You insert the key and turn it. 'Click!'"));
-    items.put("Frying Pan", new Item("Frying Pan", "A stainless steel skillet for frying.", 10, 10, 0, 3, "Sizzle, sizzle...bonk!"));
-    items.put("Note", new Item("Note", "It's a personal note to you from Professor K. \nYou read the note: 'I am very proud of you!'\nWhoop Whoop! You High-5 your team and ride off into the sunset.", 1000, 1000, 100, 0, "You read the note. It's from Professor K: 'I am very proud of you!'\nWhoop Whoop! You High-5 your team and ride off into the sunset."));
+    items.put("Golden Ticket", new Item("Golden Ticket", "A Golden Ticket "
+            + "inviting your team to the Architectural Review and Code Walk with our TA Team.",
+            1, 1, 5, 10,
+            "You read the Golden Ticket and mark your calendar. "
+                    + "'We cannot miss our code review!', you happily shout as you place it "
+                    + "in the slot."));
+    items.put("Key", new Item("Key", "A medium-sized key. Looks like it may unlock"
+            + " a cabinet or desk.", 3, 3, 5, 1,
+            "You insert the key and turn it. 'Click!'"));
+    items.put("Frying Pan", new Item("Frying Pan", "A stainless steel skillet "
+            + "for frying.", 10, 10, 0, 3,
+            "Sizzle, sizzle...bonk!"));
+    items.put("Note", new Item("Note", """
+            It's a personal note to you from \
+            Professor K.\s
+            You read the note: 'I am very proud of you!'
+            Whoop Whoop! \
+            You High-5 your team and ride off into the sunset.""", 1000,
+            1000, 100, 0,
+            "You read the note. It's from Professor K: 'I am very proud of you!'"
+            + "\nWhoop Whoop! You High-5 your team and ride off into the sunset."));
 
     // Initialize fixtures
     Map<String, Fixture> fixtures = new HashMap<>();
     fixtures.put("Desk", new Fixture("Desk", "An old wooden desk with a mess of papers. A note "
             + "says: \"use thumb drive!\"", 1000));
-    fixtures.put("Laptop", new Fixture("Laptop", "A ZacPro 5000 with all the latest features and a USB slot. It's bolted to the table and can't move", 1000));
-    fixtures.put("Professor Keith", new Fixture("Professor Keith", "Professor Keith, Faculty Director of Align Boston. He smiles at you and gives a thumb's up. \"Great job! You can do this!\"", 1000));
-    fixtures.put("Billboard", new Fixture("Billboard", "A large billboard looms in the distance. \nIt's hard to read but seems to say 'Welcome to Align Quest, adventurer! Enjoy the exploration! - Prof. K'", 1000));
-    fixtures.put("Chandelier", new Fixture("Chandelier", "A large and heavy chandelier hangs from the ceiling. \nThe light from it is dim, and it is too high to reach without using a mechanical lift.", 1000));
-    fixtures.put("Bookshelf", new Fixture("Bookshelf", "A tall black oak bookshelf in the corner of the room. \nIt's much too heavy to move...but there's something weird about it and the books seem to tremble on their own", 1000));
-    fixtures.put("Monitor", new Fixture("Monitor", "A large and heavy video monitor (one of many, actually). \nIt's replaying your success here at Khoury/NU in your Align studies. Bravo!", 1000));
-    fixtures.put("Monitors", new Fixture("Monitors", "A large and heavy video monitor (one of many, actually). \nIt's replaying your success here at Khoury/NU in your Align studies. Bravo!", 1000));
-    fixtures.put("Stove", new Fixture("Stove", "A large propane stove. You like electric ones, but this wasn't your decision, obviously.", 1000));
-    fixtures.put("Whiteboard", new Fixture("Whiteboard", "A large whiteboard mounted to the wall. Some UML class and sequence diagrams are scattered on it, in various colors", 1000));
-
+    fixtures.put("Laptop", new Fixture("Laptop", "A ZacPro 5000 with all the latest features "
+            + "and a USB slot. It's bolted to the table and can't move", 1000));
+    fixtures.put("Professor Keith", new Fixture("Professor Keith", "Professor Keith, Faculty "
+            + "Director of Align Boston. He smiles at you and gives a thumb's up. "
+            + "\"Great job! You can do this!\"", 1000));
+    fixtures.put("Billboard", new Fixture("Billboard", "A large billboard looms in the distance. "
+            + "\nIt's hard to read but seems to say 'Welcome to Align Quest, adventurer! "
+            + "Enjoy the exploration! - Prof. K'", 1000));
+    fixtures.put("Chandelier", new Fixture("Chandelier", "A large and heavy chandelier hangs "
+            + "from the ceiling. \nThe light from it is dim, and it is too high to reach "
+            + "without using a mechanical lift.", 1000));
+    fixtures.put("Bookshelf", new Fixture("Bookshelf", "A tall black oak bookshelf in the corner "
+            + "of the room. \nIt's much too heavy to move...but there's something weird about "
+            + "it and the books seem to tremble on their own", 1000));
+    fixtures.put("Monitor", new Fixture("Monitor", "A large and heavy video monitor (one of many, "
+            + "actually). \nIt's replaying your success here at Khoury/NU in your Align studies. "
+            + "Bravo!", 1000));
+    fixtures.put("Monitors", new Fixture("Monitors", "A large and heavy video "
+            + "monitor (one of many, "
+            + "actually). \nIt's replaying your success here at Khoury/NU in your Align studies. "
+            + "Bravo!", 1000));
+    fixtures.put("Stove", new Fixture("Stove", "A large propane stove. You like electric ones, "
+            + "but this wasn't your decision, obviously.", 1000));
+    fixtures.put("Whiteboard", new Fixture("Whiteboard", "A large whiteboard mounted to the wall. "
+            + "Some UML class and sequence diagrams are scattered on it, in various colors", 1000));
 
     // Initialize monsters
     Map<String, Monster> monsters = new HashMap<>();
     String solutionName = "Carrot";
     Item solution = items.get(solutionName);
     monsters.put("Rabbit", new Monster("Rabbit",
-            "Awww. A furry rabbit twitching its nose and eating a carrot. Makes you want to pet him",
+            "Awww. A furry rabbit twitching its nose and eating a carrot. "
+                    + "Makes you want to pet him",
             true, true, true, true,
             solution, 300, -15,
             "A monster Rabbit moves towards you! He's blocking the way north."
@@ -104,33 +152,38 @@ public class GameControllerTest {
     solution = items.get(solutionName);
     puzzles.put("MOD-SPOOKY-VOICE", new Puzzle<Item>(
             "MOD-SPOOKY-VOICE",
-            "An spooky, eerie library. You walked into this eerie library FROM the west. \nAnother room is north. Books are rustling by themselves on a bookshelf.", true, true,
-              false, solution,
-              400,
-            "Books are rustling by themselves on the bookshelf. That's a weird bookshelf. Really weird.\nYou hear a voice whisper: \"~Find Even Numbers Only~\" \nYikes. That's creepy. Maybe we should leave?", "4:Spooky Library",
+            "An spooky, eerie library. You walked into this eerie library FROM the west. "
+                    + "\nAnother room is north. Books are rustling by themselves on a bookshelf.",
+            true, true, false, solution, 400,
+            "Books are rustling by themselves on the bookshelf. That's a weird bookshelf. "
+                    + "Really weird.\nYou hear a voice whisper: "
+                    + "\"~Find Even Numbers Only~\" \nYikes. That's creepy. Maybe we should leave?",
+            "4:Spooky Library",
             "", new ItemSolutionValidator()));
 
     solutionName = "'Base Case'";
-    puzzles.put("RECURSION-PUZZLE", new Puzzle<String>("RECURSION-PUZZLE", "I feel like we've " +
-            "been here before - not quite an infinite loop but infinite...!", true, true,
+    puzzles.put("RECURSION-PUZZLE", new Puzzle<String>("RECURSION-PUZZLE", "I feel like we've "
+            + "been here before - not quite an infinite loop but infinite...!", true, true,
               false, solutionName,
-              700, "Every time you move, you end up in the same room!\nSomething is etched into the wall with a knife. It says: 'Provide a solution to end the recursive madness'", "10:Recursive Study",
+              700, "Every time you move, you end up in the same room!\nSomething is "
+            + "etched into the wall with a knife. It says: 'Provide a solution to end the recursive madness'",
+            "10:Recursive Study",
             "", new StringSolutionValidator()));
 
     solutionName = "Thumb Drive";
     solution = items.get(solutionName);
     puzzles.put("USB", new Puzzle<Item>("USB", "A laptop with a USB port", true, true,
               false, solution,
-              500, "This is a quiet living room. \nThe dining area is to your south and another " +
-            "room to your east but there seems to be an invisible barrier blocking you from going in that direction. \nA dimly lit laptop is on a small table in the corner", "9:Living Room", null,
+              500, "This is a quiet living room. \nThe dining area is to your south and another "
+            + "room to your east but there seems to be an invisible barrier blocking you from going in that direction. \nA dimly lit laptop is on a small table in the corner", "9:Living Room", null,
               new ItemSolutionValidator()));
 
     solutionName = "Golden Ticket";
     solution = items.get(solutionName);
     puzzles.put("ROBOT", new Puzzle<Item>("ROBOT", "A large robot with lights flashing, humming a tune from a cartoon. You can't quite remember the song. \nThere's a slot on it's front side it reads: 'Insert Here'", true, true,
               false, solution,
-              250, "This room is pretty much empty, except for a large robot in the corner, " +
-            "making a humming sound. \nIt's annoying! Turn it off!\nThere's a slot on it's front side it reads: 'INSERT TICKET HERE'", "13:Bridge Exit", "robot.png",
+              250, "This room is pretty much empty, except for a large robot in the corner, "
+            + "making a humming sound. \nIt's annoying! Turn it off!\nThere's a slot on it's front side it reads: 'INSERT TICKET HERE'", "13:Bridge Exit", "robot.png",
             new ItemSolutionValidator()));
 
     // Initialize rooms
@@ -144,7 +197,7 @@ public class GameControllerTest {
 
     Item currentItem = items.get("Hair Clippers");
     Fixture currentFixture = fixtures.get("Billboard");
-    Map<String,IdentifiableEntity> entities = new HashMap<>();
+    Map<String, IdentifiableEntity> entities = new HashMap<>();
     entities.put("Hair Clippers", currentItem);
     entities.put("Billboard", currentFixture);
 
@@ -153,8 +206,8 @@ public class GameControllerTest {
                     + "both sides of the stone walkway. "
                     + "\nThe walkway leads north. A billboard is in the "
                     + "distance.",
-            exits,entities,
-            puzzles.get("DARKNESS"),""));
+            exits, entities,
+            puzzles.get("DARKNESS"), ""));
 
     //update exits
     exits = new HashMap<>();
@@ -315,18 +368,27 @@ public class GameControllerTest {
     gameController = new GameController(gameWorld, player);
   }
 
+  /**
+   * Test move north command.
+   */
   @Test
   void testMoveNorth() {
     gameController.processCommand("N");
     assertEquals(2, player.getRoomNumber());
   }
 
+  /**
+   * Test take item command.
+   */
   @Test
   void testTakeItem() {
     gameController.processCommand("TAKE Hair Clippers");
     assertTrue(player.getEntities().containsKey("Hair Clippers"));
   }
 
+  /**
+   * Test drop item command.
+   */
   @Test
   void testDropItem() {
     gameController.processCommand("TAKE Hair Clippers");
@@ -339,13 +401,17 @@ public class GameControllerTest {
     assertTrue(gameWorld.getRoom(1).getEntities().containsKey("Carrot"));
   }
 
+  /**
+   * Test examine item command.
+   */
   @Test
   void testExamineItem() {
     gameController.processCommand("EXAMINE Billboard");
-    // Assuming viewer.showText() prints to console or logs, we can't assert its output directly
-    // We can check if the method runs without exceptions
   }
 
+  /**
+   * Test solve puzzle command.
+   */
   @Test
   void testSolvePuzzle() {
     gameController.processCommand("TAKE Key");
@@ -356,6 +422,9 @@ public class GameControllerTest {
     gameController.processCommand("USE Hair Clippers");
   }
 
+  /**
+   * Test handle monster command.
+   */
   @Test
   void testHandleMonster() {
     player.setRoomNumber(7); //get in monster room
@@ -368,11 +437,12 @@ public class GameControllerTest {
     assertFalse(gameWorld.getRoom(7).getProblem().getActive());
   }
 
+  /**
+   * Test check inventory command.
+   */
   @Test
   void testCheckInventory() {
     gameController.processCommand("TAKE Hair Clippers");
     gameController.processCommand("INVENTORY");
-    // Assuming viewer.showText() prints to console or logs, we can't assert its output directly
-    // We can check if the method runs without exceptions
   }
 }
