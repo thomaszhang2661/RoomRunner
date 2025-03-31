@@ -165,7 +165,8 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
     sb.append("\"items\":").append(items.isEmpty() ? "null" : "\"" + items + "\"").append(",");
 
     String fixtures = getElementNames(Fixture.class);
-    sb.append("\"fixtures\":").append(fixtures.isEmpty() ? "null" : "\"" + fixtures + "\"").append(",");
+    sb.append("\"fixtures\":").append(fixtures.isEmpty() ? "null" : "\""
+            + fixtures + "\"").append(",");
 
     sb.append("\"picture\":\"").append(getPictureName()).append("\"");
 
