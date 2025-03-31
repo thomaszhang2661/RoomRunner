@@ -147,7 +147,10 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
 
     sb.append("\"room_name\":\"").append(getName()).append("\",");
     sb.append("\"room_number\":\"").append(getId()).append("\",");
-    sb.append("\"description\":\"").append(getDescription()).append("\",");
+    sb.append("\"description\":\"").append(getDescription()
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n"))
+            .append("\",");
 
     sb.append("\"N\":\"").append(exits.get("N")).append("\",");
     sb.append("\"S\":\"").append(exits.get("S")).append("\",");
