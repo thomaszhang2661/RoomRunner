@@ -14,6 +14,21 @@ public class Monster<T> extends Problem<T> {
 
   /**
    * Constructor for Puzzle.
+
+   * @param name the name of the monster
+   * @param description the description of the monster
+   * @param active the active status of the monster
+   * @param affectsTarget the affects target status of the monster
+   * @param affectsPlayer the affects player status of the monster
+   * @param canAttack the can attack status of the monster
+   * @param solution the solution of the monster
+   * @param value the value of the monster
+   * @param damage the damage when attacking
+   * @param effects the effects of the monster
+   * @param target the target of the monster affecting
+   * @param pictureName the picture name of the monster
+   * @param attack the attack description of the monster
+   * @param validator the solution validator of the monster
    */
   public Monster(String name,
                 String description,
@@ -35,48 +50,11 @@ public class Monster<T> extends Problem<T> {
     this.canAttack = canAttack;
   }
 
+  /**
+   * Sets the active status of the monster.
 
-  //  @Override
-  //  public int getId() {
-  //    return super.getId();
-  //  }
-  //
-  //  @Override
-  //  public String getName() {
-  //    return super.getName();
-  //  }
-  //
-  //  @Override
-  //  public String getDescription() {
-  //    return super.getDescription();
-  //  }
-  //
-  //  @Override
-  //  public Image getPicture() {
-  //    return super.getPicture();
-  //  }
-  //
-  //  @Override
-  //  public boolean getActive() {
-  //    return super.getActive();
-  //  }
-  //
-  //  @Override
-  //  public boolean solve(T input) {
-  //    return super.solve(input);
-  //  }
-  //
-  //  @Override
-  //  public int getValue() {
-  //    return super.getValue();
-  //  }
-  //
-  //  @Override
-  //  public String getEffects() {
-  //    return super.getEffects();
-  //  }
-
-
+   * @param active the active status of the monster
+   */
   @Override
   public void setActive(boolean active) {
     super.setActive(active);
@@ -117,6 +95,8 @@ public class Monster<T> extends Problem<T> {
 
   /**
    * Setter for canAttack.
+
+   * @param input boolean for can attack.
    */
   public void setCanAttack(boolean input) {
     canAttack = input;
@@ -132,7 +112,9 @@ public class Monster<T> extends Problem<T> {
   }
 
   /**
-   *  Override solve deal with can attack.
+   * Override solve deal with can attack.
+
+   * @param input the input to solve the puzzle
    */
   @Override
   public int solve(T input) {
@@ -143,7 +125,11 @@ public class Monster<T> extends Problem<T> {
     return result;
   }
 
+  /**
+   * Override toString to include attack and damage.
 
+   * @return String for monster.
+   */
   @Override
   public String toString() {
     String solutionStr;
