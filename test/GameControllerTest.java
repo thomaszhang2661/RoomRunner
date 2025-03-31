@@ -153,8 +153,7 @@ public class GameControllerTest {
                     + "both sides of the stone walkway. "
                     + "\nThe walkway leads north. A billboard is in the "
                     + "distance.",
-            exits,entities,
-            puzzles.get("DARKNESS"),""));
+            exits,entities,null,""));
 
     //update exits
     exits = new HashMap<>();
@@ -273,7 +272,6 @@ public class GameControllerTest {
     exits.put("W", -9);
     //update entities
     entities = new HashMap<>();
-    entities.put("Professor Keith", fixtures.get("Professor Keith"));
     rooms.put(10, new Room<Puzzle<?>>(10, "Recursive Study",
             "A study/office room. A fake mirror has been shattered showing an opening to the east.",
             exits, entities, puzzles.get("RECURSION-PUZZLE"),""));
