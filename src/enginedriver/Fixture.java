@@ -10,10 +10,12 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   private final int weight;
   private Puzzle<?> puzzle;
   private int states;
-  //TODO: accomposition for weightable
 
   /**
    * Simple constructor for fixture without weight.
+
+   * @param name the name of the fixture
+   * @param description the description of the fixture
    */
   public Fixture(String name, String description) {
     super(name, description);
@@ -23,6 +25,10 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
 
   /**
    * Constructor for a fixture with weight.
+
+   * @param name the name of the fixture
+   * @param description the description of the fixture
+   * @param weight the weight of the fixture
    */
   public Fixture(String name, String description, int weight) {
     super(name, description);
@@ -31,7 +37,14 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   }
 
   /**
-   * Constructor for a fixture with weight and puzzle.
+   * Constructor for a fixture with weight, puzzle, states and pictureName.
+
+   * @param name the name of the fixture
+   * @param description the description of the fixture
+   * @param weight the weight of the fixture
+   * @param puzzle the puzzle of the fixture
+   * @param states the states of the fixture
+   * @param pictureName the picture name of the fixture
    */
   public Fixture(String name, String description, int weight,
                  Puzzle<?> puzzle, int states,
@@ -43,7 +56,13 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   }
 
   /**
-   * Constructor for a fixture with weight and puzzle.
+   * Constructor for a fixture with weight, puzzle and pictureName.
+
+   * @param name the name of the fixture
+   * @param description the description of the fixture
+   * @param weight the weight of the fixture
+   * @param puzzle the puzzle of the fixture
+   * @param pictureName the picture name of the fixture
    */
   public Fixture(String name, String description, int weight,
                  Puzzle<?> puzzle,
@@ -65,25 +84,37 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
 
   /**
    * setter of states.
+
+   * @param input the states of the fixture
    */
   public void setStates(int input) {
     this.states = input;
   }
 
   /**
-   * Get the puzzle of the fixture.
+   * getter of puzzle.
 
-   * @return the puzzle contained by the fixture
+   * @return Puzzle<?> puzzle
    */
   public Puzzle<?> getPuzzle() {
     return puzzle;
   }
 
+  /**
+   * getter of weight.
+
+   * @return int weight
+   */
   @Override
   public int getWeight() {
     return weight;
   }
 
+  /**
+   * toString method for fixture.
+   *
+   * @return String representation of fixture
+   */
   @Override
   public String toString() {
     return "{ "

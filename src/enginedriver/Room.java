@@ -2,8 +2,8 @@ package enginedriver;
 
 import java.util.Map;
 
-import enginedriver.problems.Monster;
 import enginedriver.problems.IProblem;
+import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 
 /**
@@ -16,6 +16,11 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
 
   /**
    * Simple Constructor for a room.
+
+   * @param id the id of the room
+   * @param name the name of the room
+   * @param description the description of the room
+   * @param exits the exits of the room
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits) {
@@ -26,6 +31,12 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
 
   /**
    * Simple Constructor for a room with problem.
+
+   * @param id the id of the room
+   * @param name the name of the room
+   * @param description the description of the room
+   * @param exits the exits of the room
+   * @param problem the problem of the room
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,  T problem) {
@@ -36,6 +47,12 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
 
   /**
    * Constructor for a room with Map of Entities.
+
+   * @param id the id of the room
+   * @param name the name of the room
+   * @param description the description of the room
+   * @param exits the exits of the room
+   * @param entityNames the map of entities
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
@@ -47,6 +64,14 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
 
   /**
    * Constructor for a room with Map of Entities and a problem.
+
+   * @param id the id of the room
+   * @param name the name of the room
+   * @param description the description of the room
+   * @param exits the exits of the room
+   * @param entityNames the map of entities
+   * @param problem the problem of the room
+   * @param pictureName the picture name of the room
    */
   public Room(int id, String name, String description,
               Map<String, Integer> exits,
@@ -68,64 +93,27 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
 
   /**
    * unlocks an exit from the room.
+
+   * @param key the key of the exit
    */
   void unlockExit(String key) {
     exits.put(key, Math.abs(exits.get(key)));
   }
 
-  //  /**
-  //   * adds an entity to the room.
-  //   */
-  //  public boolean addEntity(IdentifiableEntity entity) {
-  //    return super.addEntity(entity);
-  //  }
-
-  //  /**
-  //   * removes an entity from the room.
-  //   */
-  //  public boolean removeEntity(IdentifiableEntity entity) {
-  //    return super.removeEntity(entity);
-  //  }
-
-  //  /**
-  //   *  Check if the room has an entity, check by object.
-  //   */
-  //  public Boolean  hasEntity(IdentifiableEntity entity) {
-  //    return super.hasEntity(entity);
-  //  }
-
-  //  /**
-  //   *  Check if the room has an entity check by name.
-  //   */
-  //  public Boolean  hasEntity(String entityName) {
-  //    return super.hasEntity(entityName);
-  //  }
-
-  //  /**
-  //   *  get an Entity from the room.
-  //   */
-  //  public <U extends IdentifiableEntity> U getEntity(
-  //          String entityName, Class<U> clazz) {
-  //    return super.getEntity(entityName, clazz);
-  //  }
-  //
-  //  public  Map<String, IdentifiableEntity> getEntities() {
-  //    return super.getEntities();
-  //  }
-
-
-
   /**
    *  get an Item from the room.
+
+   *  @param itemName the name of the item
+   *  @return the item
    */
   public Item  getItem(String itemName) {
     return super.getEntity(itemName, Item.class);
   }
 
-
-
   /**
    * get the problem in the room.
+
+   * @return the problem in the room
    */
   public T getProblem() {
     return problem;
@@ -133,6 +121,9 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
 
   /**
    * get the String list of items in the room.
+
+   * @param clazz the class of the entity
+   *  @return the string list of items
    */
   public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
     return String.join(", ", getEntitiesByType(clazz).stream()
@@ -140,6 +131,11 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
             .toList());
   }
 
+  /**
+   * get the String list of items in the room.
+
+   * @return the string list of items
+   */
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -172,7 +168,8 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
     sb.append("\"items\":").append(items.isEmpty() ? "null" : "\"" + items + "\"").append(",");
 
     String fixtures = getElementNames(Fixture.class);
-    sb.append("\"fixtures\":").append(fixtures.isEmpty() ? "null" : "\"" + fixtures + "\"").append(",");
+    sb.append("\"fixtures\":").append(fixtures.isEmpty() ? "null" : "\""
+            + fixtures + "\"").append(",");
 
     sb.append("\"picture\":\"").append(getPictureName()).append("\"");
 

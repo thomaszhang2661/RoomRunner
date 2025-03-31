@@ -13,12 +13,17 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * Unit Test for Monster class.
+ */
 class MonsterTest {
   private Monster<String> rabbit;
   private Monster<String> teddyBear;
   private Player player;
 
+  /**
+   * Set up the test environment.
+   */
   @BeforeEach
   void setUp() {
     // Create a player for testing
@@ -63,7 +68,9 @@ class MonsterTest {
     );
   }
 
-  // Test Monster Initialization
+  /**
+   * Test the initialization of Monster objects.
+   */
   @Test
   void testMonsterInitialization() {
     // Validate Rabbit
@@ -144,10 +151,10 @@ class MonsterTest {
     }
     return true;
   }
+
   /**
    * Test getPicture method of Monster.
    */
-
   @Test
   void testMonsterGetPicture() {
 
@@ -183,7 +190,9 @@ class MonsterTest {
     assertTrue(compareImages(expectedImage, teddyBear.getPicture()), "图片内容不匹配！");
   }
 
-  // Test Solve with Correct Solution
+  /**
+   * Test Solve with Correct Solution.
+   */
   @Test
   void testSolveCorrectSolution() {
     // Solve Rabbit
@@ -199,7 +208,9 @@ class MonsterTest {
     assertFalse(teddyBear.getActive(), "Teddy Bear should become inactive after solving.");
   }
 
-  // Test Solve with Incorrect Solution
+  /**
+   * Test Solve with Incorrect Solution.
+   */
   @Test
   void testSolveIncorrectSolution() {
     // Incorrect solution for Rabbit
@@ -215,7 +226,29 @@ class MonsterTest {
             + "remain active after failed solution.");
   }
 
-  // Test Monster Attack on Player
+  /**
+   * Test the setCanAttack method of Monster.
+   */
+  @Test
+  void testSetCanAttack() {
+    // Validate Rabbit Can Attack
+    assertTrue(rabbit.getCanAttack(), "Rabbit should be able to attack.");
+
+    // Set Rabbit to not attack
+    rabbit.setCanAttack(false);
+    assertFalse(rabbit.getCanAttack(), "Rabbit should not be able to attack.");
+
+    // Validate Teddy Bear Can Attack
+    assertTrue(teddyBear.getCanAttack(), "Teddy Bear should be able to attack.");
+
+    // Set Teddy Bear to not attack
+    teddyBear.setCanAttack(false);
+    assertFalse(teddyBear.getCanAttack(), "Teddy Bear should not be able to attack.");
+  }
+
+  /**
+   * Test Monster Attack on Player.
+   */
   @Test
   void testMonsterAttack() {
     // Verify initial player health
@@ -232,7 +265,9 @@ class MonsterTest {
             + "decrease by 5 due to Teddy Bear attack.");
   }
 
-  // Test Monster Attack When Inactive
+  /**
+   * Test Monster Attack When Inactive.
+   */
   @Test
   void testInactiveMonsterCannotAttack() {
     // Solve Rabbit, making it inactive

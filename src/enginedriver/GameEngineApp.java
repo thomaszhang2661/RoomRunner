@@ -94,7 +94,9 @@ public class GameEngineApp {
   }
 
   /**
-   * Set player's name for the whole game.
+   * Gets the player's name from input.
+
+   * @return the player's name
    */
   private String getPlayerName() {
     Scanner scanner = new Scanner(System.in);

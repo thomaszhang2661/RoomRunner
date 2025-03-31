@@ -66,6 +66,22 @@ public class ItemTest {
     assertEquals(10, item3.getRemainingUses());
   }
 
+  /**
+   * Test use method.
+   */
+  @Test
+  void testUse() {
+    Item item = new Item("A", "desc", 5, 2,
+            100, 10, "when used");
+    assertTrue(item.use());
+    assertEquals(1, item.getRemainingUses());
+
+    // Test using an item with no remaining uses
+    Item itemNoUses = new Item("B", "desc", 5, 0,
+            100, 10, "when used");
+    assertFalse(itemNoUses.use());
+    assertEquals(0, itemNoUses.getRemainingUses());
+  }
   //  /**
   //   * Test setUseRemain method.
   //   */
