@@ -11,7 +11,7 @@ public class Player extends EntityContainer<Item> {
   private int health;
   private final int maxWeight;
   private int currentWeight;
-  private int roomNumber; //the room that player is in
+  private int roomNumber = 1; //the room that player is in
   private int score;
 
   /**
@@ -143,38 +143,6 @@ public class Player extends EntityContainer<Item> {
     return health;
   }
 
-  //  @Override
-  //  public int getId() {
-  //    return super.getId();
-  //  }
-  //
-  //  /**
-  //   * Retrieves the name.
-  //
-  //   * @return name of player.
-  //   */
-  //  public String getName() {
-  //    return super.getName();
-  //  }
-  //
-  //  /**
-  //   * Retrieves the description.
-  //
-  //   * @return player's description.
-  //   */
-  //  public String getDescription() {
-  //    return super.getDescription();
-  //  }
-  //
-  //  /**
-  //   * Retrieves a picture of the player.
-  //
-  //   * @return picture.
-  //   */
-  //  public Image getPicture() {
-  //    return null;
-  //  }
-
   /**
    * Retrieves the room number, which represents which room we're currently in.
 
@@ -207,13 +175,6 @@ public class Player extends EntityContainer<Item> {
     this.score += score;
   }
 
-  //  /**
-  //   * get all items in player's inventory.
-  //   */
-  //  @Override
-  //  public Map<String, Item> getEntities() {
-  //    return super.getEntities();
-  //  }
 
   /**
    * Add an item into player's inventory if it is within the maxWeight.
@@ -221,8 +182,6 @@ public class Player extends EntityContainer<Item> {
    * @param item the name of the item to be added
    * @return true if the item is within the maxWeight and successfully added, false otherwise
    */
-
-
   public boolean addItem(Item item) {
     if (item.getWeight() + getCurrentWeight() <= maxWeight) {
       super.addEntity(item);
@@ -251,15 +210,6 @@ public class Player extends EntityContainer<Item> {
   public void setRoomNumber(int roomNumber) {
     this.roomNumber = roomNumber;
   }
-
-  //  /**
-  //   *  get an Entity from the room.
-  //   */
-  //  public <U extends IdentifiableEntity> U getEntity(
-  //          String entityName, Class<U> clazz) {
-  //    return super.getEntity(entityName, clazz);
-  //  }
-
 
   @Override
   public String toString() {

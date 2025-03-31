@@ -8,18 +8,11 @@ import enginedriver.problems.Puzzle;
 
 /**
  * Class representing the game world, read from json file.
- * !!!! 这个地方需要考虑如何记录每一步的操作，方便复盘!!!!
  */
 public class GameWorld {
   private String name;
   private String version;
   private Map<Integer, Room> rooms;
-  //  private Map<String, Item> items;
-  //  private Map<String, Fixture> fixtures;
-  //  private Map<String, Monster> monsters;
-  //  private Map<String, Puzzle> puzzles;
-  //  private int score;
-  //  private Player player; //记录生命值、item、位置等
 
   /**
    * Default constructor for deserialization.
@@ -78,24 +71,6 @@ public class GameWorld {
   public void setRooms(Map<Integer, Room>  rooms) {
     this.rooms = rooms;
   }
-  //  public void setScore(int score) {
-  //    player.setScore(score);
-  //  }
-
-  //  public void addScore(int inputValue) {
-  //    this.score += inputValue;
-  //  }
-  //
-  //  public int getScore() {
-  //    return score;
-  //  }
-
-  //  public void setPlayer(String name, int health, int maxWeight, int score) {
-  //    this.player = new Player(name, health, maxWeight, score);
-  //  }
-  //  public void setPlayer(Player player) {
-  //    this.player = player;
-  //  }
 
   @Override
   public String toString() {
@@ -170,11 +145,4 @@ public class GameWorld {
     sb.append("}");
     return sb.toString();
   }
-
-  //  public Item findItemByName(String name) {
-  //    if (name == null) {
-  //      throw new IllegalArgumentException("Name cannot be null.");
-  //    }
-  //    return items.get(name);
-  //    }
 }

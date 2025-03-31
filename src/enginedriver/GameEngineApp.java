@@ -2,6 +2,7 @@ package enginedriver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Objects;
@@ -30,26 +31,10 @@ public class GameEngineApp {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
-    //    // create ObjectMapper
-    //    ObjectMapper mapper = new ObjectMapper();
-    //    SimpleModule module = new SimpleModule();
-    //    // register GameWorldDeserializer
-    //    module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
-    //    mapper.registerModule(module);
-    //    // parse gameWorld
-    //    GameWorld gameWorld = mapper.readValue(new File(gameFileName), GameWorld.class);
-    //
-    //    // register PlayerDeserializer
-    //    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
-    //    mapper.registerModule(module);
-    //    // parse player
-    //    Player player = mapper.readValue(new File(gameFileName), Player.class);
-
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
     Player player = GameDataLoader.loadPlayer(gameFileName, gameWorld);
 
     // if player is null, create a new player from input
-    // TODO： 检测是否存在同名文件，有重名要提示不能用
     if (player == null) {
       String playerName = getPlayerName();
       player = new Player(playerName, 100, 20, 0); // 提示玩家输入名字
@@ -68,11 +53,25 @@ public class GameEngineApp {
     BufferedReader reader = new BufferedReader((Reader) source);
 
     String command;
-    while ((command = reader.readLine()) != null) {
+    while (true) {
+      System.out.println("===");
+      System.out.println("To move, enter: (N)orth, (S)outh, (E)ast or (W)est.");
+      System.out.println("Other actions: (I)nventory, (L)ook around the location, (U)se an item");
+      System.out.println("(T)ake an item, (D)rop an item, or e(X)amine something.");
+      System.out.println("(A)nswer a question or provide a text solution.");
+      System.out.println("To end the game, enter (Q)uit to quit and exit.");
+      System.out.print("Your choice: ");
+
+      command = reader.readLine();
+      if (command == null) {
+        break;
+      }
+
       if (command.equalsIgnoreCase("Q")) {
         System.out.println("Exiting game.");
         break;
       }
+
       gameController.processCommand(command);
     }
   }
@@ -84,11 +83,12 @@ public class GameEngineApp {
    * @throws IOException if an error occurs during input/output
    */
   public static void main(String[] args) throws IOException {
-    String s = "Sir Mix-A-Lot\nT NOTEBOOK\nN\nT HAIR CLIPPERS\nT KEY\nD NOTEBOOK\nQuit";
-    BufferedReader stringReader = new BufferedReader(new StringReader(s));
+    BufferedReader consoleReader =
+            new BufferedReader(new InputStreamReader(System.in));
+
     GameEngineApp gameEngineApp = new GameEngineApp(
             "./resources/align_quest_game_elements.json",
-            stringReader,
+            consoleReader,
             System.out);
 
     gameEngineApp.start();
@@ -107,8 +107,6 @@ public class GameEngineApp {
     // 输出用户输入的姓名
     System.out.println("Your name is: " + playerName);
 
-    // 关闭 Scanner 对象
-    scanner.close();
     return playerName;
   }
 }

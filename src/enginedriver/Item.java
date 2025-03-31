@@ -65,20 +65,11 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
 
   }
 
-
-
-  //  /**
-  //   * Constructor for an item with no max uses.
-  //   */
-  //  public void setRemainingUses(int remainingUses) {
-  //    if (remainingUses >= 0) {
-  //      this.remainingUses = remainingUses;
-  //    } else {
-  //      throw new IllegalArgumentException(
-  //              "Remaining uses of an item cannot be less than 0");
-  //    }
-  //  }
-
+  /**
+   * Use the item.
+   * If the item can be used, the remaining uses are decremented by 1.
+   * If the item cannot be used, the remaining uses are not decremented.
+   */
   public boolean use() {
     if (remainingUses <= 0) {
       return false;
@@ -115,39 +106,7 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
     return whenUsed;
   }
 
-  /**
-   * Use the item.
-   * If the item can be used, the remaining uses are decremented by 1.
-   * If the item cannot be used, the remaining uses are not decremented.
-   */
-  public boolean use() {
-    // 1. 不能用了 返回使用失败
-    if (remainingUses <= 0) {
-      return false;
-    }
-    // 2. 还可以用,处理remainingUses，返回 whenUsed
-    remainingUses--;
-    return true;
-  }
-  //  @Override
-  //  public int getId() {
-  //    return super.getId();
-  //  }
-  //
-  //  @Override
-  //  public String getName() {
-  //    return super.getName();
-  //  }
-  //
-  //  @Override
-  //  public String getDescription() {
-  //    return super.getDescription();
-  //  }
-  //
-  //  @Override
-  //  public Image getPicture() {
-  //    return null;
-  //  }
+
 
   @Override
   public String toString() {
