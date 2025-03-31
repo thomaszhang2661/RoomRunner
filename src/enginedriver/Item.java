@@ -1,9 +1,5 @@
 package enginedriver;
 
-import java.awt.Image;
-import java.util.Map;
-
-
 /**
  * Class for items in the game.
  * Items are objects that can be used by the player.
@@ -19,6 +15,15 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
 
   /**
    * Constructor for an item.
+
+   * @param name the name of the item
+   * @param description the description of the item
+   * @param maxUses the max uses of the item
+   * @param remainingUses the remaining uses of the item
+   * @param value the value of the item
+   * @param weight the weight of the item
+   * @param whenUsed a description when used the item
+   * @param pictureName the picture name of the item
    */
   public Item(String name, String description, int maxUses,
               int remainingUses, int value,
@@ -43,6 +48,14 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
 
   /**
    * Constructor for an item.
+
+   * @param name the name of the item
+   * @param description the description of the item
+   * @param maxUses the max uses of the item
+   * @param remainingUses the remaining uses of the item
+   * @param value the value of the item
+   * @param weight the weight of the item
+   * @param whenUsed a description when used the item
    */
   public Item(String name, String description, int maxUses,
               int remainingUses, int value,
@@ -65,33 +78,38 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
 
   }
 
-
-
-  //  /**
-  //   * Constructor for an item with no max uses.
-  //   */
-  //  public void setRemainingUses(int remainingUses) {
-  //    if (remainingUses >= 0) {
-  //      this.remainingUses = remainingUses;
-  //    } else {
-  //      throw new IllegalArgumentException(
-  //              "Remaining uses of an item cannot be less than 0");
-  //    }
-  //  }
-
+  /**
+   * Getter for remainingUses.
+   * @return int remainingUses
+   */
   public int getRemainingUses() {
     return remainingUses;
   }
 
+  /**
+   * Getter for maxUses.
+
+   * @return int maxUses
+   */
   public int getUseMax() {
     return maxUses;
   }
 
+  /**
+   * Getter for value.
+
+   * @return int value
+   */
   @Override
   public int getValue() {
     return value;
   }
 
+  /**
+   * Getter for weight.
+
+   * @return int weight
+   */
   @Override
   public int getWeight() {
     return weight;
@@ -110,36 +128,24 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
    * Use the item.
    * If the item can be used, the remaining uses are decremented by 1.
    * If the item cannot be used, the remaining uses are not decremented.
+
+   * @return true if the item can be used, false otherwise
    */
   public boolean use() {
-    // 1. 不能用了 返回使用失败
+    // remaining uses <= 0, cannot use
     if (remainingUses <= 0) {
       return false;
     }
-    // 2. 还可以用,处理remainingUses，返回 whenUsed
+    // remaining uses > 0, can use
     remainingUses--;
     return true;
   }
-  //  @Override
-  //  public int getId() {
-  //    return super.getId();
-  //  }
-  //
-  //  @Override
-  //  public String getName() {
-  //    return super.getName();
-  //  }
-  //
-  //  @Override
-  //  public String getDescription() {
-  //    return super.getDescription();
-  //  }
-  //
-  //  @Override
-  //  public Image getPicture() {
-  //    return null;
-  //  }
 
+  /**
+   * toString method for the item class.
+
+   * @return a string representation of the item
+   */
   @Override
   public String toString() {
     return "{ "
@@ -162,12 +168,6 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
    */
   @Override
   public boolean equals(Object o) {
-    //    return super.equals(o) && o instanceof Item item &&
-    //            maxUses == item.maxUses &&
-    //            remainingUses == item.remainingUses &&
-    //            value == item.value &&
-    //            weight == item.weight &&
-    //            whenUsed.equals(item.whenUsed);
     return super.equals(o);
   }
 
@@ -178,7 +178,6 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
    */
   @Override
   public int hashCode() {
-    //return super.hashCode() + Objects.hash(maxUses, remainingUses, value, weight, whenUsed);
     return super.hashCode();
   }
 }
