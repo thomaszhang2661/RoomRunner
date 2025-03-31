@@ -28,7 +28,7 @@ public class GameWorldTest {
   }
 
   /**
-   * Test setName(String).
+   * Test setName().
    */
   @Test
   void testSetName() {
@@ -48,7 +48,7 @@ public class GameWorldTest {
   }
 
   /**
-   * Test setVersion(String).
+   * Test setVersion().
    */
   @Test
   void testSetVersion() {
@@ -64,7 +64,6 @@ public class GameWorldTest {
   @Test
   void testGetRooms() {
     Map<Integer, Room> rooms = new HashMap<>();
-    // Use the 4-parameter constructor for a basic room with no problem & no entities
     Map<String, Integer> exits = new HashMap<>();
     exits.put("N", 1);
     Room simpleRoom = new Room(1, "SimpleRoom", "Just a room", exits);
@@ -75,7 +74,7 @@ public class GameWorldTest {
   }
 
   /**
-   * Test setRooms(Map<Integer, Room>).
+   * Test setRooms().
    */
   @Test
   void testSetRooms() {
@@ -83,7 +82,6 @@ public class GameWorldTest {
     assertNull(gw.getRooms(), "By default, rooms is null.");
 
     Map<Integer, Room> rooms = new HashMap<>();
-    // Another simple room
     Map<String, Integer> exits = new HashMap<>();
     exits.put("E", 2);
     Room room1 = new Room(1, "RoomA", "DescA", exits);
@@ -94,7 +92,7 @@ public class GameWorldTest {
   }
 
   /**
-   * Test getRoom(int).
+   * Test getRoom().
    */
   @Test
   void testGetRoom() {
@@ -111,10 +109,10 @@ public class GameWorldTest {
     rooms.put(2, room2);
 
     GameWorld gw = new GameWorld("WorldE", "4.0", rooms);
-    // Valid IDs
+    // Valid ID
     assertEquals(room1, gw.getRoom(1));
     assertEquals(room2, gw.getRoom(2));
-    // Non-existent ID => null
+    // Non-existent ID
     assertNull(gw.getRoom(999));
   }
 

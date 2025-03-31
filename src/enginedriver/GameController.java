@@ -87,16 +87,29 @@ public class GameController {
     }
   }
 
+  /**
+   * Get the game world.
+
+   * @return the game world
+   */
   public GameWorld getGameWorld() {
     return gameWorld;
   }
 
+  /**
+   * Get the player.
+
+   * @return the player
+   */
   public Player getPlayer() {
     return player;
   }
 
   /**
-   * Process the command entered by the player.
+   * Standardize the command entered by the player.
+
+   * @param command the command entered by the player
+   * @return the standardized command
    */
   private String[] standardizeCommand(String command) {
     // Remove leading and trailing white spaces
@@ -123,6 +136,9 @@ public class GameController {
     return new String[]{action, objectName};
   }
 
+  /**
+   * Capitalize the word to align with the JSON style.
+   */
   private static String capitalizeWords(String phrase) {
     if (phrase == null || phrase.isEmpty()) {
       return phrase;
@@ -140,7 +156,6 @@ public class GameController {
     }
     return capitalized.toString().trim();
   }
-
 
   /**
    * Move the player north.
@@ -237,6 +252,11 @@ public class GameController {
 
   }
 
+  /**
+   * Look around the current room.
+
+   * @return the description of the current room
+   */
   private void lookAround() {
     // Logic to look around
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
@@ -263,6 +283,8 @@ public class GameController {
 
   /**
    * Use an item.
+   *
+   * @param itemName the name of the item to use
    */
   private void useItem(String itemName) {
 
@@ -328,9 +350,10 @@ public class GameController {
     }
   }
 
-
   /**
    * Answer a puzzle.
+
+   * @param objectName the answer to the puzzle
    */
   private void answer(String objectName) {
 
@@ -385,6 +408,8 @@ public class GameController {
 
   /**
    * Check the player's inventory.
+
+   * @return the items in the player's inventory
    */
   private void checkInventory() {
     // Logic to check inventory
@@ -472,7 +497,11 @@ public class GameController {
     }
   }
 
-  private  void handleProblemSolved(IProblem<?> problem) {
+  /**
+   * Handle the situation when the problem is successfully solved.
+   * @param problem the problem that will be solved
+   */
+  private void handleProblemSolved(IProblem<?> problem) {
     viewer.showText("You have successfully"
             + (problem instanceof Puzzle<?> ? " solved " : " killed ")
             + problem.getName());
@@ -493,7 +522,11 @@ public class GameController {
     }
   }
 
-  //处理失败时怪物攻击
+  /**
+   * Handle situation when monster attacks the player by checking its attack effect and dealing
+   * with the damage.
+   * @param problem the puzzle/monster that might attack player
+   */
   private void handleMonsterAttack(IProblem<?> problem) {
     if (problem instanceof Monster) {
       Monster<?> monster = (Monster) problem;

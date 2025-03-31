@@ -1,8 +1,6 @@
 package enginedriver;
 
-import java.awt.Image;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Class for player in the game.
@@ -16,6 +14,10 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * simple Constructor for a player.
+
+   * @param name the name of the player
+   * @param health the health of the player
+   * @param maxWeight the max weight of the player
    */
   public Player(String name, int health, int maxWeight) {
     super(-1, name, "Player");
@@ -25,6 +27,11 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * simple Constructor for a player with score.
+
+   * @param name the name of the player
+   * @param health the health of the player
+   * @param maxWeight the max weight of the player
+   * @param score the score of the player
    */
   public Player(String name, int health, int maxWeight, int score) {
     super(-1, name, "Player");
@@ -35,6 +42,11 @@ public class Player extends EntityContainer<Item> {
 
   /**
    *  Constructor for a player with items.
+
+   * @param name the name of the player
+   * @param health the health of the player
+   * @param maxWeight the max weight of the player
+   * @param items the items of the player
    */
   public Player(String name, int health, int maxWeight,
                 Map<String, Item> items) {
@@ -46,6 +58,12 @@ public class Player extends EntityContainer<Item> {
 
   /**
    *  Constructor for a player with items and score.
+
+   * @param name the name of the player
+   * @param health the health of the player
+   * @param maxWeight the max weight of the player
+   * @param items the items of the player
+   * @param score the score of the player
    */
   public Player(String name, int health, int maxWeight,
                 Map<String, Item> items, int score) {
@@ -57,7 +75,15 @@ public class Player extends EntityContainer<Item> {
   }
 
   /**
-   *  Constructor for an existing player.
+   * Constructor for an existing player.
+
+   * @param name the name of the player
+   * @param health the health of the player
+   * @param maxWeight the max weight of the player
+   * @param currentWeight the current weight of the player
+   * @param roomNumber the room number of the player
+   * @param items the items of the player
+   * @param score the score of the player
    */
   public Player(String name, int health, int maxWeight,
                 int currentWeight, int roomNumber,
@@ -74,21 +100,24 @@ public class Player extends EntityContainer<Item> {
 
   /**
    * Get current total weight of inventory.
+
+   * @return current weight of inventory.
    */
   public int getCurrentWeight() {
     return currentWeight;
   }
 
   /**
-   * Updates and returns the current weight of player's inventory.
+   * Update current weight of inventory.
    */
   private void updateCurrentWeight() {
     currentWeight = 0;
-    // 获取泛型类型的实体
+    // get all items in the inventory
     Map<String, Item> playerEntities = super.getEntities();
     for (Map.Entry<String, Item> entry : playerEntities.entrySet()) {
-      Item item =  entry.getValue();  // 强制类型转换为 Item 类型
-      currentWeight += item.getWeight();    // 获取物品的重量并累加
+      Item item =  entry.getValue();  // get the item
+      // get the weight of the item and add it to the current weight
+      currentWeight += item.getWeight();
     }
 
   }
@@ -153,7 +182,7 @@ public class Player extends EntityContainer<Item> {
   }
 
   /**
-   * Sets the player' score.
+   * Sets the player's score.
    */
   public void setScore(int score) {
     this.score = score;

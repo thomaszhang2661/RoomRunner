@@ -1,11 +1,9 @@
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import enginedriver.Item;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -66,24 +64,23 @@ public class ItemTest {
     assertEquals(10, item3.getRemainingUses());
   }
 
-  //  /**
-  //   * Test setUseRemain method.
-  //   */
-  //  @Test
-  //  void testSetUseRemain() {
-  //    Item item = new Item("A", "desc", 5, 2,
-  //            100, 10, "when used");
-  //    item.setRemainingUses(3);
-  //    assertEquals(3, item.getRemainingUses());
-  //
-  //    // Test invalid remaining uses
-  //    try {
-  //      item.setRemainingUses(-1);
-  //      Assertions.fail("Expected IllegalArgumentException");
-  //    } catch (IllegalArgumentException e) {
-  //      assertEquals("Remaining uses of an item cannot be less than 0", e.getMessage());
-  //    }
-  //  }
+  /**
+   * Test use method.
+   */
+  @Test
+  void testUse() {
+    Item item = new Item("A", "desc", 5, 2,
+            100, 10, "when used");
+    assertTrue(item.use());
+    assertEquals(1, item.getRemainingUses());
+
+    // Test using an item with no remaining uses
+    Item itemNoUses = new Item("B", "desc", 5, 0,
+            100, 10, "when used");
+    assertFalse(itemNoUses.use());
+    assertEquals(0, itemNoUses.getRemainingUses());
+  }
+
   /**
    * Test getUseMax method.
    */
@@ -214,7 +211,6 @@ public class ItemTest {
     Item item = new Item("A", "descA", 5, 3,
             100, 2, "Now");
 
-    // Notice getWhenUsed() always returns "", so the when_used field should be empty in the result.
     String expected =
             "{ \"name\":\"A\",\"weight\":\"2\",\"max_uses\":\"5\",\"uses_remaining"
                     + "\":\"3\",\"value\":\"100\","
