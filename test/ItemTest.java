@@ -211,7 +211,6 @@ public class ItemTest {
     Item item = new Item("A", "descA", 5, 3,
             100, 2, "Now");
 
-    // Notice getWhenUsed() always returns "", so the when_used field should be empty in the result.
     String expected =
             "{ \"name\":\"A\",\"weight\":\"2\",\"max_uses\":\"5\",\"uses_remaining"
                     + "\":\"3\",\"value\":\"100\","
