@@ -10,6 +10,18 @@ public class Puzzle<T> extends Problem<T> {
 
   /**
    * Constructor for Puzzle.
+
+   * @param name the name of the puzzle
+   * @param description the description of the puzzle
+   * @param active the active status of the puzzle
+   * @param affectsTarget the affects target status of the puzzle
+   * @param affectsPlayer the affects player status of the puzzle
+   * @param solution the solution of the puzzle
+   * @param value the value of the puzzle
+   * @param effects the effects of the puzzle
+   * @param target the target of the puzzle affecting
+   * @param pictureName the picture name of the puzzle
+   * @param validator the solution validator of the puzzle
    */
   public Puzzle(String name,
                 String description,
@@ -26,57 +38,11 @@ public class Puzzle<T> extends Problem<T> {
             pictureName, validator);
   }
 
+  /**
+   * toString method for Puzzle.
 
-  //  @Override
-  //  public int getId() {
-  //    return super.getId();
-  //  }
-  //
-  //  @Override
-  //  public String getName() {
-  //    return super.getName();
-  //  }
-  //
-  //  @Override
-  //  public String getDescription() {
-  //    return super.getDescription();
-  //  }
-  //
-  //  @Override
-  //  public Image getPicture() {
-  //    return super.getPicture();
-  //  }
-  //
-  //  @Override
-  //  public boolean getActive() {
-  //    return super.getActive();
-  //  }
-  //
-  //  @Override
-  //  public boolean solve(T input) {
-  //    return super.solve(input);
-  //  }
-  //
-  //  @Override
-  //  public int getValue() {
-  //    return super.getValue();
-  //  }
-  //
-  //  @Override
-  //  public Map<Integer,String> getTarget() {
-  //    return super.getTarget();
-  //  }
-  //
-  //  @Override
-  //  public String getEffects() {
-  //    return super.getEffects();
-  //  }
-  //
-  //  @Override
-  //  public T getSolution() {
-  //    return super.getSolution();
-  //  }
-
+   * @return the string representation of the puzzle
+   */
   @Override
   public String toString() {
     String solutionStr;
