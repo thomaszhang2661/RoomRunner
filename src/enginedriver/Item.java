@@ -80,6 +80,7 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
 
   /**
    * Getter for remainingUses.
+
    * @return int remainingUses
    */
   public int getRemainingUses() {
