@@ -231,6 +231,19 @@ public class Player extends EntityContainer<Item> {
     return false;
   }
 
+
+  /**
+   * get the String list of items in the room.
+
+   * @param clazz the class of the entity
+   *  @return the string list of items
+   */
+  public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
+    return String.join(", ", getEntitiesByType(clazz).stream()
+            .map(U::getName)
+            .toList());
+  }
+
   /**
    * Sets the room number.
 
