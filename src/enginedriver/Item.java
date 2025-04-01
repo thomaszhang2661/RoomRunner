@@ -156,22 +156,22 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
             + " }";
   }
 
-  /**
-   * equals method for the item class.
-
-   * @param o the object to compare to
-   * @return true if the objects are equal, false otherwise
-   */
-  @Override
-  public boolean equals(Object o) {
-    //    return super.equals(o) && o instanceof Item item &&
-    //            maxUses == item.maxUses &&
-    //            remainingUses == item.remainingUses &&
-    //            value == item.value &&
-    //            weight == item.weight &&
-    //            whenUsed.equals(item.whenUsed);
-    return super.equals(o);
-  }
+  //  /**
+  //   * equals method for the item class.
+  //
+  //   * @param o the object to compare to
+  //   * @return true if the objects are equal, false otherwise
+  //   */
+  //  @Override
+  //  public boolean equals(Object o) {
+  //    //    return super.equals(o) && o instanceof Item item &&
+  //    //            maxUses == item.maxUses &&
+  //    //            remainingUses == item.remainingUses &&
+  //    //            value == item.value &&
+  //    //            weight == item.weight &&
+  //    //            whenUsed.equals(item.whenUsed);
+  //    return super.equals(o);
+  //  }
 
   /**
    * hashcode method for the item class.
