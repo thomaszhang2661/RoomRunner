@@ -10,14 +10,13 @@ import enginedriver.Fixture;
 import enginedriver.GameWorld;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
+import enginedriver.Room;
 import enginedriver.problems.IProblem;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.validator.ItemSolutionValidator;
 import enginedriver.problems.validator.SolutionValidator;
 import enginedriver.problems.validator.StringSolutionValidator;
-
-import enginedriver.Room;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,11 +76,11 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
 
         // parse states
         JsonNode statesNode = fixtureNode.get("states");
-        int states; // 用于存储最终的整数值
+        int states; // for storing the number of states
         if (statesNode != null && statesNode.isInt()) {
           states = statesNode.asInt();
         } else {
-          states = -1; // 默认值
+          states = -1; // default value
         }
 
         String description = getNodeText(fixtureNode, "description");
@@ -161,7 +160,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
           Item solutionItem = items.getOrDefault(solutionText, null);
           SolutionValidator<Item> validator = new ItemSolutionValidator();
           Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
-                  affectsPlayer, solutionItem, value, effects, target, pictureName,validator);
+                  affectsPlayer, solutionItem, value, effects, target, pictureName, validator);
           puzzles.put(puzzle.getName(), puzzle);
         }
       }
@@ -221,11 +220,25 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     return new GameWorld(name, version, rooms);
   }
 
+  /**
+   * Helper method to get a text value from a JsonNode.
+
+   * @param node the JsonNode
+   * @param fieldName the field name
+   * @return the text value, or an empty string if not found
+   */
   private String getNodeText(JsonNode node, String fieldName) {
     JsonNode fieldNode = node.get(fieldName);
     return fieldNode != null ? fieldNode.asText() : "";
   }
 
+  /**
+   * Helper method to get an integer value from a JsonNode.
+
+   * @param node the JsonNode
+   * @param fieldName the field name
+   * @return the integer value, or 0 if not found
+   */
   private int getNodeInt(JsonNode node, String fieldName) {
     JsonNode fieldNode = node.get(fieldName);
     return fieldNode != null ? fieldNode.asInt() : 0;

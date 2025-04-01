@@ -8,18 +8,12 @@ import enginedriver.problems.Puzzle;
 
 /**
  * Class representing the game world, read from json file.
- * !!!! 这个地方需要考虑如何记录每一步的操作，方便复盘!!!!
+ * The game world contains rooms, items, fixtures, monsters, and puzzles.
  */
 public class GameWorld {
   private String name;
   private String version;
   private Map<Integer, Room> rooms;
-  //  private Map<String, Item> items;
-  //  private Map<String, Fixture> fixtures;
-  //  private Map<String, Monster> monsters;
-  //  private Map<String, Puzzle> puzzles;
-  //  private int score;
-  //  private Player player; //记录生命值、item、位置等
 
   /**
    * Default constructor for deserialization.
@@ -35,30 +29,41 @@ public class GameWorld {
    */
   public GameWorld(String name, String version,
                    Map<Integer, Room> rooms) {
-    this.name = name; // ？？？need name TODO
+    this.name = name;
     this.version = version;
     this.rooms = rooms;
-    //  this.player = player;
-    //  this.score = score;
 
   }
 
+  /**
+   * Get the name of the game world.
 
-  // Getters and Setters
+   * @return the name of the game world
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Retrieve the version of the GameWorld.
+   * @return the version of the world
+   */
   public String getVersion() {
     return version;
   }
 
+  /**
+   * Get the rooms in the game world.
+
+   * @return the rooms in the game world
+   */
   public Map<Integer, Room> getRooms() {
     return rooms;
   }
 
   /**
    * Get a room by its ID.
+
    * @param id The ID of the room.
    * @return The room with the specified ID.
    */
@@ -67,36 +72,39 @@ public class GameWorld {
     return rooms.get(id);
   }
 
+  /**
+   * Set the name of the gameWorld object.
+
+   * @param name the name of the game world
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   * Set the version of the game world.
+
+   * @param version the version of the game world
+   */
   public void setVersion(String version) {
     this.version = version;
   }
 
+  /**
+   * Set the rooms in the game world.
+
+   * @param rooms the rooms in the game world
+   */
   public void setRooms(Map<Integer, Room>  rooms) {
     this.rooms = rooms;
   }
-  //  public void setScore(int score) {
-  //    player.setScore(score);
-  //  }
 
-  //  public void addScore(int inputValue) {
-  //    this.score += inputValue;
-  //  }
-  //
-  //  public int getScore() {
-  //    return score;
-  //  }
 
-  //  public void setPlayer(String name, int health, int maxWeight, int score) {
-  //    this.player = new Player(name, health, maxWeight, score);
-  //  }
-  //  public void setPlayer(Player player) {
-  //    this.player = player;
-  //  }
+  /**
+   * Get a string representation of the game world.
 
+   * @return a string representation of the game world
+   */
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -170,11 +178,4 @@ public class GameWorld {
     sb.append("}");
     return sb.toString();
   }
-
-  //  public Item findItemByName(String name) {
-  //    if (name == null) {
-  //      throw new IllegalArgumentException("Name cannot be null.");
-  //    }
-  //    return items.get(name);
-  //    }
 }

@@ -28,6 +28,18 @@ public abstract class Problem<T> extends IdentifiableEntity
 
   /**
    * Constructor for a problem.
+
+   * @param name the name of the problem
+   * @param description the description of the problem
+   * @param active the active status of the problem
+   * @param affectsTarget the affects target status of the problem
+   * @param affectsPlayer the affects player status of the problem
+   * @param solution the solution of the problem
+   * @param value the value of the problem
+   * @param effects the effects of the problem
+   * @param target the target of the problem affecting
+   * @param pictureName the picture name of the problem
+   * @param validator the solution validator of the problem
    */
   public Problem(String name, String description, Boolean active,
                  Boolean affectsTarget, Boolean affectsPlayer,
@@ -39,48 +51,79 @@ public abstract class Problem<T> extends IdentifiableEntity
     this.affectsPlayer = affectsPlayer;
     this.value = value;
     this.effects = effects;
-
-    // parse target
-    //    String[] parts = target.split(":", 2);
-    //    int roomNumber = Integer.parseInt(parts[0].trim());
-    //    String roomName = parts[1].trim();
-    //    this.target = Map.of(roomNumber, roomName);
     this.target =  target;
     this.solution = solution;
     this.validator = validator;
   }
 
+  /**
+   * Gets affectsPlayer status of the problem.
+
+   * @return the affectsPlayer status of the problem
+   */
   @Override
   public boolean getAffectsPlayer() {
     return affectsPlayer;
   }
 
+  /**
+   * Gets affectsTarget status of the problem.
+
+   * @return the affectsTarget status of the problem
+   */
   @Override
   public boolean  getAffectsTarget() {
     return affectsTarget;
   }
 
+  /**
+   * Gets the target of the problem.
+
+   * @return the target of the problem
+   */
   @Override
   public String getTarget() {
     // target to map
     return target;
   }
 
+  /**
+   * Gets the active status of the problem.
+
+   * @return the active status of the problem
+   */
   @Override
   public boolean getActive() {
     return active;
   }
 
+  /**
+   * Sets the active status of the problem.
+
+   * @param active the active status of the problem
+   */
   @Override
   public void setActive(boolean active) {
     this.active = active;
   }
+
+  /**
+   * Gets the solution of the problem.
+
+   * @return the solution of the problem
+   */
   @Override
   public T getSolution() {
     return solution;
   }
 
+  /**
+   * Solves the problem.
 
+   * @param input the string or Item to solve the problem.
+   * @return 1 if the problem is solved, 0 if the problem is not active,
+   *      2 if the problem is not solved.
+   */
   @Override
   public int solve(T input) {
     // if the problem is not active, no need to solve.
@@ -89,19 +132,28 @@ public abstract class Problem<T> extends IdentifiableEntity
     }
     // if the solution is correct, the problem is solved.
     if (validator.validate(solution, input)) {
-      //active = false; moved to cotroller handleProblemSolved
+      //active = false; moved to controller handleProblemSolved
       return 1;
     }
     // if the solution is incorrect, the problem is not solved.
     return 2;
   }
 
+  /**
+   * Gets the value of the problem.
 
+   * @return the value of the problem
+   */
   @Override
   public int getValue() {
     return value;
   }
 
+  /**
+   * Gets the effects of the problem.
+
+   * @return the effects of the problem
+   */
   @Override
    public String getEffects() {
     return effects;

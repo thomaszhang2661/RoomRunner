@@ -5,20 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import enginedriver.Player;
 import enginedriver.problems.Monster;
 import enginedriver.problems.validator.StringSolutionValidator;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
-
-
+/**
+ * Unit Test for Monster class.
+ */
 class MonsterTest {
   private Monster<String> rabbit;
   private Monster<String> teddyBear;
   private Player player;
 
+  /**
+   * Set up the test environment.
+   */
   @BeforeEach
   void setUp() {
     // Create a player for testing
@@ -63,7 +66,9 @@ class MonsterTest {
     );
   }
 
-  // Test Monster Initialization
+  /**
+   * Test the initialization of Monster objects.
+   */
   @Test
   void testMonsterInitialization() {
     // Validate Rabbit
@@ -129,7 +134,7 @@ class MonsterTest {
   }
 
 
-  // 图片比对方法（逐像素比对）
+  // Method to compare two images
   private boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
     if (imgA.getWidth() != imgB.getWidth() || imgA.getHeight() != imgB.getHeight()) {
       return false;
@@ -144,10 +149,10 @@ class MonsterTest {
     }
     return true;
   }
+
   /**
    * Test getPicture method of Monster.
    */
-
   @Test
   void testMonsterGetPicture() {
 
@@ -183,7 +188,9 @@ class MonsterTest {
     assertTrue(compareImages(expectedImage, teddyBear.getPicture()), "图片内容不匹配！");
   }
 
-  // Test Solve with Correct Solution
+  /**
+   * Test Solve with Correct Solution.
+   */
   @Test
   void testSolveCorrectSolution() {
     // Solve Rabbit
@@ -199,7 +206,9 @@ class MonsterTest {
     assertFalse(teddyBear.getActive(), "Teddy Bear should become inactive after solving.");
   }
 
-  // Test Solve with Incorrect Solution
+  /**
+   * Test Solve with Incorrect Solution.
+   */
   @Test
   void testSolveIncorrectSolution() {
     // Incorrect solution for Rabbit
@@ -215,7 +224,29 @@ class MonsterTest {
             + "remain active after failed solution.");
   }
 
-  // Test Monster Attack on Player
+  /**
+   * Test the setCanAttack method of Monster.
+   */
+  @Test
+  void testSetCanAttack() {
+    // Validate Rabbit Can Attack
+    assertTrue(rabbit.getCanAttack(), "Rabbit should be able to attack.");
+
+    // Set Rabbit to not attack
+    rabbit.setCanAttack(false);
+    assertFalse(rabbit.getCanAttack(), "Rabbit should not be able to attack.");
+
+    // Validate Teddy Bear Can Attack
+    assertTrue(teddyBear.getCanAttack(), "Teddy Bear should be able to attack.");
+
+    // Set Teddy Bear to not attack
+    teddyBear.setCanAttack(false);
+    assertFalse(teddyBear.getCanAttack(), "Teddy Bear should not be able to attack.");
+  }
+
+  /**
+   * Test Monster Attack on Player.
+   */
   @Test
   void testMonsterAttack() {
     // Verify initial player health
@@ -232,7 +263,9 @@ class MonsterTest {
             + "decrease by 5 due to Teddy Bear attack.");
   }
 
-  // Test Monster Attack When Inactive
+  /**
+   * Test Monster Attack When Inactive.
+   */
   @Test
   void testInactiveMonsterCannotAttack() {
     // Solve Rabbit, making it inactive
@@ -255,11 +288,12 @@ class MonsterTest {
    */
   @Test
   void testMonsterToString() {
-    String expected = "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\","
+    String expected =
+            "{ \"name\":\"Rabbit\",\"active\":\"true\",\"affects_target\":\"true\","
             + "\"affects_player\":\"true\",\"solution\":\"Carrot\",\"value\":\"300\","
             + "\"description\":\"Awww. A furry rabbit twitching its nose and eating a carrot. "
             + "Makes you want to pet him\",\"effects\":\"A monster Rabbit moves towards you! "
-            + "He's blocking the way north.\nI think you might be dinner!\","
+            + "He's blocking the way north.\\nI think you might be dinner!\","
             + "\"damage\":\"-15\",\"target\":\"7:Dining Room\",\"can_attack\":\"true\","
             + "\"attack\":\"licks you with a giant tongue!\",\"picture\":\"monster-rabbit.png\" }";
 

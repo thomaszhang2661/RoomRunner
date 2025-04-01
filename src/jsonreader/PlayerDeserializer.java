@@ -8,10 +8,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import enginedriver.GameWorld;
 import enginedriver.Item;
 import enginedriver.Player;
-import enginedriver.Room;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A custom deserializer for the Player class, which converts a JSON representation of
@@ -19,13 +19,12 @@ import java.util.Map;
  */
 public class PlayerDeserializer extends JsonDeserializer<Player> {
 
-  // Initialize gameWorld for finding items
+  // Initialize gameWorld for reference
   private final GameWorld gameWorld;
 
   /**
    * Constructor for PlayerDeserializer.
-
-   * @param gameWorld the GameWorld instance to search for items
+   * @param gameWorld the GameWorld instance
    */
   public PlayerDeserializer(GameWorld gameWorld) {
     this.gameWorld = gameWorld;
@@ -33,18 +32,33 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
 
   /**
    * Deserialize a JSON representation of a Player into a Player object.
-
-   * @param jsonParser the JsonParser to read the JSON
-   * @param deserializationContext the DeserializationContext
-   * @return the deserialized Player object
-   * @throws IOException if an error occurs during deserialization
-   * @throws JsonProcessingException if an error occurs during JSON processing
    */
   @Override
   public Player deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
           throws IOException, JsonProcessingException {
     JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
     Player player = null;
+
+
+    // Parse all items from the JSON first
+    Map<String, Item> allItems = new HashMap<>();
+    JsonNode itemsNode = rootNode.get("items");
+    if (itemsNode != null) {
+      for (JsonNode itemNode : itemsNode) {
+        String itemName = getNodeText(itemNode, "name");
+        String description = getNodeText(itemNode, "description");
+        int weight = getNodeInt(itemNode, "weight");
+        int maxUses = getNodeInt(itemNode, "max_uses");
+        int remainingUses = getNodeInt(itemNode, "uses_remaining");
+        int value = getNodeInt(itemNode, "value");
+        String whenUsed = getNodeText(itemNode, "when_used");
+        String pictureName = getNodeText(itemNode, "picture");
+
+        Item item = new Item(itemName, description, maxUses, remainingUses,
+                value, weight, whenUsed, pictureName);
+        allItems.put(itemName, item);
+      }
+    }
 
     if (rootNode.has("player")) {
       JsonNode playerNode = rootNode.get("player");
@@ -55,16 +69,15 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
       int roomNumber = playerNode.get("room_number").asInt();
       int score = playerNode.get("score").asInt();
 
-      // parse inventory
+      // Parse inventory string and lookup items from allItems map
       Map<String, Item> inventory = new HashMap<>();
       JsonNode inventoryNode = playerNode.get("inventory");
 
-      String[] itemNames = inventoryNode.asText().split(",\\s*");
-      for (String itemName : itemNames) {
-        if (!itemName.isEmpty()) {
-          Item item = findItemInGameWorld(itemName);
-          if (item != null) {
-            inventory.put(itemName, item);
+      if (inventoryNode != null && !inventoryNode.asText().isEmpty()) {
+        String[] itemNames = inventoryNode.asText().split(",\\s*");
+        for (String itemName : itemNames) {
+          if (!itemName.isEmpty() && allItems.containsKey(itemName)) {
+            inventory.put(itemName, allItems.get(itemName));
           }
         }
       }
@@ -76,17 +89,27 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
   }
 
   /**
-   * Finds the Item with the specified name in all rooms in GameWorld.
+   * Helper method to get a text value from a JsonNode.
 
-   * @param itemName the name of the item to find
+   * @param node the JsonNode
+   * @param fieldName the field name
+   * @return the text value, or an empty string if not found
    */
-  private Item findItemInGameWorld(String itemName) {
-    for (Room<?> room : gameWorld.getRooms().values()) {
-      Item item = room.getItem(itemName);
-      if (item != null) {
-        return item;
-      }
-    }
-    return null;
+  private String getNodeText(JsonNode node, String fieldName) {
+    JsonNode fieldNode = node.get(fieldName);
+    return fieldNode != null ? fieldNode.asText() : "";
+  }
+
+
+  /**
+   * Helper method to get an integer value from a JsonNode.
+
+   * @param node the JsonNode
+   * @param fieldName the field name
+   * @return the integer value, or 0 if not found
+   */
+  private int getNodeInt(JsonNode node, String fieldName) {
+    JsonNode fieldNode = node.get(fieldName);
+    return fieldNode != null ? fieldNode.asInt() : 0;
   }
 }

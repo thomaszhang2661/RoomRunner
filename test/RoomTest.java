@@ -6,14 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import enginedriver.Fixture;
 import enginedriver.IdentifiableEntity;
 import enginedriver.Item;
+import enginedriver.Room;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
-import enginedriver.Room;
 import enginedriver.problems.validator.StringSolutionValidator;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

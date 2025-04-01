@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import enginedriver.GameController;
 import enginedriver.GameWorld;
 import enginedriver.Player;
@@ -12,8 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import jsonreader.GameDataLoader;
 import jsonreader.GameDataSaver;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +26,10 @@ class GameDataSaverTest {
   private GameController controller;
   private static final String TEST_FILE_NAME = "test_save_game.json"; // 测试文件名
 
+  /**
+   * Set up the test environment.
+   * Load the game world and player from a JSON file.
+   */
   @BeforeEach
   public void setUp() {
     String setupFileName = "test/TestGameWorld.json";
@@ -41,6 +45,10 @@ class GameDataSaverTest {
     new File(TEST_FILE_NAME).delete();
   }
 
+  /**
+   * Test the saveGameJson method.
+   * It should create a JSON file with the game data.
+   */
   @Test
   void testGameDataSaver() {
     try {
@@ -68,14 +76,14 @@ class GameDataSaverTest {
       assertTrue(jsonNode.has("name"), "JSON should contain 'name' field");
       assertTrue(jsonNode.has("version"), "JSON should contain 'gameWorld' field");
       assertTrue(jsonNode.has("player"), "JSON should contain 'player' field");
-
-      // TODO: Add more specific checks depending on the JSON structure
-
     } catch (IOException e) {
       fail("IOException was thrown: " + e.getMessage());
     }
   }
 
+  /**
+   * Delete the test file after each test.
+   */
   @AfterEach
   public void tearDown() {
     // delete the test file after each test
