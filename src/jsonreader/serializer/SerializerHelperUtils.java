@@ -2,8 +2,6 @@ package jsonreader.serializer;
 
 import enginedriver.Item;
 import enginedriver.problems.IProblem;
-import enginedriver.problems.Monster;
-import enginedriver.problems.Puzzle;
 
 /**
  * SerializerHelperUtils class provides utility methods for JSON serialization and deserialization.

@@ -1,51 +1,51 @@
 package jsonreader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import enginedriver.GameController;
-import java.io.FileWriter;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import enginedriver.GameWorld;
+import enginedriver.Player;
+import java.io.File;
 import java.io.IOException;
+import jsonreader.serializer.GameWorldSerializer;
+import jsonreader.serializer.PlayerSerializer;
 
 /**
- * The GameDataSaver class is responsible for saving game data to a JSON file.
- * It uses the toString() method of GameController to write the game controller state to a file.
+ * The GameDataSaver class is responsible for saving game data to two JSON files.
  */
 public class GameDataSaver {
   /**
-   * Save the game controller to a JSON file.
+   * Save the game world to a JSON file.
 
-   * @param controller the GameController object to save
-   * @param fileName   the name of the file to save to
+   * @param gameWorld the GameWorld object to save
+   * @param fileName  the name of the file to save to
    * @throws IOException if an error occurs during saving
    */
-  public static void saveGameJson(GameController controller, String fileName) throws IOException {
-    String fullJson = controller.toString();
+  public static void saveGameJson(GameWorld gameWorld, String fileName) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
 
-    // necessary character escaping
-    fullJson = fullJson.replace("\"null\"", "null");
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(GameWorld.class, new GameWorldSerializer());
+    mapper.registerModule(module);
 
-    // check if the JSON is valid
-    if (!isValidJson(fullJson)) {
-      throw new IOException("Generated invalid JSON: " + fullJson);
-    }
-
-    // write the JSON to a file
-    try (FileWriter writer = new FileWriter(fileName)) {
-      writer.write(fullJson);
-    }
+    File saveFile = new File(fileName);
+    mapper.writeValue(saveFile, gameWorld);
   }
 
   /**
-   * Validate if a string is a valid JSON format.
+   * Save the player to a JSON file.
    *
-   * @param jsonString the string to validate
-   * @return true if the string is valid JSON, false otherwise
+   * @param player   the Player object to save
+   * @param fileName the name of the file to save to
+   * @throws IOException if an error occurs during saving
    */
-  private static boolean isValidJson(String jsonString) {
-    try {
-      new ObjectMapper().readTree(jsonString); // Try to parse the string
-      return true;
-    } catch (IOException e) {
-      return false; // If parsing fails, it's not valid JSON
-    }
+  public static void savePlayerJson(Player player, String fileName) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(Player.class, new PlayerSerializer());
+    mapper.registerModule(module);
+
+    File saveFile = new File(fileName);
+    mapper.writeValue(saveFile, player);
   }
 }

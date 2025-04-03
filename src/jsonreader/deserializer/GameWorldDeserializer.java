@@ -34,11 +34,10 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
    * @param deserializationContext the DeserializationContext
    * @return the deserialized GameWorld object
    * @throws IOException if an error occurs during deserialization
-   * @throws JsonProcessingException if an error occurs during JSON processing
    */
   @Override
   public GameWorld deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-          throws IOException, JsonProcessingException {
+          throws IOException {
     ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
     JsonNode rootNode = mapper.readTree(jsonParser);
 

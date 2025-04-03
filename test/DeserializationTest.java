@@ -53,13 +53,13 @@ class DeserializationTest {
   void testDeserializePlayer() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
+
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
     mapper.registerModule(module);
-
     GameWorld gameWorld = mapper.readValue(new File("test/TestGameWorld.json"), GameWorld.class);
-    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
 
-    Player player = mapper.readValue(new File("test/TestGameWorld.json"), Player.class);
+    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
+    Player player = mapper.readValue(new File("test/TestPlayer.json"), Player.class);
 
     assertNotNull(player);
     assertEquals("Avatar", player.getName());
