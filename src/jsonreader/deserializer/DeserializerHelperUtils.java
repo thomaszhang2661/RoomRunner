@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * It's package private and not intended for public use.
  */
 class DeserializerHelperUtils {
+
   /**
    * Helper method to get a text value from a JsonNode.
 
@@ -30,4 +31,5 @@ class DeserializerHelperUtils {
     JsonNode fieldNode = node.get(fieldName);
     return fieldNode != null ? fieldNode.asInt() : 0;
   }
+
 }

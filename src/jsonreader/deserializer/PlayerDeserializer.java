@@ -34,7 +34,7 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
    */
   @Override
   public Player deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-          throws IOException, JsonProcessingException {
+          throws IOException {
     JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
     Player player = null;
 
