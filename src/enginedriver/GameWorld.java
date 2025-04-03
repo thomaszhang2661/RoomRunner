@@ -1,6 +1,8 @@
 package enginedriver;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
@@ -99,6 +101,51 @@ public class GameWorld {
     this.rooms = rooms;
   }
 
+  /**
+   * Get a list of all items in the game world.
+
+   * @return a list of all items
+   */
+  public List<Item> getItems() {
+    return rooms.values().stream()
+            .flatMap(room -> ((List<Item>) room.getEntitiesByType(Item.class)).stream())
+            .collect(Collectors.toList());
+  }
+
+  /**
+   * Get a list of all fixtures in the game world.
+
+   * @return a list of all fixtures
+   */
+  public List<Fixture> getFixtures() {
+    return rooms.values().stream()
+            .flatMap(room -> ((List<Fixture>) room.getEntitiesByType(Fixture.class)).stream())
+            .collect(Collectors.toList());
+  }
+
+  /**
+   * Get a list of all monsters in the game world.
+
+   * @return a list of all monsters
+   */
+  public List<Monster<?>> getMonsters() {
+    return rooms.values().stream()
+            .filter(room -> room.getProblem() instanceof Monster)
+            .map(room -> (Monster<?>) room.getProblem())
+            .collect(Collectors.toList());
+  }
+
+  /**
+   * Get a list of all puzzles in the game world.
+
+   * @return a list of all puzzles
+   */
+  public List<Puzzle<?>> getPuzzles() {
+    return rooms.values().stream()
+            .filter(room -> room.getProblem() instanceof Puzzle)
+            .map(room -> (Puzzle<?>) room.getProblem())
+            .collect(Collectors.toList());
+  }
 
   /**
    * Get a string representation of the game world.
