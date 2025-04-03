@@ -27,6 +27,7 @@ public class GameWorldSerializer extends JsonSerializer<GameWorld> {
 
     // Serialize rooms
     jsonGenerator.writeArrayFieldStart("rooms");
+
     for (Room room : gameWorld.getRooms().values()) {
       jsonGenerator.writeStartObject();
 
@@ -37,12 +38,10 @@ public class GameWorldSerializer extends JsonSerializer<GameWorld> {
               .replace("\n", "\\n"));
 
       // Serialize exits
-      jsonGenerator.writeObjectFieldStart("exits");
       Map<String, Integer> exits = room.getExits();
       for (Map.Entry<String, Integer> entry : exits.entrySet()) {
         jsonGenerator.writeNumberField(entry.getKey(), entry.getValue());
       }
-      jsonGenerator.writeEndObject();
 
       // Serialize problem
       if (room.getProblem() instanceof Puzzle) {
@@ -56,11 +55,11 @@ public class GameWorldSerializer extends JsonSerializer<GameWorld> {
         jsonGenerator.writeNullField("monster");
       }
 
-      // Serialize items
+      // Serialize room items
       String items = room.getElementNames(Item.class);
       jsonGenerator.writeStringField("items", items.isEmpty() ? null : items);
 
-      // Serialize fixtures
+      // Serialize room fixtures
       String fixtures = room.getElementNames(Fixture.class);
       jsonGenerator.writeStringField("fixtures", fixtures.isEmpty() ? null : fixtures);
 
@@ -70,12 +69,15 @@ public class GameWorldSerializer extends JsonSerializer<GameWorld> {
       jsonGenerator.writeEndObject();
     }
 
+    jsonGenerator.writeEndArray();
+
     // Serialize items
     if (!gameWorld.getRooms().isEmpty()) {
       jsonGenerator.writeArrayFieldStart("items");
 
       for (Item item : gameWorld.getItems()) {
         jsonGenerator.writeStartObject();
+
         jsonGenerator.writeStringField("name", item.getName());
         jsonGenerator.writeStringField("weight", String.valueOf(item.getWeight()));
         jsonGenerator.writeStringField("max_uses", String.valueOf(item.getUseMax()));
@@ -88,6 +90,8 @@ public class GameWorldSerializer extends JsonSerializer<GameWorld> {
                 .replace("\"", "\\\"")
                 .replace("\n", "\\n"));
         jsonGenerator.writeStringField("picture", item.getPictureName());
+
+        jsonGenerator.writeEndObject();
       }
 
       jsonGenerator.writeEndArray();
@@ -177,5 +181,7 @@ public class GameWorldSerializer extends JsonSerializer<GameWorld> {
 
       jsonGenerator.writeEndArray();
     }
+
+    jsonGenerator.writeEndObject();
   }
 }

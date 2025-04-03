@@ -93,11 +93,19 @@ class GameDataLoaderSaverTest {
       // verify expected fields are present in the JSON
       assertTrue(gameJsonNode.has("name"), "JSON should contain 'name' field");
       assertTrue(gameJsonNode.has("version"), "JSON should contain 'gameWorld' field");
-      assertTrue(gameJsonNode.has("player"), "JSON should contain 'player' field");
+      assertTrue(gameJsonNode.has("rooms"), "JSON should contain 'rooms' field");
+      assertTrue(gameJsonNode.has("items"), "JSON should contain 'items' field");
+      assertTrue(gameJsonNode.has("fixtures"), "JSON should contain 'fixtures' field");
+      assertTrue(gameJsonNode.has("monsters"), "JSON should contain 'monsters' field");
+      assertTrue(gameJsonNode.has("puzzles"), "JSON should contain 'puzzles' field");
 
       assertTrue(playerJsonNode.has("name"), "JSON should contain 'name' field");
       assertTrue(playerJsonNode.has("health"), "JSON should contain 'health' field");
+      assertTrue(playerJsonNode.has("inventory"), "JSON should contain 'inventory' field");
       assertTrue(playerJsonNode.has("max_weight"), "JSON should contain 'max_weight' field");
+      assertTrue(playerJsonNode.has("current_weight"), "JSON should contain 'current_weight' field");
+      assertTrue(playerJsonNode.has("room_number"), "JSON should contain 'room_number' field");
+      assertTrue(playerJsonNode.has("score"), "JSON should contain 'score' field");
     } catch (IOException e) {
       fail("IOException was thrown: " + e.getMessage());
     }

@@ -9,9 +9,9 @@ import enginedriver.problems.IProblem;
  */
 class SerializerHelperUtils {
 
-  static String getSolutionString(IProblem problem) {
+  static String getSolutionString(IProblem<?> problem) {
     Object solution = problem.getSolution();
-    if (problem instanceof Item) {
+    if (solution instanceof Item) {
       return ((Item) solution).getName();
     }
     return solution.toString();
