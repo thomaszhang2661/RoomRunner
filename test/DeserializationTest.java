@@ -8,8 +8,8 @@ import enginedriver.GameWorld;
 import enginedriver.Player;
 import java.io.File;
 import java.io.IOException;
-import jsonreader.GameWorldDeserializer;
-import jsonreader.PlayerDeserializer;
+import jsonreader.deserializer.GameWorldDeserializer;
+import jsonreader.deserializer.PlayerDeserializer;
 import org.junit.jupiter.api.Test;
 
 /**

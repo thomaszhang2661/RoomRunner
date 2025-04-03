@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import enginedriver.GameWorld;
 import enginedriver.Player;
+import jsonreader.deserializer.GameWorldDeserializer;
+import jsonreader.deserializer.PlayerDeserializer;
+
 import java.io.File;
 import java.io.IOException;
 

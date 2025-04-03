@@ -1,4 +1,4 @@
-package jsonreader;
+package jsonreader.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,7 +11,6 @@ import enginedriver.Player;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A custom deserializer for the Player class, which converts a JSON representation of
@@ -45,14 +44,14 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
     JsonNode itemsNode = rootNode.get("items");
     if (itemsNode != null) {
       for (JsonNode itemNode : itemsNode) {
-        String itemName = getNodeText(itemNode, "name");
-        String description = getNodeText(itemNode, "description");
-        int weight = getNodeInt(itemNode, "weight");
-        int maxUses = getNodeInt(itemNode, "max_uses");
-        int remainingUses = getNodeInt(itemNode, "uses_remaining");
-        int value = getNodeInt(itemNode, "value");
-        String whenUsed = getNodeText(itemNode, "when_used");
-        String pictureName = getNodeText(itemNode, "picture");
+        String itemName = DeserializerHelperUtils.getNodeText(itemNode, "name");
+        String description = DeserializerHelperUtils.getNodeText(itemNode, "description");
+        int weight = DeserializerHelperUtils.getNodeInt(itemNode, "weight");
+        int maxUses = DeserializerHelperUtils.getNodeInt(itemNode, "max_uses");
+        int remainingUses = DeserializerHelperUtils.getNodeInt(itemNode, "uses_remaining");
+        int value = DeserializerHelperUtils.getNodeInt(itemNode, "value");
+        String whenUsed = DeserializerHelperUtils.getNodeText(itemNode, "when_used");
+        String pictureName = DeserializerHelperUtils.getNodeText(itemNode, "picture");
 
         Item item = new Item(itemName, description, maxUses, remainingUses,
                 value, weight, whenUsed, pictureName);
@@ -86,30 +85,5 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
     }
 
     return player;
-  }
-
-  /**
-   * Helper method to get a text value from a JsonNode.
-
-   * @param node the JsonNode
-   * @param fieldName the field name
-   * @return the text value, or an empty string if not found
-   */
-  private String getNodeText(JsonNode node, String fieldName) {
-    JsonNode fieldNode = node.get(fieldName);
-    return fieldNode != null ? fieldNode.asText() : "";
-  }
-
-
-  /**
-   * Helper method to get an integer value from a JsonNode.
-
-   * @param node the JsonNode
-   * @param fieldName the field name
-   * @return the integer value, or 0 if not found
-   */
-  private int getNodeInt(JsonNode node, String fieldName) {
-    JsonNode fieldNode = node.get(fieldName);
-    return fieldNode != null ? fieldNode.asInt() : 0;
   }
 }
