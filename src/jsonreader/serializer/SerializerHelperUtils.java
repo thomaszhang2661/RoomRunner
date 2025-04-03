@@ -1,5 +1,6 @@
 package jsonreader.serializer;
 
+import enginedriver.Item;
 import enginedriver.problems.IProblem;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
@@ -10,13 +11,12 @@ import enginedriver.problems.Puzzle;
  */
 class SerializerHelperUtils {
 
-  static String getProblemType(IProblem problem) {
-    if (problem instanceof Monster) {
-      return "monster";
+  static String getSolutionString(IProblem problem) {
+    Object solution = problem.getSolution();
+    if (problem instanceof Item) {
+      return ((Item) solution).getName();
     }
-    if (problem instanceof Puzzle) {
-      return "puzzle";
-    }
-    return null;
+    return solution.toString();
   }
+
 }
