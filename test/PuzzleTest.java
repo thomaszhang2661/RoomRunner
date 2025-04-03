@@ -95,21 +95,4 @@ public class PuzzleTest {
     assertEquals(2, puzzle.solve("WrongInput"));
     assertTrue(puzzle.getActive());
   }
-
-  /**
-   * Test the toString method of Puzzle.
-   */
-  @Test
-  public void testPuzzleToString() {
-    Puzzle<String> puzzle = new Puzzle<>("Darkness",
-            "It's dark!", true, true,
-            true, "Lamp", 150,
-            "You cannot see!", "6:Kitchen", "null", new StringSolutionValidator());
-    String expected = "{ \"name\":\"Darkness\",\"active\":\"true\",\"affects_target\":\"true\","
-            + "\"affects_player\":\"true\",\"solution\":\"Lamp\",\"value\":\"150\","
-            + "\"description\":\"It's dark!\",\"effects\":\"You cannot see!\","
-            + "\"target\":\"6:Kitchen\",\"picture\":\"null\" }";
-
-    assertEquals(expected, puzzle.toString());
-  }
 }

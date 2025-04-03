@@ -545,27 +545,4 @@ public class GameController {
       quit();
     }
   }
-
-  @Override
-  public String toString() {
-    String gameWorldJson = gameWorld.toString();
-    String playerJson = player.toString();
-
-    StringBuilder sb = new StringBuilder(gameWorldJson);
-
-    String playerItems = this.getPlayer().getElementNames(Item.class);
-    if (!playerItems.isEmpty()) {
-      // insert player items into items
-      int itemsIndex = sb.indexOf("\"items\":[") + 9;
-      sb.insert(itemsIndex, "\n");
-      for (Item item : this.getPlayer().getEntitiesByType(Item.class)) {
-        sb.insert(itemsIndex, item.toString() + ",");
-      }
-    }
-
-    String updatedGameWorldJson = sb.toString();
-
-    return updatedGameWorldJson.substring(0, updatedGameWorldJson.length() - 1) + ",\n\n"
-            + "\"player\":" + playerJson + "\n}";
-  }
 }
