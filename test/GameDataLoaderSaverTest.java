@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 class GameDataLoaderSaverTest {
 
   private GameController controller;
-  private static final String TEST_GAME_FILE_NAME = "test_save_game.json";
-  private static final String TEST_PLAYER_FILE_NAME = "test_save_player.json";
+  private static String TEST_GAME_FILE_NAME;
+  private static String TEST_PLAYER_FILE_NAME;
 
   /**
    * Set up the test environment.
@@ -39,6 +39,9 @@ class GameDataLoaderSaverTest {
       GameWorld gameWorld = GameDataLoader.loadGameWorld(setupGameFileName);
       Player player = GameDataLoader.loadPlayer(setupPlayerFileName, gameWorld);
       controller = new GameController(gameWorld, player);
+
+      TEST_GAME_FILE_NAME = controller.getGameWorld().getName() + ".json";
+      TEST_PLAYER_FILE_NAME = controller.getPlayer().getName() + ".json";
     } catch (IOException e) {
       fail("IOException was thrown during setup: " + e.getMessage());
     }
@@ -56,9 +59,9 @@ class GameDataLoaderSaverTest {
   void testGameDataSaver() {
     try {
       // save the game data to a JSON file
-      GameDataSaver.saveGameJson(controller.getGameWorld(), TEST_GAME_FILE_NAME);
+      GameDataSaver.saveGameJson(TEST_GAME_FILE_NAME, controller.getGameWorld());
 
-      GameDataSaver.savePlayerJson(controller.getPlayer(), TEST_PLAYER_FILE_NAME);
+      GameDataSaver.savePlayerJson(TEST_PLAYER_FILE_NAME, controller.getPlayer());
 
       // verify if the file was created
       File gameFile = new File(TEST_GAME_FILE_NAME);

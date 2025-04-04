@@ -471,8 +471,8 @@ public class GameController {
       String gameFileName = gameWorld.getName() + ".json";
       String playerFileName = player.getName() + ".json";
 
-      GameDataSaver.saveGameJson(gameWorld, gameFileName);
-      GameDataSaver.savePlayerJson(player, playerFileName);
+      GameDataSaver.saveGameJson(gameFileName, gameWorld);
+      GameDataSaver.savePlayerJson(playerFileName, player);
 
       viewer.showText("Game saved successfully as " + gameFileName + " and " + playerFileName);
     } catch (Exception e) {
