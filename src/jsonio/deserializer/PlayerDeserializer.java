@@ -1,4 +1,4 @@
-package jsonreader.deserializer;
+package jsonio.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -39,20 +39,18 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
     JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
     Player player = null;
 
-    // Parse all items from the JSON first
-    Map<String, Item> allItems = new HashMap<>();
-    for (Room<?> room : gameWorld.getRooms().values()) {
-      for (Item obj : room.getEntitiesByType(Item.class)) {
-        allItems.put(obj.getName(), obj);
-      }
-    }
-
     String name = rootNode.get("name").asText();
     int health = rootNode.get("health").asInt();
     int maxWeight = rootNode.get("max_weight").asInt();
     int currentWeight = rootNode.get("current_weight").asInt();
     int roomNumber = rootNode.get("room_number").asInt();
     int score = rootNode.get("score").asInt();
+
+    // Parse all items from gameWorld
+    Map<String, Item> allItems = new HashMap<>();
+    for (Item item : gameWorld.getItems()) {
+      allItems.put(item.getName(), item);
+    }
 
     // Parse inventory string and lookup items from allItems map
     Map<String, Item> inventory = new HashMap<>();

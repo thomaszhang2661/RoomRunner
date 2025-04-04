@@ -12,8 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import jsonreader.GameDataLoader;
-import jsonreader.GameDataSaver;
+import jsonio.GameDataLoader;
+import jsonio.GameDataSaver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +24,10 @@ import org.junit.jupiter.api.Test;
 class GameDataLoaderSaverTest {
 
   private GameController controller;
-  private static String TEST_GAME_FILE_NAME;
-  private static String TEST_PLAYER_FILE_NAME;
+  private static String testGameFileName;
+  private static String testPlayerFileName;
+  private static String testGameFilePath;
+  private static String testPlayerFilePath;
 
   /**
    * Set up the test environment.
@@ -33,22 +35,28 @@ class GameDataLoaderSaverTest {
    */
   @BeforeEach
   public void setUp() {
-    String setupGameFileName = "test/TestGameWorld.json";
-    String setupPlayerFileName = "test/TestPlayer.json";
+    // Load the game world and player from JSON files in the test folder in the resources directory
+    String setupGameFileName = "TestGameWorld.json";
+    String setupPlayerFileName = "TestPlayer.json";
+
     try {
       GameWorld gameWorld = GameDataLoader.loadGameWorld(setupGameFileName);
       Player player = GameDataLoader.loadPlayer(setupPlayerFileName, gameWorld);
       controller = new GameController(gameWorld, player);
 
-      TEST_GAME_FILE_NAME = controller.getGameWorld().getName() + ".json";
-      TEST_PLAYER_FILE_NAME = controller.getPlayer().getName() + ".json";
+      // Add copy suffix to the test file names to avoid overwriting the original files
+      testGameFileName = controller.getGameWorld().getName() + "_copy.json";
+      testPlayerFileName = controller.getPlayer().getName() + "_copy.json";
+
+      testGameFilePath = "resources/worlds/" + testGameFileName;
+      testPlayerFilePath = "resources/players/" + testPlayerFileName;
     } catch (IOException e) {
       fail("IOException was thrown during setup: " + e.getMessage());
     }
 
     // ensure the test file does not exist before the test
-    new File(TEST_GAME_FILE_NAME).delete();
-    new File(TEST_PLAYER_FILE_NAME).delete();
+    new File(testGameFileName).delete();
+    new File(testPlayerFileName).delete();
   }
 
   /**
@@ -58,24 +66,24 @@ class GameDataLoaderSaverTest {
   @Test
   void testGameDataSaver() {
     try {
-      // save the game data to a JSON file
-      GameDataSaver.saveGameJson(TEST_GAME_FILE_NAME, controller.getGameWorld());
+      // save the game data to a JSON file in the same directory
+      GameDataSaver.saveGameJson(testGameFileName, controller.getGameWorld());
 
-      GameDataSaver.savePlayerJson(TEST_PLAYER_FILE_NAME, controller.getPlayer());
+      GameDataSaver.savePlayerJson(testPlayerFileName, controller.getPlayer());
 
       // verify if the file was created
-      File gameFile = new File(TEST_GAME_FILE_NAME);
+      File gameFile = new File(testGameFilePath);
       assertTrue(gameFile.exists(), "File should be created");
 
-      File playerFile = new File(TEST_PLAYER_FILE_NAME);
+      File playerFile = new File(testPlayerFilePath);
       assertTrue(playerFile.exists(), "File should be created");
 
       // verify if the file is not empty
-      String gameContent = Files.readString(Paths.get(TEST_GAME_FILE_NAME));
+      String gameContent = Files.readString(Paths.get(testGameFilePath));
       assertNotNull(gameContent, "Content should not be null");
       assertFalse(gameContent.isEmpty(), "Content should not be empty");
 
-      String playerContent = Files.readString(Paths.get(TEST_PLAYER_FILE_NAME));
+      String playerContent = Files.readString(Paths.get(testPlayerFilePath));
       assertNotNull(playerContent, "Content should not be null");
       assertFalse(playerContent.isEmpty(), "Content should not be empty");
 
@@ -120,19 +128,19 @@ class GameDataLoaderSaverTest {
   @AfterEach
   public void tearDown() {
     // delete the test file after each test
-    File gameFile = new File(TEST_GAME_FILE_NAME);
+    File gameFile = new File(testGameFilePath);
     if (gameFile.exists()) {
       boolean deleted = gameFile.delete();
       if (!deleted) {
-        System.err.println("Failed to delete test file: " + TEST_GAME_FILE_NAME);
+        System.err.println("Failed to delete test file: " + testGameFilePath);
       }
     }
 
-    File playerFile = new File(TEST_PLAYER_FILE_NAME);
+    File playerFile = new File(testPlayerFilePath);
     if (playerFile.exists()) {
       boolean deleted = playerFile.delete();
       if (!deleted) {
-        System.err.println("Failed to delete test file: " + TEST_PLAYER_FILE_NAME);
+        System.err.println("Failed to delete test file: " + testPlayerFilePath);
       }
     }
   }

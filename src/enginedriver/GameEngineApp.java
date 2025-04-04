@@ -5,11 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
-import jsonreader.GameDataLoader;
+import jsonio.GameDataLoader;
 
 /**
  * The GameEngineApp class is the main entry point for the game engine application.
@@ -86,8 +85,9 @@ public class GameEngineApp {
     BufferedReader consoleReader =
             new BufferedReader(new InputStreamReader(System.in));
 
+    // Hardcoded game file name, can be replaced with a dynamic input
     GameEngineApp gameEngineApp = new GameEngineApp(
-            "./resources/align_quest_game_elements.json",
+            "align_quest_game_elements.json",
             consoleReader,
             System.out);
 

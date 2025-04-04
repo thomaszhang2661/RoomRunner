@@ -1,4 +1,4 @@
-package jsonreader.deserializer;
+package jsonio.deserializer;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

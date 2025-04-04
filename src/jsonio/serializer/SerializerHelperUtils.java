@@ -1,4 +1,4 @@
-package jsonreader.serializer;
+package jsonio.serializer;
 
 import enginedriver.Item;
 import enginedriver.problems.IProblem;

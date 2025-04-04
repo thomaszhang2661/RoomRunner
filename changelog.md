@@ -5,4 +5,4 @@
  - Removed unnecessary toString() methods and related tests; updated GameController's save()/restore() methods
  - Split storage into separate gameworld.json and player.json files (player.json stores item names as strings, with actual items in gameworld.json)
  - Modified GameEngineApp constructor to maintain backward compatibility
- - Renamed "jsonreader" package to "jsonio" to better reflect its expanded functionality
+ - Renamed "jsonio" package to "jsonio" to better reflect its expanded functionality

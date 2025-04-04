@@ -1,11 +1,11 @@
-package jsonreader;
+package jsonio;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import enginedriver.GameWorld;
 import enginedriver.Player;
-import jsonreader.deserializer.GameWorldDeserializer;
-import jsonreader.deserializer.PlayerDeserializer;
+import jsonio.deserializer.GameWorldDeserializer;
+import jsonio.deserializer.PlayerDeserializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,8 @@ import java.io.IOException;
  * It uses Jackson to read and write JSON files representing the game world.
  */
 public class GameDataLoader {
+  private static final String WORLD_SAVE_BASE_PATH = "resources/worlds/";
+  private static final String PLAYER_SAVE_BASE_PATH = "resources/players/";
 
   /**
    * Load the game world from a JSON file.
@@ -24,13 +26,15 @@ public class GameDataLoader {
    * @throws IOException if an error occurs during loading
    */
   public static GameWorld loadGameWorld(String fileName) throws IOException {
+    String newFileName = WORLD_SAVE_BASE_PATH + fileName;
+
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
 
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
     mapper.registerModule(module);
 
-    return mapper.readValue(new File(fileName), GameWorld.class);
+    return mapper.readValue(new File(newFileName), GameWorld.class);
   }
 
   /**
@@ -42,12 +46,14 @@ public class GameDataLoader {
    * @throws IOException if an error occurs during loading
    */
   public static Player loadPlayer(String fileName, GameWorld gameWorld) throws IOException {
+    String newFileName = PLAYER_SAVE_BASE_PATH + fileName;
+
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
 
     module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
     mapper.registerModule(module);
 
-    return mapper.readValue(new File(fileName), Player.class);
+    return mapper.readValue(new File(newFileName), Player.class);
   }
 }
