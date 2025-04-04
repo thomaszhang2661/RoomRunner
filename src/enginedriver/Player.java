@@ -253,17 +253,4 @@ public class Player extends EntityContainer<Item> {
     this.roomNumber = roomNumber;
   }
 
-  @Override
-  public String toString() {
-    return "{\n"
-            + "\"name\":\"" + getName() + "\",\n"
-            + "\"health\":\"" + getHealth() + "\",\n"
-            + "\"inventory\":\"" + String.join(", ", getEntities().keySet()) + "\",\n"
-            + "\"max_weight\":\"" + getMaxWeight() + "\",\n"
-            + "\"current_weight\":\"" + getCurrentWeight() + "\",\n"
-            + "\"room_number\":\"" + getRoomNumber() + "\",\n"
-            + "\"score\":\"" + getScore() + "\"\n"
-            + "}";
-  }
-
 }

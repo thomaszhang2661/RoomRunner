@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import enginedriver.GameWorld;
 import enginedriver.Player;
+import jsonreader.deserializer.GameWorldDeserializer;
+import jsonreader.deserializer.PlayerDeserializer;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -16,35 +19,35 @@ public class GameDataLoader {
   /**
    * Load the game world from a JSON file.
 
-   * @param gameFileName the name of the file to load
+   * @param fileName the name of the file to load
    * @return the GameWorld object
    * @throws IOException if an error occurs during loading
    */
-  public static GameWorld loadGameWorld(String gameFileName) throws IOException {
+  public static GameWorld loadGameWorld(String fileName) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
 
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
     mapper.registerModule(module);
 
-    return mapper.readValue(new File(gameFileName), GameWorld.class);
+    return mapper.readValue(new File(fileName), GameWorld.class);
   }
 
   /**
    * Load the player from a JSON file.
 
-   * @param gameFileName the name of the file to load
+   * @param fileName the name of the file to load
    * @param gameWorld    the GameWorld object
    * @return the Player object
    * @throws IOException if an error occurs during loading
    */
-  public static Player loadPlayer(String gameFileName, GameWorld gameWorld) throws IOException {
+  public static Player loadPlayer(String fileName, GameWorld gameWorld) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
 
     module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
     mapper.registerModule(module);
 
-    return mapper.readValue(new File(gameFileName), Player.class);
+    return mapper.readValue(new File(fileName), Player.class);
   }
 }

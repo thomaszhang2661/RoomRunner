@@ -109,23 +109,4 @@ public class Fixture extends IdentifiableEntity implements IWeightable {
   public int getWeight() {
     return weight;
   }
-
-  /**
-   * toString method for fixture.
-   *
-   * @return String representation of fixture
-   */
-  @Override
-  public String toString() {
-    return "{ "
-            + "\"name\":\"" + getName() + "\","
-            + "\"weight\":\"" + getWeight() + "\","
-            + "\"puzzle\":\"" + getPuzzle() + "\","
-            + "\"states\":\"" + getStates() + "\","
-            +  "\"description\":\"" + getDescription()
-                                        .replace("\"", "\\\"")
-                                        .replace("\n", "\\n") + "\","
-            + "\"picture\":\"" + getPictureName() + "\""
-            + " }";
-  }
 }

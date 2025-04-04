@@ -8,8 +8,8 @@ import enginedriver.GameWorld;
 import enginedriver.Player;
 import java.io.File;
 import java.io.IOException;
-import jsonreader.GameWorldDeserializer;
-import jsonreader.PlayerDeserializer;
+import jsonreader.deserializer.GameWorldDeserializer;
+import jsonreader.deserializer.PlayerDeserializer;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -53,13 +53,13 @@ class DeserializationTest {
   void testDeserializePlayer() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
+
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
     mapper.registerModule(module);
-
     GameWorld gameWorld = mapper.readValue(new File("test/TestGameWorld.json"), GameWorld.class);
-    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
 
-    Player player = mapper.readValue(new File("test/TestGameWorld.json"), Player.class);
+    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
+    Player player = mapper.readValue(new File("test/TestPlayer.json"), Player.class);
 
     assertNotNull(player);
     assertEquals("Avatar", player.getName());

@@ -1,6 +1,7 @@
 package enginedriver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,13 +41,13 @@ public class GameEngineApp {
     this.graphicsMode = graphicsMode;
 
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
-    Player player = GameDataLoader.loadPlayer(gameFileName, gameWorld);
 
-    // if player is null, create a new player from input
-    if (player == null) {
-      String playerName = getPlayerName();
-      player = new Player(playerName, 100, 20, 0); // 提示玩家输入名字
-    }
+    String playerName = getPlayerName();
+    String playerFileName = playerName + ".json";
+    File playerFile = new File(playerFileName);
+    Player player = playerFile.exists()
+            ? GameDataLoader.loadPlayer(playerFileName, gameWorld)
+            : new Player(playerName, 100, 20, 0);
 
     this.gameController = new GameController(gameWorld, player);
 
@@ -62,7 +63,7 @@ public class GameEngineApp {
 
   /**
    * Starts the game engine application.
-   *
+
    * @throws IOException if an error occurs during input/output
    */
   public void start() throws IOException {
@@ -109,7 +110,7 @@ public class GameEngineApp {
 
   /**
    * Main method to start the game.
-   *
+
    * @param args command line arguments
    * @throws IOException if an error occurs during input/output
    */

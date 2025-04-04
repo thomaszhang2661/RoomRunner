@@ -476,11 +476,13 @@ public class GameController {
    */
   private void save() {
     try {
-      String fileName = gameWorld.getName() + ".json";
+      String gameFileName = gameWorld.getName() + ".json";
+      String playerFileName = player.getName() + ".json";
 
-      GameDataSaver.saveGameJson(this, fileName);
+      GameDataSaver.saveGameJson(gameFileName, gameWorld);
+      GameDataSaver.savePlayerJson(playerFileName, player);
 
-      viewer.showText("Game saved successfully as " + fileName);
+      viewer.showText("Game saved successfully as " + gameFileName + " and " + playerFileName);
     } catch (Exception e) {
       viewer.showText("Failed to save game: " + e.getMessage());
     }
@@ -491,15 +493,16 @@ public class GameController {
    */
   private void restore() {
     try {
-      String fileName = gameWorld.getName() + ".json";
+      String gameFileName = gameWorld.getName() + ".json";
+      String playerFileName = player.getName() + ".json";
 
-      GameWorld newGameWorld = GameDataLoader.loadGameWorld(fileName);
-      Player newPlayer = GameDataLoader.loadPlayer(fileName, newGameWorld);
+      GameWorld newGameWorld = GameDataLoader.loadGameWorld(gameFileName);
+      Player newPlayer = GameDataLoader.loadPlayer(playerFileName, newGameWorld);
 
       this.gameWorld = newGameWorld;
       this.player = newPlayer;
 
-      viewer.showText("Game restored successfully from " + fileName);
+      viewer.showText("Game restored successfully from " + gameFileName + " and " + playerFileName);
     } catch (Exception e) {
       viewer.showText("Failed to restore game: " + e.getMessage());
     }
@@ -549,28 +552,5 @@ public class GameController {
       viewer.showText("Game ends...");
       quit();
     }
-  }
-
-  @Override
-  public String toString() {
-    String gameWorldJson = gameWorld.toString();
-    String playerJson = player.toString();
-
-    StringBuilder sb = new StringBuilder(gameWorldJson);
-
-    String playerItems = this.getPlayer().getElementNames(Item.class);
-    if (!playerItems.isEmpty()) {
-      // insert player items into items
-      int itemsIndex = sb.indexOf("\"items\":[") + 9;
-      sb.insert(itemsIndex, "\n");
-      for (Item item : this.getPlayer().getEntitiesByType(Item.class)) {
-        sb.insert(itemsIndex, item.toString() + ",");
-      }
-    }
-
-    String updatedGameWorldJson = sb.toString();
-
-    return updatedGameWorldJson.substring(0, updatedGameWorldJson.length() - 1) + ",\n\n"
-            + "\"player\":" + playerJson + "\n}";
   }
 }
