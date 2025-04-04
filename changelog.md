@@ -1,4 +1,4 @@
-[JSON access] - 04/03/2025
+[Xueyuan Sun (Dimcirui)] - 04/03/2025
  - Created utility classes for serialization and deserialization with shared helper functions
  - Added accessor methods to GameWorld: getItems(), getFixtures(), getMonsters(), getPuzzles()
  - Refactored serialization from string concatenation to custom Jackson serializers (similar to existing deserialization)
