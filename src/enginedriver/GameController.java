@@ -10,20 +10,23 @@ import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
 import jsonreader.GameDataLoader;
 import jsonreader.GameDataSaver;
-import viewer.TextViewer;
-import viewer.Viewer;
+import viewer.IView;
 
 /**
- * GameEngine class to handle game logic and player commands.
+ * GameController class to handle game logic and player commands.
+ * This is the Controller component in the MVC architecture.
  */
 public class GameController {
   private Player player;
   private GameWorld gameWorld;
-  private Viewer viewer;
+  private IView view;
   private Map<String, String> actionMap = new HashMap<>();
 
   /**
    * Constructor for GameController.
+   *
+   * @param gameWorld The game world
+   * @param player The player
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
@@ -43,62 +46,83 @@ public class GameController {
   }
 
   /**
-   * Set the viewer for the game controller.
+   * Set the view for the game controller.
+   *
+   * @param viewer The game view
    */
-  public void setView(Viewer viewer) {
-    this.viewer = viewer;
+  public void setView(IView viewer) {
+    this.view = viewer;
   }
 
   /**
    * Process the command entered by the player.
+   *
+   * @param command The command entered by the player
    */
   public void processCommand(String command) {
     // Standardize the command
     String[] commandParts = standardizeCommand(command);
 
-    //take out action 和 objectName
-    command = commandParts[0];
+    // Extract action and object name
+    String action = commandParts[0];
     String objectName = commandParts[1];
 
-    switch (command.toUpperCase()) {
-      case "N": move("N");
+    switch (action.toUpperCase()) {
+      case "N":
+        move("N");
         break;
-      case "S": move("S");
+      case "S":
+        move("S");
         break;
-      case "E": move("E");
+      case "E":
+        move("E");
         break;
-      case "W": move("W");
+      case "W":
+        move("W");
         break;
-      case "T": takeItem(objectName);
+      case "T":
+        takeItem(objectName);
         break;
-      case "D": dropItem(objectName);
+      case "D":
+        dropItem(objectName);
         break;
-      case "L": lookAround();
+      case "L":
+        lookAround();
         break;
-      case "U": useItem(objectName);
+      case "U":
+        useItem(objectName);
         break;
-      case "I": checkInventory();
+      case "I":
+        checkInventory();
         break;
-      case "X": examine(objectName);
+      case "X":
+        examine(objectName);
         break;
-      case "A": answer(objectName);
+      case "A":
+        answer(objectName);
         break;
-      case "Q": quit();
+      case "Q":
+        quit();
         break;
-      case "SAVE": save();
+      case "SAVE":
+        save();
         break;
-      case "RESTORE": restore();
+      case "RESTORE":
+        restore();
         break;
       default:
-        viewer.showText("Invalid command.");
+        view.showText("Invalid command.");
         break;
     }
+
+    // Update the view after processing command
+    view.update();
   }
 
   /**
    * Get the game world.
-
-   * @return the game world
+   *
+   * @return The game world
    */
   public GameWorld getGameWorld() {
     return gameWorld;
@@ -106,8 +130,8 @@ public class GameController {
 
   /**
    * Get the player.
-
-   * @return the player
+   *
+   * @return The player
    */
   public Player getPlayer() {
     return player;
@@ -115,9 +139,9 @@ public class GameController {
 
   /**
    * Standardize the command entered by the player.
-
-   * @param command the command entered by the player
-   * @return the standardized command
+   *
+   * @param command The command entered by the player
+   * @return The standardized command as a string array [action, object]
    */
   private String[] standardizeCommand(String command) {
     // Remove leading and trailing white spaces
@@ -132,9 +156,9 @@ public class GameController {
     // Prepare the object name by joining the rest of the command parts
     String objectName = (commandParts.length > 1)
             ? capitalizeWords(
-                    String.join(
-                            " ", Arrays.copyOfRange(commandParts, 1, commandParts.length)
-                    )
+            String.join(
+                    " ", Arrays.copyOfRange(commandParts, 1, commandParts.length)
+            )
     )
             : "";
 
@@ -145,7 +169,10 @@ public class GameController {
   }
 
   /**
-   * Capitalize the word to align with the JSON style.
+   * Capitalize the words in a phrase to align with the JSON style.
+   *
+   * @param phrase The phrase to capitalize
+   * @return The capitalized phrase
    */
   private static String capitalizeWords(String phrase) {
     if (phrase == null || phrase.isEmpty()) {
@@ -166,293 +193,294 @@ public class GameController {
   }
 
   /**
-   * Move the player north.
+   * Move the player in the specified direction.
+   *
+   * @param direction The direction to move (N, S, E, W)
    */
   private void move(String direction) {
-    //check player's current room
+    // Check player's current room
     int currentRoom = player.getRoomNumber();
-
     Room<?> currentRoomObj = gameWorld.getRoom(currentRoom);
-    //get room's exists
+
+    // Get room exits
     Map<String, Integer> exits = currentRoomObj.getExits();
 
-    //check if the direction is valid
+    // Check if the direction is valid
     if (exits.containsKey(direction)) {
       int attemptRoomNum = exits.get(direction);
       if (attemptRoomNum < 0) {
-        viewer.showText("The direction is blocked.");
+        view.showText("The direction is blocked.");
         return;
       } else if (attemptRoomNum == 0) {
-        viewer.showText("Invalid direction, there is no more room in this direction.");
+        view.showText("Invalid direction, there is no more room in this direction.");
       } else {
-
-        //get the room that player is going to enter
+        // Get the room that player is going to enter
         Room enteredRoom = gameWorld.getRoom(attemptRoomNum);
-        //move player to the new room
+        // Move player to the new room
         player.setRoomNumber(attemptRoomNum);
-        //show description when entering
-        viewer.showText("You are moving to the derection "
-                + direction + ", entered " + enteredRoom.getName()
-                + ", room number " + attemptRoomNum);
+        // Show description when entering
+        view.showText("You are moving " + getDirectionName(direction) + ", entered " +
+                enteredRoom.getName() + ", room number " + attemptRoomNum);
 
-        // room description
-        viewer.showText(enteredRoom.getDescription());
+        // Room description
+        view.showText(enteredRoom.getDescription());
 
-        // get problem from the room,get prloblem clas
+        // Get problem from the room
         IProblem<?> problem = enteredRoom.getProblem();
 
         if (problem != null && problem.getActive()) {
-          // show the problem effect on Entering
-          viewer.showText(problem.getEffects());
-          // deal with monster attack
+          // Show the problem effect on entering
+          view.showText(problem.getEffects());
+          // Deal with monster attack
           handleMonsterAttack(problem);
         }
       }
     } else {
-      viewer.showText("Invalid direction.");
+      view.showText("Invalid direction.");
     }
   }
 
   /**
-   * Controller method to call the player's addItem method.
-   * Print message based on the result.
+   * Get the full name of a direction.
+   *
+   * @param direction The direction code (N, S, E, W)
+   * @return The full direction name
+   */
+  private String getDirectionName(String direction) {
+    switch (direction) {
+      case "N":
+        return "north";
+      case "S":
+        return "south";
+      case "E":
+        return "east";
+      case "W":
+        return "west";
+      default:
+        return direction;
+    }
+  }
 
-   * @param itemName the name of the item that needs to be taken.
+  /**
+   * Take an item from the current room.
+   *
+   * @param itemName The name of the item to take
    */
   private void takeItem(String itemName) {
-    //get room
+    // Get current room
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    //get item
+    // Get item
     Item itemAttempt = currentRoom.getItem(itemName);
 
     if (itemAttempt != null) {
       if (player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
-        viewer.showText(itemName + "added to your inventory!");
+        view.showText(itemName + " added to your inventory!");
         player.setScore(player.getScore() + itemAttempt.getValue());
       } else {
-        viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
-                + "  your bag is full.");
+        view.showText("Sorry, you cannot add " + itemName + " to your bag. Your bag is full.");
       }
     } else {
-      viewer.showText("Sorry, you can not add " + itemName + " to your bag. Because"
-              + " the item is not in the room .");
+      view.showText("Sorry, you cannot add " + itemName + " to your bag. The item is not in the room.");
     }
   }
 
   /**
-   * Controller method to call the player's delete method.
-
-   * @param itemName the name of the item that needs to be dropped.
+   * Drop an item from the player's inventory.
+   *
+   * @param itemName The name of the item to drop
    */
   private void dropItem(String itemName) {
     Item item = player.getEntity(itemName, Item.class);
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+
     // Check if player has this item
     if (item != null) {
       player.removeItem(item);
       currentRoom.addEntity(item);
-      viewer.showText(itemName + " dropped here in " + currentRoom.getName());
+      view.showText(itemName + " dropped here in " + currentRoom.getName());
       player.setScore(player.getScore() - item.getValue());
     } else {
-      viewer.showText("Sorry, you don't have " + itemName + " in your bag");
+      view.showText("Sorry, you don't have " + itemName + " in your bag");
     }
-
   }
 
   /**
    * Look around the current room.
-
-   * @return the description of the current room
    */
   private void lookAround() {
-    // Logic to look around
+    // Get current room
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    // check if room has
-    viewer.showText("You are currently standing in the " + currentRoom.getName());
-    viewer.showText(currentRoom.getDescription());
 
-    // deal with monster attack
-    IProblem<?> problem  =  currentRoom.getProblem();
+    // Show room info
+    view.showText("You are currently standing in the " + currentRoom.getName());
+    view.showText(currentRoom.getDescription());
+
+    // Check for monster attack
+    IProblem<?> problem = currentRoom.getProblem();
     handleMonsterAttack(problem);
 
-    //get items keys from the room
+    // Get items and fixtures in the room
     String itemNames = currentRoom.getElementNames(Item.class);
-    //get fixtures keys from the room
     String fixtureNames = currentRoom.getElementNames(Fixture.class);
 
-    // show the items, fixtures, problem in the room
-    viewer.showText(itemNames.isEmpty() ? "There is no items here" : "Items you see here: "
-            + "\n" + itemNames);
-    viewer.showText(fixtureNames.isEmpty() ? "There is no fixtures here" : "Fixtures you see here: "
-            + "\n" + fixtureNames);
-
+    // Show the items and fixtures
+    view.showText(itemNames.isEmpty() ? "There are no items here" : "Items you see here: " +
+            "\n" + itemNames);
+    view.showText(fixtureNames.isEmpty() ? "There are no fixtures here" : "Fixtures you see here: " +
+            "\n" + fixtureNames);
   }
 
   /**
    * Use an item.
    *
-   * @param itemName the name of the item to use
+   * @param itemName The name of the item to use
    */
   private void useItem(String itemName) {
+    // Get current room
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
 
-    // get room
-    Room<?> currentRoom = gameWorld.getRoom(
-            player.getRoomNumber());
-
-    // get current problem
-    IProblem<?> problem  =  currentRoom.getProblem();
+    // Get current problem
+    IProblem<?> problem = currentRoom.getProblem();
 
     if (problem == null) {
-      viewer.showText("You are trying to use" + itemName
-              + " but nothing interesting happens");
+      view.showText("You are trying to use " + itemName + " but nothing interesting happens");
       return;
     }
 
-    //check solution type
-    Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
-    // check if the prolem is a IProblem<Item>
+    // Check solution type
+    Class<?> solutionClass = problem.getSolution().getClass();
+    // Check if the problem is an IProblem<Item>
     if (solutionClass != Item.class) {
-      viewer.showText("You are trying to use " + itemName
-              + " but nothing interesting happens");
+      view.showText("You are trying to use " + itemName + " but nothing interesting happens");
       handleMonsterAttack(currentRoom.getProblem());
       return;
     }
 
-    // check if player has this item.
+    // Check if player has this item
     boolean hasItem = player.hasEntity(itemName);
     if (!hasItem) {
-      viewer.showText("You don't have " + itemName
-              + " in your bag.");
-      // deal with monster attack
+      view.showText("You don't have " + itemName + " in your inventory.");
+      // Deal with monster attack
       handleMonsterAttack(currentRoom.getProblem());
       return;
     }
 
-    // get item
-    Item itemAttempt = player.getEntity(itemName,
-            Item.class);
+    // Get item
+    Item itemAttempt = player.getEntity(itemName, Item.class);
 
-    Problem<Item> itemproblem = (Problem<Item>) problem;
-    // slove problem
-    int flag = itemproblem.solve(itemAttempt);
+    Problem<Item> itemProblem = (Problem<Item>) problem;
+    // Solve problem
+    int flag = itemProblem.solve(itemAttempt);
     switch (flag) {
       case 0:
-        viewer.showText("You are trying to use" + itemName
-                + " but nothing interesting happens");
+        view.showText("You are trying to use " + itemName + " but nothing interesting happens");
         return;
       case 1:
         if (!itemAttempt.use()) {
-          viewer.showText(itemName + "is empty "
-                  + "or cannot be used again.");
+          view.showText(itemName + " is empty or cannot be used again.");
           handleMonsterAttack(problem);
           return;
         }
-        viewer.showText(itemAttempt.getWhenUsed());
+        view.showText(itemAttempt.getWhenUsed());
         handleProblemSolved(problem);
         return;
       case 2:
-        viewer.showText("You are trying to use" + itemName
-                + " but nothing interesting happens");
+        view.showText("You are trying to use " + itemName + " but nothing interesting happens");
         handleMonsterAttack(problem);
     }
   }
 
   /**
    * Answer a puzzle.
-
-   * @param objectName the answer to the puzzle
+   *
+   * @param objectName The answer to the puzzle
    */
   private void answer(String objectName) {
-
-    // get the current room
+    // Get the current room
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    // get puzzle or moster in the room
+    // Get puzzle or monster in the room
     IProblem<?> problem = currentRoom.getProblem();
     if (problem == null) {
-      viewer.showText("There is no question to answer in this room.");
+      view.showText("There is no question to answer in this room.");
       return;
     }
 
     if (objectName == null || objectName.isEmpty()) {
-      viewer.showText("Please provide an answer.");
+      view.showText("Please provide an answer.");
       handleMonsterAttack(problem);
       return;
     }
 
-    // check if the puzzle is solved
+    // Check if the puzzle is solved
     if (!problem.getActive()) {
-      viewer.showText("The puzzle is already solved.");
+      view.showText("The puzzle is already solved.");
       return;
     }
 
-    // check if the solution is a string
+    // Check if the solution is a string
     if (!(problem.getSolution() instanceof String)) {
-      viewer.showText("You are trying to answer a question, "
-              + "but nothing interesting happens.");
+      view.showText("You are trying to answer a question, but nothing interesting happens.");
       handleMonsterAttack(problem);
       return;
     }
 
     Problem<String> problemString = (Puzzle<String>) problem;
 
-    // solve the problem
+    // Solve the problem
     int flag = problemString.solve(objectName);
     switch (flag) {
       case 0:
-        viewer.showText("You are trying to answer the question, "
-                + "but nothing interesting happens.");
+        view.showText("You are trying to answer the question, but nothing interesting happens.");
         return;
       case 1:
-        viewer.showText("You have successfully solved the puzzle!");
+        view.showText("You have successfully solved the puzzle!");
         handleProblemSolved(problem);
         return;
       case 2:
-        viewer.showText("You are trying to answer the question, "
-                + "but the answer is wrong.");
+        view.showText("You are trying to answer the question, but the answer is wrong.");
         handleMonsterAttack(problem);
     }
   }
 
   /**
    * Check the player's inventory.
-
-   * @return the items in the player's inventory
    */
   private void checkInventory() {
-    // Logic to check inventory
+    // Get inventory items
     Map<String, Item> items = player.getEntities();
     if (items.isEmpty()) {
-      viewer.showText("There is nothing in your inventory.");
+      view.showText("There is nothing in your inventory.");
     } else {
-      viewer.showText("Items in your inventory: ");
+      view.showText("Items in your inventory: ");
       String itemList = String.join(", ", items.keySet());
-      viewer.showText(itemList);
+      view.showText(itemList);
     }
   }
 
   /**
-   * Examine an item.
+   * Examine an item or fixture.
+   *
+   * @param entityName The name of the entity to examine
    */
   private void examine(String entityName) {
-    // Logic to examine item
-    // get current room
+    // Get current room
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
     IIdentifiableEntity entity = currentRoom.getEntity(entityName, Item.class);
     if (entity == null) {
       entity = currentRoom.getEntity(entityName, Fixture.class);
     }
     if (entity == null) {
-      viewer.showText(entityName + " is not in the room.");
+      view.showText(entityName + " is not in the room.");
     } else {
-      viewer.showText(entity.getDescription());
+      view.showText(entity.getDescription());
     }
   }
 
   /**
-   * Unlocks room.
-
-   * @param room the room to unlock exits
+   * Unlocks room exits.
+   *
+   * @param room The room to unlock exits for
    */
   private void unlockExits(Room<?> room) {
     for (String key : room.getExits().keySet()) {
@@ -467,7 +495,7 @@ public class GameController {
    * Quit the game.
    */
   private void quit() {
-    viewer.showText("Quitting...");
+    view.showText("Quitting...");
     System.exit(0);
   }
 
@@ -482,9 +510,9 @@ public class GameController {
       GameDataSaver.saveGameJson(gameFileName, gameWorld);
       GameDataSaver.savePlayerJson(playerFileName, player);
 
-      viewer.showText("Game saved successfully as " + gameFileName + " and " + playerFileName);
+      view.showText("Game saved successfully as " + gameFileName + " and " + playerFileName);
     } catch (Exception e) {
-      viewer.showText("Failed to save game: " + e.getMessage());
+      view.showText("Failed to save game: " + e.getMessage());
     }
   }
 
@@ -502,54 +530,56 @@ public class GameController {
       this.gameWorld = newGameWorld;
       this.player = newPlayer;
 
-      viewer.showText("Game restored successfully from " + gameFileName + " and " + playerFileName);
+      view.showText("Game restored successfully from " + gameFileName + " and " + playerFileName);
     } catch (Exception e) {
-      viewer.showText("Failed to restore game: " + e.getMessage());
+      view.showText("Failed to restore game: " + e.getMessage());
     }
   }
 
   /**
    * Handle the situation when the problem is successfully solved.
-   * @param problem the problem that will be solved
+   * @param problem The problem that has been solved
    */
   private void handleProblemSolved(IProblem<?> problem) {
-    viewer.showText("You have successfully"
-            + (problem instanceof Puzzle<?> ? " solved " : " killed ")
-            + problem.getName());
-    problem.setActive(false); // set problem to inactive
+    view.showText("You have successfully"
+            + (problem instanceof Puzzle<?> ? " solved " : " defeated ")
+           + problem.getName());
+    problem.setActive(false); // Set problem to inactive
 
-    // deal with score
+    // Update score
     int points = problem.getValue();
-    player.addScore(points); // update score
-    viewer.showText("Your score" + " + " + points + ". Current Score is " + player.getScore());
+    player.addScore(points);
+    view.showText("Your score increased by " + points + ". Current score is " + player.getScore());
 
+    // Check if problem affects a target
     if (problem.getAffectsTarget()) {
       String problemTarget = problem.getTarget();
       String[] parts = problemTarget.split(":", 2);
       int roomNumber = Integer.parseInt(parts[0].trim());
       String roomName = parts[1].trim();
       unlockExits(gameWorld.getRoom(roomNumber));
-      viewer.showText("The room " + roomName + " is unlocked.");
+      view.showText("The room " + roomName + " is now unlocked.");
     }
   }
 
   /**
-   * Handle situation when monster attacks the player by checking its attack effect and dealing
-   * with the damage.
-   * @param problem the puzzle/monster that might attack player
+   * Handle situation when monster attacks the player.
+   *
+   * @param problem The puzzle/monster that might attack player
    */
   private void handleMonsterAttack(IProblem<?> problem) {
-    if (problem instanceof Monster) {
-      Monster<?> monster = (Monster) problem;
+    if (problem instanceof Monster<?> monster) {
       if (monster.getAffectsPlayer() && monster.getCanAttack()) {
         monster.attack(player);
-        viewer.showText(monster.getAttack());
-        viewer.showText("Player takes " + monster.getDamage() + " damage!");
-        viewer.showText(player.checkStatus().getMessage());
+        view.showText(monster.getAttack());
+        view.showText("Player takes " + monster.getDamage() + " damage!");
+        view.showText(player.checkStatus().getMessage());
       }
     }
+
+    // Check if player has died
     if (player.checkStatus() == HEALTH_STATUS.SLEEP) {
-      viewer.showText("Game ends...");
+      view.showText("Game over...");
       quit();
     }
   }

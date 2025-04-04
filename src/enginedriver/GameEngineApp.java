@@ -1,30 +1,27 @@
 package enginedriver;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.util.Objects;
 import java.util.Scanner;
 
-import graphicsview.GraphicalView;
 import jsonreader.GameDataLoader;
-import textview.TextView;
+import viewer.TextView;
+import viewer.GraphicView;
+import viewer.IView;
 
 /**
  * The GameEngineApp class is the main entry point for the game engine application.
  * It initializes the game world and player, and starts the game loop.
  */
 public class GameEngineApp {
-  private GameController gameController;
-  private Readable source;
-  private Appendable output;
-  private GameView view;
-  private boolean graphicsMode;
+  private final GameController gameController;
+//  private final Readable source;
+//  private final Appendable output;
+  private final IView viewer;
 
   /**
    * Constructor for the GameEngineApp class.
@@ -36,12 +33,13 @@ public class GameEngineApp {
    * @throws IOException if an error occurs during input/output
    */
   public GameEngineApp(String gameFileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
-    this.source = Objects.requireNonNull(source);
-    this.output = Objects.requireNonNull(output);
-    this.graphicsMode = graphicsMode;
+  //    this.source = Objects.requireNonNull(source);
+  //    this.output = Objects.requireNonNull(output);
 
+    // Load game world from file
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
 
+    // Get player name and load or create player
     String playerName = getPlayerName();
     String playerFileName = playerName + ".json";
     File playerFile = new File(playerFileName);
@@ -49,68 +47,36 @@ public class GameEngineApp {
             ? GameDataLoader.loadPlayer(playerFileName, gameWorld)
             : new Player(playerName, 100, 20, 0);
 
+    // Create controller
     this.gameController = new GameController(gameWorld, player);
 
     // Initialize the appropriate view based on mode
     if (graphicsMode) {
-      this.view = new GraphicalView(gameController, gameWorld, player);
+      this.viewer = new GraphicView(gameController, gameWorld, player);
     } else {
-      this.view = new TextView(gameController, gameWorld, player, output);
+      this.viewer = new TextView(gameController, gameWorld, player, output);
     }
 
-    gameController.setView(this.view);
+    // Set view in controller
+    gameController.setView(this.viewer);
   }
 
   /**
    * Starts the game engine application.
-
-   * @throws IOException if an error occurs during input/output
-   */
-  public void start() throws IOException {
-    if (graphicsMode) {
-      // For graphics mode, start the graphical interface
-      ((GraphicalView) view).initialize();
-    } else {
-      // For text mode, run the command loop
-      runTextCommandLoop();
-    }
-  }
-
-  /**
-   * Runs the text-based command loop.
    *
    * @throws IOException if an error occurs during input/output
    */
-  private void runTextCommandLoop() throws IOException {
-    BufferedReader reader = new BufferedReader((Reader) source);
+  public void start() throws IOException {
+    // Initialize the view
+    viewer.initialize();
 
-    String command;
-    while (true) {
-      output.append("===\n");
-      output.append("To move, enter: (N)orth, (S)outh, (E)ast or (W)est.\n");
-      output.append("Other actions: (I)nventory, (L)ook around the location, (U)se an item\n");
-      output.append("(T)ake an item, (D)rop an item, or e(X)amine something.\n");
-      output.append("(A)nswer a question or provide a text solution.\n");
-      output.append("To end the game, enter (Q)uit to quit and exit.\n");
-      output.append("Your choice: ");
-
-      command = reader.readLine();
-      if (command == null) {
-        break;
-      }
-
-      if (command.equalsIgnoreCase("Q")) {
-        output.append("Exiting game.\n");
-        break;
-      }
-
-      gameController.processCommand(command);
-    }
+    // Start handling user input in the view
+    viewer.startInputHandling();
   }
 
   /**
    * Main method to start the game.
-
+   *
    * @param args command line arguments
    * @throws IOException if an error occurs during input/output
    */
@@ -135,13 +101,13 @@ public class GameEngineApp {
     switch (mode) {
       case "-text":
         // Text mode: interactive with console I/O
-        inputSource = new BufferedReader(new InputStreamReader(System.in));
+        inputSource = new InputStreamReader(System.in);
         outputDest = System.out;
         break;
 
       case "-graphics":
         // Graphics mode: GUI interface
-        inputSource = new BufferedReader(new InputStreamReader(System.in));
+        inputSource = new InputStreamReader(System.in);
         outputDest = System.out;
         isGraphicsMode = true;
         break;
@@ -155,7 +121,7 @@ public class GameEngineApp {
         // Batch mode: input from file
         String sourceFile = args[2];
         try {
-          inputSource = new BufferedReader(new FileReader(sourceFile));
+          inputSource = new FileReader(sourceFile);
 
           // If a target file is specified, redirect output there
           if (args.length >= 4) {
@@ -177,6 +143,7 @@ public class GameEngineApp {
     }
 
     try {
+      // Create and start the game engine
       GameEngineApp gameEngineApp = new GameEngineApp(
               gameFileName,
               inputSource,
@@ -190,8 +157,8 @@ public class GameEngineApp {
         ((FileReader) inputSource).close();
       }
 
-      if (outputDest instanceof FileWriter) {
-        ((FileWriter) outputDest).close();
+      if (outputDest instanceof PrintWriter) {
+        ((PrintWriter) outputDest).close();
       }
 
     } catch (IOException e) {
@@ -208,10 +175,8 @@ public class GameEngineApp {
     Scanner scanner = new Scanner(System.in);
 
     System.out.print("Enter your name: ");
-
     String playerName = scanner.nextLine();
-
-    System.out.println("Your name is: " + playerName);
+    System.out.println("Welcome, " + playerName + "!");
 
     return playerName;
   }
