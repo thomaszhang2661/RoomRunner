@@ -6,3 +6,5 @@
  - Split storage into separate gameworld.json and player.json files (player.json stores item names as strings, with actual items in gameworld.json)
  - Modified GameEngineApp constructor to maintain backward compatibility
  - Renamed "jsonio" package to "jsonio" to better reflect its expanded functionality
+ - Set resource as the root directory for saving json, and move all savefiles to resource.
+ - Updated GameEngineApp to use the new JSON serialization and deserialization methods
