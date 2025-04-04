@@ -33,6 +33,7 @@ public class GameEngineApp {
     this.output = Objects.requireNonNull(output);
 
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
+
     String playerName = getPlayerName();
     String playerFileName = playerName + ".json";
     File playerFile = new File(playerFileName);
