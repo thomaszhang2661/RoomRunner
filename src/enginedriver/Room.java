@@ -10,7 +10,7 @@ import enginedriver.problems.Puzzle;
 /**
  * class for a room in the game.
  */
-public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableEntity> {
+public class Room<T extends IProblem<?>> extends EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
   private final T problem;
 
@@ -120,15 +120,4 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
     return problem;
   }
 
-  /**
-   * get the String list of items in the room.
-
-   * @param clazz the class of the entity
-   *  @return the string list of items
-   */
-  public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
-    return String.join(", ", getEntitiesByType(clazz).stream()
-            .map(U::getName)
-            .toList());
-  }
 }
