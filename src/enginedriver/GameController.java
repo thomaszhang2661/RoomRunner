@@ -10,6 +10,8 @@ import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
 import jsonreader.GameDataLoader;
 import jsonreader.GameDataSaver;
+import viewer.TextViewer;
+import viewer.Viewer;
 
 /**
  * GameEngine class to handle game logic and player commands.
@@ -26,7 +28,6 @@ public class GameController {
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
     this.player = player;
-    this.viewer = Viewer.getInstance();
     // Action abbreviations map
     actionMap.put("NORTH", "N");
     actionMap.put("SOUTH", "S");
@@ -39,6 +40,13 @@ public class GameController {
     actionMap.put("USE", "U");
     actionMap.put("INVENTORY", "I");
     actionMap.put("ANSWER", "A");
+  }
+
+  /**
+   * Set the viewer for the game controller.
+   */
+  public void setView(Viewer viewer) {
+    this.viewer = viewer;
   }
 
   /**
@@ -259,7 +267,7 @@ public class GameController {
    */
   private void lookAround() {
     // Logic to look around
-    Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
     // check if room has
     viewer.showText("You are currently standing in the " + currentRoom.getName());
     viewer.showText(currentRoom.getDescription());
