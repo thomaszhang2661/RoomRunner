@@ -9,7 +9,7 @@ public class Player extends EntityContainer<Item> {
   private int health;
   private final int maxWeight;
   private int currentWeight;
-  private int roomNumber; //the room that player is in
+  private int roomNumber = 1; //the room that player is in
   private int score;
 
   /**
@@ -204,6 +204,7 @@ public class Player extends EntityContainer<Item> {
     this.score += score;
   }
 
+
   /**
    * Add an item into player's inventory if it is within the maxWeight.
 
@@ -237,24 +238,6 @@ public class Player extends EntityContainer<Item> {
    */
   public void setRoomNumber(int roomNumber) {
     this.roomNumber = roomNumber;
-  }
-
-  /**
-   * toString method for the player class.
-
-   * @return a string representation of the player
-   */
-  @Override
-  public String toString() {
-    return "{ "
-            + "\"name\":\"" + getName() + "\","
-            + "\"health\":\"" + getHealth() + "\","
-            + "\"inventory\":\"" + String.join(", ", getEntities().keySet()) + "\","
-            + "\"max_weight\":\"" + getMaxWeight() + "\","
-            + "\"current_weight\":\"" + getCurrentWeight() + "\","
-            + "\"room_number\":\"" + getRoomNumber() + "\","
-            + "\"score\":\"" + getScore() + "\""
-            + " }";
   }
 
 }

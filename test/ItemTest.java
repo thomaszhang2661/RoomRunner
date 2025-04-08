@@ -201,22 +201,4 @@ public class ItemTest {
     Assertions.assertNotEquals("Not an Item", item1);
     assertEquals(item1.hashCode(), item2.hashCode());
   }
-
-  /**
-   * Test toString method.
-   */
-  @Test
-  void testToString() {
-    // Using assertEquals for an exact match to the current toString() format
-    Item item = new Item("A", "descA", 5, 3,
-            100, 2, "Now");
-
-    // Notice getWhenUsed() always returns "", so the when_used field should be empty in the result.
-    String expected =
-            "{ \"name\":\"A\",\"weight\":\"2\",\"max_uses\":\"5\",\"uses_remaining"
-                    + "\":\"3\",\"value\":\"100\","
-                    + "\"when_used\":\"Now\",\"description\":\"descA\",\"picture\":\"null\" }";
-
-    assertEquals(expected, item.toString());
-  }
 }

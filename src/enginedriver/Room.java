@@ -1,6 +1,6 @@
 package enginedriver;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import enginedriver.problems.IProblem;
@@ -10,7 +10,7 @@ import enginedriver.problems.Puzzle;
 /**
  * class for a room in the game.
  */
-public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableEntity> {
+public class Room<T extends IProblem<?>> extends EntityContainer<IdentifiableEntity> {
   private Map<String, Integer> exits;
   private final T problem;
 
@@ -120,65 +120,4 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
     return problem;
   }
 
-  /**
-   * get the String list of items in the room.
-
-   * @param clazz the class of the entity
-   *  @return the string list of items
-   */
-  public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
-    return String.join(", ", getEntitiesByType(clazz).stream()
-            .map(U::getName)
-            .toList());
-  }
-
-  public void checkExits() {
-    System.out.println("exits 类型: " + (exits instanceof HashMap)); // 应该输出 true
-    System.out.println("exits 内容: " + exits);
-    System.out.println("entities 类型: " + (getEntities() instanceof HashMap)); // 应该输出 true
-    System.out.println("exits 内容: " + getEntities());
-  }
-
-  /**
-   * get the String list of items in the room.
-
-   * @return the string list of items
-   */
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("{");
-
-    sb.append("\"room_name\":\"").append(getName()).append("\",");
-    sb.append("\"room_number\":\"").append(getId()).append("\",");
-    sb.append("\"description\":\"").append(getDescription()).append("\",");
-
-    sb.append("\"N\":\"").append(exits.get("N")).append("\",");
-    sb.append("\"S\":\"").append(exits.get("S")).append("\",");
-    sb.append("\"E\":\"").append(exits.get("E")).append("\",");
-    sb.append("\"W\":\"").append(exits.get("W")).append("\",");
-
-    if (problem instanceof Puzzle) {
-      sb.append("\"puzzle\":\"").append(problem.getName()).append("\",");
-      sb.append("\"monster\":null,");
-    } else if (problem instanceof Monster) {
-      sb.append("\"puzzle\":null,");
-      sb.append("\"monster\":\"").append(problem.getName()).append("\",");
-    } else {
-      sb.append("\"puzzle\":null,");
-      sb.append("\"monster\":null,");
-    }
-
-    String items = getElementNames(Item.class);
-    sb.append("\"items\":").append(items.isEmpty() ? "null" : "\"" + items + "\"").append(",");
-
-    String fixtures = getElementNames(Fixture.class);
-    sb.append("\"fixtures\":").append(fixtures.isEmpty() ? "null" : "\""
-            + fixtures + "\"").append(",");
-
-    sb.append("\"picture\":\"").append(getPictureName()).append("\"");
-
-    sb.append("}");
-    return sb.toString();
-  }
 }

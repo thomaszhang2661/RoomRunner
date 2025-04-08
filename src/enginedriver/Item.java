@@ -79,6 +79,19 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
   }
 
   /**
+   * Use the item.
+   * If the item can be used, the remaining uses are decremented by 1.
+   * If the item cannot be used, the remaining uses are not decremented.
+   */
+  public boolean use() {
+    if (remainingUses <= 0) {
+      return false;
+    }
+    remainingUses--;
+    return true;
+  }
+
+  /**
    * Getter for remainingUses.
 
    * @return int remainingUses
@@ -125,52 +138,6 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
     return whenUsed;
   }
 
-  /**
-   * Use the item.
-   * If the item can be used, the remaining uses are decremented by 1.
-   * If the item cannot be used, the remaining uses are not decremented.
-
-   * @return true if the item can be used, false otherwise
-   */
-  public boolean use() {
-    // remaining uses <= 0, cannot use
-    if (remainingUses <= 0) {
-      return false;
-    }
-    // remaining uses > 0, can use
-    remainingUses--;
-    return true;
-  }
-
-  /**
-   * toString method for the item class.
-
-   * @return a string representation of the item
-   */
-  @Override
-  public String toString() {
-    return "{ "
-            + "\"name\":\"" + getName() + "\","
-            + "\"weight\":\"" + getWeight() + "\","
-            + "\"max_uses\":\"" + getUseMax() + "\","
-            + "\"uses_remaining\":\"" + getRemainingUses() + "\","
-            + "\"value\":\"" + getValue() + "\","
-            + "\"when_used\":\"" + getWhenUsed() + "\","
-            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
-            + "\"picture\":\"" + getPictureName() + "\""
-            + " }";
-  }
-
-  /**
-   * equals method for the item class.
-
-   * @param o the object to compare to
-   * @return true if the objects are equal, false otherwise
-   */
-  @Override
-  public boolean equals(Object o) {
-    return super.equals(o);
-  }
 
   /**
    * hashcode method for the item class.

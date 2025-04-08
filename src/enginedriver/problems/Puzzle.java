@@ -37,35 +37,4 @@ public class Puzzle<T> extends Problem<T> {
             affectsPlayer, solution, value, effects, target,
             pictureName, validator);
   }
-
-  /**
-   * toString method for Puzzle.
-
-   * @return the string representation of the puzzle
-   */
-  @Override
-  public String toString() {
-    String solutionStr;
-    Object solution = getSolution();
-    // is an Item
-    if (solution instanceof Item) {
-      solutionStr = ((Item) solution).getName();
-    // is a String or null
-    } else {
-      solutionStr = solution.toString();
-    }
-
-    return "{ "
-            + "\"name\":\"" + getName() + "\","
-            + "\"active\":\"" + getActive() + "\","
-            + "\"affects_target\":\"" + getAffectsTarget() + "\","
-            + "\"affects_player\":\"" + getAffectsPlayer() + "\","
-            + "\"solution\":\"" + solutionStr + "\","
-            + "\"value\":\"" + getValue() + "\","
-            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
-            + "\"effects\":\"" + getEffects() + "\","
-            + "\"target\":\"" + getTarget() + "\","
-            + "\"picture\":\"" + getPictureName() + "\""
-            + " }";
-  }
 }

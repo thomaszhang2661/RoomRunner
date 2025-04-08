@@ -124,38 +124,4 @@ public class Monster<T> extends Problem<T> {
     }
     return result;
   }
-
-  /**
-   * Override toString to include attack and damage.
-
-   * @return String for monster.
-   */
-  @Override
-  public String toString() {
-    String solutionStr;
-    Object solution = getSolution();
-    // is an Item
-    if (solution instanceof Item) {
-      solutionStr = ((Item) solution).getName();
-      // is a String or null
-    } else {
-      solutionStr = solution.toString();
-    }
-
-    return "{ "
-            + "\"name\":\"" + getName() + "\","
-            + "\"active\":\"" + getActive() + "\","
-            + "\"affects_target\":\"" + getAffectsTarget() + "\","
-            + "\"affects_player\":\"" + getAffectsPlayer() + "\","
-            + "\"solution\":\"" + solutionStr + "\","
-            + "\"value\":\"" + getValue() + "\","
-            + "\"description\":\"" + getDescription().replace("\n", "\\n") + "\","
-            + "\"effects\":\"" + getEffects() + "\","
-            + "\"damage\":\"" + getDamage() + "\","
-            + "\"target\":\"" + getTarget() + "\","
-            + "\"can_attack\":\"" + getCanAttack() + "\","
-            + "\"attack\":\"" + getAttack() + "\","
-            + "\"picture\":\"" + getPictureName() + "\""
-            + " }";
-  }
 }

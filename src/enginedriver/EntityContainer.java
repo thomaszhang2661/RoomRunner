@@ -22,7 +22,6 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    */
   protected EntityContainer(int id, String name, String description, String pictureName) {
     super(id, name, description, pictureName);
-    //分配一个新的 HashMap 实例，用于存储实体
     this.stringEntityMap = new java.util.HashMap<>();
   }
 
@@ -108,7 +107,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
    * Get the list of entities from the container according to the type.
 
    * @param clazz the class of the entity
-   * @return List&lt;U&gt; the list of entities
+   * @return the list of entities
    */
   public  <U> List<U> getEntitiesByType(Class<U> clazz) {
     List<U> result = new ArrayList<>();
@@ -118,6 +117,18 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
       }
     }
     return result;
+  }
+
+  /**
+   * get the String list of items in the room.
+
+   * @param clazz the class of the entity
+   *  @return the string list of items
+   */
+  public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
+    return String.join(", ", getEntitiesByType(clazz).stream()
+            .map(U::getName)
+            .toList());
   }
 
 

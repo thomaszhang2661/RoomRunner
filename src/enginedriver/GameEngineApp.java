@@ -1,13 +1,14 @@
 package enginedriver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
-import jsonreader.GameDataLoader;
+import jsonio.GameDataLoader;
 
 /**
  * The GameEngineApp class is the main entry point for the game engine application.
@@ -31,17 +32,16 @@ public class GameEngineApp {
     this.output = Objects.requireNonNull(output);
 
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
-    Player player = GameDataLoader.loadPlayer(gameFileName, gameWorld);
 
-    // if player is null, create a new player from input
-    if (player == null) {
-      String playerName = getPlayerName();
-      player = new Player(playerName, 100, 20, 0); // 提示玩家输入名字
-    }
+    String playerName = getPlayerName();
+    String playerFileName = playerName + ".json";
+    File playerFile = new File(playerFileName);
+    Player player = playerFile.exists()
+            ? GameDataLoader.loadPlayer(playerFileName, gameWorld)
+            : new Player(playerName, 100, 20, 0);
 
     this.gameController = new GameController(gameWorld, player);
   }
-
 
   /**
    * Starts the game engine application.
@@ -52,11 +52,25 @@ public class GameEngineApp {
     BufferedReader reader = new BufferedReader((Reader) source);
 
     String command;
-    while ((command = reader.readLine()) != null) {
+    while (true) {
+      System.out.println("===");
+      System.out.println("To move, enter: (N)orth, (S)outh, (E)ast or (W)est.");
+      System.out.println("Other actions: (I)nventory, (L)ook around the location, (U)se an item");
+      System.out.println("(T)ake an item, (D)rop an item, or e(X)amine something.");
+      System.out.println("(A)nswer a question or provide a text solution.");
+      System.out.println("To end the game, enter (Q)uit to quit and exit.");
+      System.out.print("Your choice: ");
+
+      command = reader.readLine();
+      if (command == null) {
+        break;
+      }
+
       if (command.equalsIgnoreCase("Q")) {
         System.out.println("Exiting game.");
         break;
       }
+
       gameController.processCommand(command);
     }
   }
@@ -68,12 +82,16 @@ public class GameEngineApp {
    * @throws IOException if an error occurs during input/output
    */
   public static void main(String[] args) throws IOException {
-    String s = "Sir Mix-A-Lot\nT NOTEBOOK\nN\nT HAIR CLIPPERS\nT KEY\nD NOTEBOOK\nQuit";
-    BufferedReader stringReader = new BufferedReader(new StringReader(s));
+    BufferedReader consoleReader =
+            new BufferedReader(new InputStreamReader(System.in));
+
+    // Hardcoded game file name, can be replaced with a dynamic input
     GameEngineApp gameEngineApp = new GameEngineApp(
-            "./resources/align_quest_game_elements.json",
-            stringReader,
+            "align_quest_game_elements.json",
+            consoleReader,
             System.out);
+
+    gameEngineApp.start();
   }
 
   /**
@@ -82,20 +100,14 @@ public class GameEngineApp {
    * @return the player's name
    */
   private String getPlayerName() {
-    // Create a Scanner object to read user input
     Scanner scanner = new Scanner(System.in);
 
-    // Ask the user for their name
     System.out.print("Enter your name: ");
 
-    // Read the user input
     String playerName = scanner.nextLine();
 
-    // Print the player's name
     System.out.println("Your name is: " + playerName);
 
-    // Close the scanner
-    scanner.close();
     return playerName;
   }
 }

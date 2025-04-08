@@ -2,20 +2,17 @@ package enginedriver;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import enginedriver.problems.IProblem;
 import enginedriver.problems.Monster;
 import enginedriver.problems.Problem;
 import enginedriver.problems.Puzzle;
+import enginedriver.problems.IProblem;
+import jsonio.GameDataLoader;
+import jsonio.GameDataSaver;
 
 /**
  * GameEngine class to handle game logic and player commands.
- * This class is responsible for processing
- * player commands and updating the game state.
- * It interacts with the GameWorld, Player, and Viewer classes.
- * It also handles the game loop and user input.
  */
 public class GameController {
   private Player player;
@@ -25,16 +22,12 @@ public class GameController {
 
   /**
    * Constructor for GameController.
-
-   * @param gameWorld the game world
-   * @param player the player
    */
   public GameController(GameWorld gameWorld, Player player) {
     this.gameWorld = gameWorld;
     this.player = player;
     this.viewer = Viewer.getInstance();
     // Action abbreviations map
-    // TODO：这里应该设计为一个配置文件直接读进来
     actionMap.put("NORTH", "N");
     actionMap.put("SOUTH", "S");
     actionMap.put("EAST", "E");
@@ -46,6 +39,52 @@ public class GameController {
     actionMap.put("USE", "U");
     actionMap.put("INVENTORY", "I");
     actionMap.put("ANSWER", "A");
+  }
+
+  /**
+   * Process the command entered by the player.
+   */
+  public void processCommand(String command) {
+    // Standardize the command
+    String[] commandParts = standardizeCommand(command);
+
+    //take out action 和 objectName
+    command = commandParts[0];
+    String objectName = commandParts[1];
+
+    switch (command.toUpperCase()) {
+      case "N": move("N");
+        break;
+      case "S": move("S");
+        break;
+      case "E": move("E");
+        break;
+      case "W": move("W");
+        break;
+      case "T": takeItem(objectName);
+        break;
+      case "D": dropItem(objectName);
+        break;
+      case "L": lookAround();
+        break;
+      case "U": useItem(objectName);
+        break;
+      case "I": checkInventory();
+        break;
+      case "X": examine(objectName);
+        break;
+      case "A": answer(objectName);
+        break;
+      case "Q": quit();
+        break;
+      case "SAVE": save();
+        break;
+      case "RESTORE": restore();
+        break;
+      default:
+        viewer.showText("Invalid command.");
+        break;
+    }
   }
 
   /**
@@ -79,16 +118,16 @@ public class GameController {
     // Split by space
     String[] commandParts = command.split("\\s+");
 
-
-
-
-
     // Default action is the first part of the command (converted to uppercase)
     String action = commandParts[0].toUpperCase();
 
     // Prepare the object name by joining the rest of the command parts
     String objectName = (commandParts.length > 1)
-            ? String.join(" ", Arrays.copyOfRange(commandParts, 1, commandParts.length))
+            ? capitalizeWords(
+                    String.join(
+                            " ", Arrays.copyOfRange(commandParts, 1, commandParts.length)
+                    )
+    )
             : "";
 
     // If the action exists in the map, use its abbreviation, otherwise leave as is
@@ -97,59 +136,29 @@ public class GameController {
     return new String[]{action, objectName};
   }
 
-
   /**
-   * Process the command after it has been standardized.
-
-   * @param command the command standardized by standardizeCommand
+   * Capitalize the word to align with the JSON style.
    */
-  public void processCommand(String command) {
-    // Standardize the command
-    String[] commandParts = standardizeCommand(command);
-
-    //take out action 和 objectName
-    command = commandParts[0];
-    String objectName = commandParts[1];
-
-    switch (command.toUpperCase()) {
-      case "N": move("N");
-      break;
-      case "S": move("S");
-      break;
-      case "E": move("E");
-      break;
-      case "W": move("W");
-      break;
-      case "T": takeItem(objectName);
-      break;
-      case "D": dropItem(objectName);
-      break;
-      case "L": lookAround();
-      break;
-      case "U": useItem(objectName);
-      break;
-      case "I": checkInventory();
-      break;
-      case "X": examine(objectName);
-      break;
-      case "A": answer(objectName);
-      break;
-      case "Q": quit();
-      break;
-      case "SAVE": save();
-      break;
-      case "RESTORE": restore();
-      break;
-      default:
-        viewer.showText("Invalid command.");
-        break;
+  private static String capitalizeWords(String phrase) {
+    if (phrase == null || phrase.isEmpty()) {
+      return phrase;
     }
+
+    String[] words = phrase.split(" ");
+    StringBuilder capitalized = new StringBuilder();
+
+    for (String word : words) {
+      if (!word.isEmpty()) {
+        capitalized.append(Character.toUpperCase(word.charAt(0)));
+        capitalized.append(word.substring(1).toLowerCase());
+        capitalized.append(" ");
+      }
+    }
+    return capitalized.toString().trim();
   }
 
   /**
-   * Move the player to a new room based on the direction.
-
-   * @param direction the direction to move (N, S, E, W)
+   * Move the player north.
    */
   private void move(String direction) {
     //check player's current room
@@ -161,22 +170,22 @@ public class GameController {
 
     //check if the direction is valid
     if (exits.containsKey(direction)) {
-      int attempRoomNum = exits.get(direction);
-      if (attempRoomNum < 0) {
+      int attemptRoomNum = exits.get(direction);
+      if (attemptRoomNum < 0) {
         viewer.showText("The direction is blocked.");
         return;
-      } else if (attempRoomNum == 0) {
+      } else if (attemptRoomNum == 0) {
         viewer.showText("Invalid direction, there is no more room in this direction.");
       } else {
 
         //get the room that player is going to enter
-        Room enteredRoom = gameWorld.getRoom(attempRoomNum);
+        Room enteredRoom = gameWorld.getRoom(attemptRoomNum);
         //move player to the new room
-        player.setRoomNumber(attempRoomNum);
-        //show the enter discription
+        player.setRoomNumber(attemptRoomNum);
+        //show description when entering
         viewer.showText("You are moving to the derection "
-                + direction + ",enterred " + enteredRoom.getName()
-                + ", room number" + attempRoomNum);
+                + direction + ", entered " + enteredRoom.getName()
+                + ", room number " + attemptRoomNum);
 
         // room description
         viewer.showText(enteredRoom.getDescription());
@@ -208,7 +217,6 @@ public class GameController {
     //get item
     Item itemAttempt = currentRoom.getItem(itemName);
 
-    // check if the item is in the room
     if (itemAttempt != null) {
       if (player.addItem(itemAttempt)) {
         currentRoom.removeEntity(itemAttempt);
@@ -236,7 +244,7 @@ public class GameController {
     if (item != null) {
       player.removeItem(item);
       currentRoom.addEntity(item);
-      viewer.showText(itemName + "dropped here in " + currentRoom.getName());
+      viewer.showText(itemName + " dropped here in " + currentRoom.getName());
       player.setScore(player.getScore() - item.getValue());
     } else {
       viewer.showText("Sorry, you don't have " + itemName + " in your bag");
@@ -253,34 +261,25 @@ public class GameController {
     // Logic to look around
     Room currentRoom = gameWorld.getRoom(player.getRoomNumber());
     // check if room has
-    viewer.showText("You are currently standing in the" + currentRoom.getName());
+    viewer.showText("You are currently standing in the " + currentRoom.getName());
     viewer.showText(currentRoom.getDescription());
 
     // deal with monster attack
     IProblem<?> problem  =  currentRoom.getProblem();
     handleMonsterAttack(problem);
 
-
     //get items keys from the room
-    List<String> itemNames = currentRoom.getEntities().keySet().stream()
-            .toList();
+    String itemNames = currentRoom.getElementNames(Item.class);
     //get fixtures keys from the room
-    List<String> fixtureNames = currentRoom.getEntities().keySet().stream()
-            .toList();
-    //get problem from the room
-    String problemDescription = currentRoom.getProblem()
-            .getDescription();
+    String fixtureNames = currentRoom.getElementNames(Fixture.class);
 
     // show the items, fixtures, problem in the room
-    viewer.showText("Items you see here: ");
-    viewer.showText(String.join(", ", itemNames));
-    viewer.showText("Fixtures you see here: ");
-    viewer.showText(String.join(", ", fixtureNames));
+    viewer.showText(itemNames.isEmpty() ? "There is no items here" : "Items you see here: "
+            + "\n" + itemNames);
+    viewer.showText(fixtureNames.isEmpty() ? "There is no fixtures here" : "Fixtures you see here: "
+            + "\n" + fixtureNames);
 
   }
-
-
-
 
   /**
    * Use an item.
@@ -288,7 +287,6 @@ public class GameController {
    * @param itemName the name of the item to use
    */
   private void useItem(String itemName) {
-
 
     // get room
     Room<?> currentRoom = gameWorld.getRoom(
@@ -307,7 +305,7 @@ public class GameController {
     Class<?> solutionClass = problem.getSolution().getClass(); // 获取solution的Class对象
     // check if the prolem is a IProblem<Item>
     if (solutionClass != Item.class) {
-      viewer.showText("You are trying to use" + itemName
+      viewer.showText("You are trying to use " + itemName
               + " but nothing interesting happens");
       handleMonsterAttack(currentRoom.getProblem());
       return;
@@ -352,7 +350,6 @@ public class GameController {
     }
   }
 
-
   /**
    * Answer a puzzle.
 
@@ -386,6 +383,7 @@ public class GameController {
       viewer.showText("You are trying to answer a question, "
               + "but nothing interesting happens.");
       handleMonsterAttack(problem);
+      return;
     }
 
     Problem<String> problemString = (Puzzle<String>) problem;
@@ -408,8 +406,6 @@ public class GameController {
     }
   }
 
-
-
   /**
    * Check the player's inventory.
 
@@ -429,14 +425,11 @@ public class GameController {
 
   /**
    * Examine an item.
-
-   * @param entityName the name of the item to examine
    */
   private void examine(String entityName) {
+    // Logic to examine item
     // get current room
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
-
-    // check if the entity is in the room
     IIdentifiableEntity entity = currentRoom.getEntity(entityName, Item.class);
     if (entity == null) {
       entity = currentRoom.getEntity(entityName, Fixture.class);
@@ -462,58 +455,65 @@ public class GameController {
     }
   }
 
-
   /**
    * Quit the game.
    */
   private void quit() {
-    // Logic to quit the game
-    //TODO
+    viewer.showText("Quitting...");
+    System.exit(0);
   }
 
   /**
    * Save the game state.
    */
   private void save() {
-    // Logic to save the game state
-    //TODO
+    try {
+      String gameFileName = gameWorld.getName() + ".json";
+      String playerFileName = player.getName() + ".json";
+
+      GameDataSaver.saveGameJson(gameFileName, gameWorld);
+      GameDataSaver.savePlayerJson(playerFileName, player);
+
+      viewer.showText("Game saved successfully as " + gameFileName + " and " + playerFileName);
+    } catch (Exception e) {
+      viewer.showText("Failed to save game: " + e.getMessage());
+    }
   }
 
   /**
    * Restore the game state.
    */
   private void restore() {
-    // Logic to restore the game state
-    //TODO
+    try {
+      String gameFileName = gameWorld.getName() + ".json";
+      String playerFileName = player.getName() + ".json";
+
+      GameWorld newGameWorld = GameDataLoader.loadGameWorld(gameFileName);
+      Player newPlayer = GameDataLoader.loadPlayer(playerFileName, newGameWorld);
+
+      this.gameWorld = newGameWorld;
+      this.player = newPlayer;
+
+      viewer.showText("Game restored successfully from " + gameFileName + " and " + playerFileName);
+    } catch (Exception e) {
+      viewer.showText("Failed to restore game: " + e.getMessage());
+    }
   }
 
   /**
-   * record the game state.
+   * Handle the situation when the problem is successfully solved.
+   * @param problem the problem that will be solved
    */
-  // Additional methods for game logic can be added here
-  private void record() {
-    // Logic to record the game state for replay
-    // 区分用户操作是否对gameworld造成了影响，
-    //  如果有影响，记录操作和变化
-    //TODO
-  }
-
-  /**
-   * Handle the problem solved event.
-   * This method updates the game state when a problem is solved.
-   * It updates the player's score, unlocks exits if necessary,and shows a message to the player.
-
-   * @param problem the problem that was solved
-   */
-  private  void handleProblemSolved(IProblem<?> problem) {
-    viewer.showText("You have successfully solved"
+  private void handleProblemSolved(IProblem<?> problem) {
+    viewer.showText("You have successfully"
+            + (problem instanceof Puzzle<?> ? " solved " : " killed ")
             + problem.getName());
     problem.setActive(false); // set problem to inactive
 
     // deal with score
     int points = problem.getValue();
     player.addScore(points); // update score
-    viewer.showText("+ " + points + ". Current Score is " + player.getScore());
+    viewer.showText("Your score" + " + " + points + ". Current Score is " + player.getScore());
 
     if (problem.getAffectsTarget()) {
       String problemTarget = problem.getTarget();
@@ -526,11 +526,9 @@ public class GameController {
   }
 
   /**
-   * Handle monster attack.
-   * This method checks if the problem is a monster and if it can attack the player.
-   * If so, it performs the attack and shows the attack message to the player.
-
-   * @param problem the problem to check
+   * Handle situation when monster attacks the player by checking its attack effect and dealing
+   * with the damage.
+   * @param problem the puzzle/monster that might attack player
    */
   private void handleMonsterAttack(IProblem<?> problem) {
     if (problem instanceof Monster) {
@@ -538,22 +536,13 @@ public class GameController {
       if (monster.getAffectsPlayer() && monster.getCanAttack()) {
         monster.attack(player);
         viewer.showText(monster.getAttack());
+        viewer.showText("Player takes " + monster.getDamage() + " damage!");
+        viewer.showText(player.checkStatus().getMessage());
       }
     }
-  }
-
-  /**
-   * Get the game controller as a string.
-   * This method returns a string representation of the game controller,
-   * including the game world and player information.
-
-   * @return the string representation of the game controller
-   */
-  @Override
-  public String toString() {
-    return "{ "
-            + gameWorld.toString() + ","
-            + "\"player\":" + player.toString()
-            + " }";
+    if (player.checkStatus() == HEALTH_STATUS.SLEEP) {
+      viewer.showText("Game ends...");
+      quit();
+    }
   }
 }

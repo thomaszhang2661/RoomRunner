@@ -263,38 +263,4 @@ public class RoomTest {
     assertEquals(puzzle, puzzleRoom.getProblem());
   }
 
-  /**
-   * Test getElementNames(Class<U> clazz).
-   */
-  @Test
-  void testGetElementNames() {
-    Map<String, Integer> exits = new HashMap<>();
-    Map<String, IdentifiableEntity> entities = new HashMap<>();
-    Item itemA = new Item("itemA", "descA", 1, 1,
-            10, 5, "used");
-    Item itemB = new Item("itemB", "descB", 2, 2,
-            20, 10, "used");
-    Fixture fixtureX = new Fixture("fixtureX", "fixtureX", 9);
-    entities.put(itemA.getName(), itemA);
-    entities.put(itemB.getName(), itemB);
-    entities.put(fixtureX.getName(), fixtureX);
-    exits.put("N", 1);
-    exits.put("S", -2);
-
-    Room<?> room = new Room(10, "J", "descJ", exits, entities);
-    room.checkExits();
-
-    // Get items' names
-    String itemNames = room.getElementNames(Item.class);
-    assertTrue(itemNames.contains("itemA"));
-    assertTrue(itemNames.contains("itemB"));
-    assertFalse(itemNames.contains("fixtureX"));
-
-    // Get fixtures' names
-    String fixtureNames = room.getElementNames(Fixture.class);
-    assertTrue(fixtureNames.contains("fixtureX"));
-    assertFalse(fixtureNames.contains("itemA"));
-    assertFalse(fixtureNames.contains("itemB"));
-  }
-
 }

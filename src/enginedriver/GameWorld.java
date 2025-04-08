@@ -1,6 +1,8 @@
 package enginedriver;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
@@ -17,8 +19,7 @@ public class GameWorld {
 
   /**
    * Default constructor for deserialization.
-   * This constructor is used by Jackson to create an instance of GameWorld
-   */
+    */
   public GameWorld() {}
 
   /**
@@ -30,11 +31,11 @@ public class GameWorld {
    */
   public GameWorld(String name, String version,
                    Map<Integer, Room> rooms) {
-    this.name = name; // ？？？need name TODO
+    this.name = name;
     this.version = version;
     this.rooms = rooms;
-  }
 
+  }
 
   /**
    * Get the name of the game world.
@@ -46,9 +47,8 @@ public class GameWorld {
   }
 
   /**
-   * Get the version of the game world.
-
-   * @return the version of the game world
+   * Retrieve the version of the GameWorld.
+   * @return the version of the world
    */
   public String getVersion() {
     return version;
@@ -102,81 +102,48 @@ public class GameWorld {
   }
 
   /**
-   * Get a string representation of the game world.
+   * Get a list of all items in the game world.
 
-   * @return a string representation of the game world
+   * @return a list of all items
    */
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("{");
-    sb.append("\"name\":\"").append(name).append("\",");
-    sb.append("\"version\":\"").append(version).append("\",");
+  public List<Item> getItems() {
+    return rooms.values().stream()
+            .flatMap(room -> ((List<Item>) room.getEntitiesByType(Item.class)).stream())
+            .collect(Collectors.toList());
+  }
 
-    sb.append("\"rooms\":[");
-    boolean firstRoom = true;
-    for (Room<?> room : rooms.values()) {
-      if (!firstRoom) {
-        sb.append(",");
-      }
-      sb.append(room.toString());
-      firstRoom = false;
-    }
-    sb.append("],");
+  /**
+   * Get a list of all fixtures in the game world.
 
-    sb.append("\"items\":[");
-    boolean firstItem = true;
-    for (Room<?> room : rooms.values()) {
-      for (Item item : room.getEntitiesByType(Item.class)) {
-        if (!firstItem) {
-          sb.append(",");
-        }
-        sb.append(item.toString());
-        firstItem = false;
-      }
-    }
-    sb.append("],");
+   * @return a list of all fixtures
+   */
+  public List<Fixture> getFixtures() {
+    return rooms.values().stream()
+            .flatMap(room -> ((List<Fixture>) room.getEntitiesByType(Fixture.class)).stream())
+            .collect(Collectors.toList());
+  }
 
-    sb.append("\"fixtures\":[");
-    boolean firstFixture = true;
-    for (Room<?> room : rooms.values()) {
-      for (Fixture fixture : room.getEntitiesByType(Fixture.class)) {
-        if (!firstFixture) {
-          sb.append(",");
-        }
-        sb.append(fixture.toString());
-        firstFixture = false;
-      }
-    }
-    sb.append("],");
+  /**
+   * Get a list of all monsters in the game world.
 
-    sb.append("\"monsters\":[");
-    boolean firstMonster = true;
-    for (Room<?> room : rooms.values()) {
-      if (room.getProblem() instanceof Monster) {
-        if (!firstMonster) {
-          sb.append(",");
-        }
-        sb.append(((Monster<?>) room.getProblem()).toString());
-        firstMonster = false;
-      }
-    }
-    sb.append("],");
+   * @return a list of all monsters
+   */
+  public List<Monster<?>> getMonsters() {
+    return rooms.values().stream()
+            .filter(room -> room.getProblem() instanceof Monster)
+            .map(room -> (Monster<?>) room.getProblem())
+            .collect(Collectors.toList());
+  }
 
-    sb.append("\"puzzles\":[");
-    boolean firstPuzzle = true;
-    for (Room<?> room : rooms.values()) {
-      if (room.getProblem() instanceof Puzzle) {
-        if (!firstPuzzle) {
-          sb.append(",");
-        }
-        sb.append(((Puzzle<?>) room.getProblem()).toString());
-        firstPuzzle = false;
-      }
-    }
-    sb.append("]");
+  /**
+   * Get a list of all puzzles in the game world.
 
-    sb.append("}");
-    return sb.toString();
+   * @return a list of all puzzles
+   */
+  public List<Puzzle<?>> getPuzzles() {
+    return rooms.values().stream()
+            .filter(room -> room.getProblem() instanceof Puzzle)
+            .map(room -> (Puzzle<?>) room.getProblem())
+            .collect(Collectors.toList());
   }
 }

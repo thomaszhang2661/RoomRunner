@@ -8,8 +8,8 @@ import enginedriver.GameWorld;
 import enginedriver.Player;
 import java.io.File;
 import java.io.IOException;
-import jsonreader.GameWorldDeserializer;
-import jsonreader.PlayerDeserializer;
+import jsonio.deserializer.GameWorldDeserializer;
+import jsonio.deserializer.PlayerDeserializer;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,10 +31,10 @@ class DeserializationTest {
     mapper.registerModule(new SimpleModule().addDeserializer(GameWorld.class,
             new GameWorldDeserializer()));
 
-    GameWorld gameWorld = mapper.readValue(new File("test/TestGameWorld.json"), GameWorld.class);
+    GameWorld gameWorld = mapper.readValue(new File("resources/worlds/TestGameWorld.json"), GameWorld.class);
 
     assertNotNull(gameWorld);
-    assertEquals("Simple Scenarios", gameWorld.getName());
+    assertEquals("TestGameWorld", gameWorld.getName());
     assertEquals("0.0.1", gameWorld.getVersion());
     assertEquals(5, gameWorld.getRooms().size());
     assertTrue(gameWorld.getRooms().containsKey(1));
@@ -53,18 +53,18 @@ class DeserializationTest {
   void testDeserializePlayer() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
+
     module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
     mapper.registerModule(module);
+    GameWorld gameWorld = mapper.readValue(new File("resources/worlds/TestGameWorld.json"), GameWorld.class);
 
-    GameWorld gameWorld = mapper.readValue(new File("test/TestGameWorld.json"), GameWorld.class);
     module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
-
-    Player player = mapper.readValue(new File("test/TestGameWorld.json"), Player.class);
+    Player player = mapper.readValue(new File("resources/players/TestPlayer.json"), Player.class);
 
     assertNotNull(player);
-    assertEquals("Avatar", player.getName());
+    assertEquals("TestPlayer", player.getName());
     assertEquals(100, player.getHealth());
-    assertEquals(20, player.getMaxWeight());
+    assertEquals(10, player.getMaxWeight());
     assertEquals(0, player.getScore());
   }
 }
