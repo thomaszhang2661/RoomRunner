@@ -1,5 +1,6 @@
 package enginedriver;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import enginedriver.problems.IProblem;
@@ -129,6 +130,13 @@ public class Room<T extends IProblem<?>>  extends  EntityContainer<IdentifiableE
     return String.join(", ", getEntitiesByType(clazz).stream()
             .map(U::getName)
             .toList());
+  }
+
+  public void checkExits() {
+    System.out.println("exits 类型: " + (exits instanceof HashMap)); // 应该输出 true
+    System.out.println("exits 内容: " + exits);
+    System.out.println("entities 类型: " + (getEntities() instanceof HashMap)); // 应该输出 true
+    System.out.println("exits 内容: " + getEntities());
   }
 
   /**

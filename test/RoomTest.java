@@ -278,8 +278,11 @@ public class RoomTest {
     entities.put(itemA.getName(), itemA);
     entities.put(itemB.getName(), itemB);
     entities.put(fixtureX.getName(), fixtureX);
+    exits.put("N", 1);
+    exits.put("S", -2);
 
     Room<?> room = new Room(10, "J", "descJ", exits, entities);
+    room.checkExits();
 
     // Get items' names
     String itemNames = room.getElementNames(Item.class);
