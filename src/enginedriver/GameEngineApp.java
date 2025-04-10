@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -33,7 +34,7 @@ public class GameEngineApp {
 
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
 
-    String playerName = getPlayerName();
+    String playerName = getPlayerName(source);
     String playerFileName = playerName + ".json";
     File playerFile = new File(playerFileName);
     Player player = playerFile.exists()
