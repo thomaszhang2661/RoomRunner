@@ -105,9 +105,9 @@ public class GameEngineApp {
     gameEngineApp.start();
 
 
-    // Next, comment the above and uncomment this to do some ad-hoc testing by hand via System.in
-    // GameEngineApp gameEngineApp = new GameEngineApp("./resources/museum.json", new InputStreamReader(System.in), System.out);
-    // gameEngineApp.start();
+////     Next, comment the above and uncomment this to do some ad-hoc testing by hand via System.in
+//     GameEngineApp gameEngineApp = new GameEngineApp("./data/museum.json", new BufferedReader(new InputStreamReader(System.in)) , System.out);
+//     gameEngineApp.start();
 
   }
 
