@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -16,7 +17,7 @@ import jsonio.GameDataLoader;
  */
 public class GameEngineApp {
   private GameController gameController;
-  private Readable source;
+  private BufferedReader  source;
   private Appendable output;
 
   /**
@@ -27,13 +28,13 @@ public class GameEngineApp {
    * @param output the output destination
    * @throws IOException if an error occurs during input/output
    */
-  public GameEngineApp(String gameFileName, Readable source, Appendable output) throws IOException {
+  public GameEngineApp(String gameFileName, BufferedReader source, Appendable output) throws IOException {
     this.source = Objects.requireNonNull(source);
     this.output = Objects.requireNonNull(output);
 
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
 
-    String playerName = getPlayerName();
+    String playerName = getPlayerName(source);
     String playerFileName = playerName + ".json";
     File playerFile = new File(playerFileName);
     Player player = playerFile.exists()
@@ -49,7 +50,7 @@ public class GameEngineApp {
    * @throws IOException if an error occurs during input/output
    */
   public void start() throws IOException {
-    BufferedReader reader = new BufferedReader((Reader) source);
+    //BufferedReader reader = new BufferedReader((Reader) source);
 
     String command;
     while (true) {
@@ -61,7 +62,9 @@ public class GameEngineApp {
       System.out.println("To end the game, enter (Q)uit to quit and exit.");
       System.out.print("Your choice: ");
 
-      command = reader.readLine();
+      //command = this.source.read();
+      // 从source中读取一行命令
+      command = source.readLine();
       if (command == null) {
         break;
       }
@@ -81,17 +84,31 @@ public class GameEngineApp {
    * @param args command line arguments
    * @throws IOException if an error occurs during input/output
    */
-  public static void main(String[] args) throws IOException {
-    BufferedReader consoleReader =
-            new BufferedReader(new InputStreamReader(System.in));
+//  public static void main(String[] args) throws IOException {
+//    BufferedReader consoleReader =
+//            new BufferedReader(new InputStreamReader(System.in));
+//
+//    GameEngineApp gameEngineApp = new GameEngineApp(
+//            "./resources/align_quest_game_elements.json",
+//            consoleReader,
+//            System.out);
+//
+//    gameEngineApp.start();
+//  }
 
-    // Hardcoded game file name, can be replaced with a dynamic input
-    GameEngineApp gameEngineApp = new GameEngineApp(
-            "align_quest_game_elements.json",
-            consoleReader,
-            System.out);
-
+  public static void main(String [] args) throws IOException {
+    // smoke tests - first send synthetic data via a string
+    String s = "Sir Mix-A-Lot\nT NOTEBOOK\nN\nT HAIR CLIPPERS\nT KEY\nD NOTEBOOK\nQuit";
+    BufferedReader stringReader = new BufferedReader(new StringReader(s));
+    GameEngineApp gameEngineApp = new GameEngineApp("./data/align_quest_game_elements.json",
+            stringReader, System.out);
     gameEngineApp.start();
+
+
+    // Next, comment the above and uncomment this to do some ad-hoc testing by hand via System.in
+    // GameEngineApp gameEngineApp = new GameEngineApp("./resources/museum.json", new InputStreamReader(System.in), System.out);
+    // gameEngineApp.start();
+
   }
 
   /**
@@ -99,12 +116,12 @@ public class GameEngineApp {
 
    * @return the player's name
    */
-  private String getPlayerName() {
-    Scanner scanner = new Scanner(System.in);
+  private String getPlayerName(BufferedReader source) throws IOException {
+  //    Scanner scanner = new Scanner(source);
 
     System.out.print("Enter your name: ");
 
-    String playerName = scanner.nextLine();
+    String playerName = source.readLine();
 
     System.out.println("Your name is: " + playerName);
 

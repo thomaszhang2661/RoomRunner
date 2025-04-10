@@ -27,6 +27,12 @@ public class GameDataLoader {
    */
   public static GameWorld loadGameWorld(String fileName) throws IOException {
     String newFileName = WORLD_SAVE_BASE_PATH + fileName;
+    // 检查文件是否存在
+    File file = new File(newFileName);
+    if (!file.exists()) {
+      newFileName = fileName;
+
+    }
 
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
