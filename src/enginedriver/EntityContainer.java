@@ -67,14 +67,7 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
   }
 
 
-  /**
-   * set entities to the container.
 
-   * @param entityNames the map of entities
-   */
-  public void setEntities(Map<String, T> entityNames) {
-    this.stringEntityMap = entityNames;
-  }
 
   /**
    * Get all entities from the container.
