@@ -119,6 +119,18 @@ abstract class EntityContainer<T extends IdentifiableEntity> extends Identifiabl
     return result;
   }
 
+  /**
+   * get the String list of items in the room.
+
+   * @param clazz the class of the entity
+   *  @return the string list of items
+   */
+  public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
+    return String.join(", ", getEntitiesByType(clazz).stream()
+            .map(U::getName)
+            .toList());
+  }
+
 
   /**
    * Adds an entity to the container.

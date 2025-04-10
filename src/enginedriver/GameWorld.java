@@ -1,6 +1,8 @@
 package enginedriver;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import enginedriver.problems.Monster;
 import enginedriver.problems.Puzzle;
@@ -99,83 +101,49 @@ public class GameWorld {
     this.rooms = rooms;
   }
 
+  /**
+   * Get a list of all items in the game world.
+
+   * @return a list of all items
+   */
+  public List<Item> getItems() {
+    return rooms.values().stream()
+            .flatMap(room -> ((List<Item>) room.getEntitiesByType(Item.class)).stream())
+            .collect(Collectors.toList());
+  }
 
   /**
-   * Get a string representation of the game world.
+   * Get a list of all fixtures in the game world.
 
-   * @return a string representation of the game world
+   * @return a list of all fixtures
    */
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("{\n");
-    sb.append("\"name\":\"").append(name).append("\",\n");
-    sb.append("\"version\":\"").append(version).append("\",\n\n");
+  public List<Fixture> getFixtures() {
+    return rooms.values().stream()
+            .flatMap(room -> ((List<Fixture>) room.getEntitiesByType(Fixture.class)).stream())
+            .collect(Collectors.toList());
+  }
 
-    sb.append("\"rooms\":[\n");
-    boolean firstRoom = true;
-    for (Room<?> room : rooms.values()) {
-      if (!firstRoom) {
-        sb.append(",\n");
-      }
-      sb.append(room.toString());
-      firstRoom = false;
-    }
-    sb.append("],\n\n");
+  /**
+   * Get a list of all monsters in the game world.
 
-    sb.append("\"items\":[\n");
-    boolean firstItem = true;
-    for (Room<?> room : rooms.values()) {
-      for (Item item : room.getEntitiesByType(Item.class)) {
-        if (!firstItem) {
-          sb.append(",\n");
-        }
-        sb.append(item.toString());
-        firstItem = false;
-      }
-    }
-    sb.append("],\n\n");
+   * @return a list of all monsters
+   */
+  public List<Monster<?>> getMonsters() {
+    return rooms.values().stream()
+            .filter(room -> room.getProblem() instanceof Monster)
+            .map(room -> (Monster<?>) room.getProblem())
+            .collect(Collectors.toList());
+  }
 
-    sb.append("\"fixtures\":[\n");
-    boolean firstFixture = true;
-    for (Room<?> room : rooms.values()) {
-      for (Fixture fixture : room.getEntitiesByType(Fixture.class)) {
-        if (!firstFixture) {
-          sb.append(",\n");
-        }
-        sb.append(fixture.toString());
-        firstFixture = false;
-      }
-    }
-    sb.append("],\n\n");
+  /**
+   * Get a list of all puzzles in the game world.
 
-    sb.append("\"monsters\":[\n");
-    boolean firstMonster = true;
-    for (Room<?> room : rooms.values()) {
-      if (room.getProblem() instanceof Monster) {
-        if (!firstMonster) {
-          sb.append(",\n");
-        }
-        sb.append(((Monster<?>) room.getProblem()).toString());
-        firstMonster = false;
-      }
-    }
-    sb.append("],\n\n");
-
-    sb.append("\"puzzles\":[\n");
-    boolean firstPuzzle = true;
-    for (Room<?> room : rooms.values()) {
-      if (room.getProblem() instanceof Puzzle) {
-        if (!firstPuzzle) {
-          sb.append(",\n");
-        }
-        sb.append(((Puzzle<?>) room.getProblem()).toString());
-        firstPuzzle = false;
-      }
-    }
-    sb.append("]");
-
-    sb.append("}");
-    return sb.toString();
+   * @return a list of all puzzles
+   */
+  public List<Puzzle<?>> getPuzzles() {
+    return rooms.values().stream()
+            .filter(room -> room.getProblem() instanceof Puzzle)
+            .map(room -> (Puzzle<?>) room.getProblem())
+            .collect(Collectors.toList());
   }
 }

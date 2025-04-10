@@ -1,14 +1,14 @@
 package enginedriver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.Objects;
 import java.util.Scanner;
 
-import jsonreader.GameDataLoader;
+import jsonio.GameDataLoader;
 
 /**
  * The GameEngineApp class is the main entry point for the game engine application.
@@ -32,13 +32,13 @@ public class GameEngineApp {
     this.output = Objects.requireNonNull(output);
 
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
-    Player player = GameDataLoader.loadPlayer(gameFileName, gameWorld);
 
-    // if player is null, create a new player from input
-    if (player == null) {
-      String playerName = getPlayerName(source);
-      player = new Player(playerName, 100, 20, 0); // 提示玩家输入名字
-    }
+    String playerName = getPlayerName();
+    String playerFileName = playerName + ".json";
+    File playerFile = new File(playerFileName);
+    Player player = playerFile.exists()
+            ? GameDataLoader.loadPlayer(playerFileName, gameWorld)
+            : new Player(playerName, 100, 20, 0);
 
     this.gameController = new GameController(gameWorld, player);
   }

@@ -139,27 +139,6 @@ public class Item  extends IdentifiableEntity implements  IValuable, IWeightable
   }
 
 
-
-  @Override
-  public String toString() {
-    return "{ "
-            + "\"name\":\"" + getName() + "\","
-            + "\"weight\":\"" + getWeight() + "\","
-            + "\"max_uses\":\"" + getUseMax() + "\","
-            + "\"uses_remaining\":\"" + getRemainingUses() + "\","
-            + "\"value\":\"" + getValue() + "\","
-            + "\"when_used\":\"" + getWhenUsed()
-                                     .replace("\"", "\\\"")
-                                     .replace("\n", "\\n") + "\","
-            + "\"description\":\"" + getDescription()
-                                       .replace("\"", "\\\"")
-                                       .replace("\n", "\\n") + "\","
-            + "\"picture\":\"" + getPictureName() + "\""
-            + " }";
-  }
-
-
-
   /**
    * hashcode method for the item class.
 

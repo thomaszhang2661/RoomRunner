@@ -1,7 +1,6 @@
-package jsonreader;
+package jsonio.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,30 +33,29 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
    * @param deserializationContext the DeserializationContext
    * @return the deserialized GameWorld object
    * @throws IOException if an error occurs during deserialization
-   * @throws JsonProcessingException if an error occurs during JSON processing
    */
   @Override
   public GameWorld deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-          throws IOException, JsonProcessingException {
+          throws IOException {
     ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
     JsonNode rootNode = mapper.readTree(jsonParser);
 
-    final String name = getNodeText(rootNode, "name");
-    final String version = getNodeText(rootNode, "version");
+    final String name = DeserializerHelperUtils.getNodeText(rootNode, "name");
+    final String version = DeserializerHelperUtils.getNodeText(rootNode, "version");
 
     // parse items
     Map<String, Item> items = new HashMap<>();
     JsonNode itemsNode = rootNode.get("items");
     if (itemsNode != null) {
       for (JsonNode itemNode : itemsNode) {
-        String itemName = getNodeText(itemNode, "name");
-        int weight = getNodeInt(itemNode, "weight");
-        int maxUses = getNodeInt(itemNode, "max_uses");
-        int remainingUses = getNodeInt(itemNode, "uses_remaining");
-        int value = getNodeInt(itemNode, "value");
-        String whenUsed = getNodeText(itemNode, "when_used");
-        String description = getNodeText(itemNode, "description");
-        String pictureName = getNodeText(itemNode, "picture"); // not used
+        String itemName = DeserializerHelperUtils.getNodeText(itemNode, "name");
+        int weight = DeserializerHelperUtils.getNodeInt(itemNode, "weight");
+        int maxUses = DeserializerHelperUtils.getNodeInt(itemNode, "max_uses");
+        int remainingUses = DeserializerHelperUtils.getNodeInt(itemNode, "uses_remaining");
+        int value = DeserializerHelperUtils.getNodeInt(itemNode, "value");
+        String whenUsed = DeserializerHelperUtils.getNodeText(itemNode, "when_used");
+        String description = DeserializerHelperUtils.getNodeText(itemNode, "description");
+        String pictureName = DeserializerHelperUtils.getNodeText(itemNode, "picture"); // not used
 
         Item item = new Item(itemName, description, maxUses, remainingUses,
                 value, weight, whenUsed, pictureName);
@@ -70,8 +68,8 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     JsonNode fixturesNode = rootNode.get("fixtures");
     if (fixturesNode != null) {
       for (JsonNode fixtureNode : fixturesNode) {
-        String fixtureName = getNodeText(fixtureNode, "name");
-        int weight = getNodeInt(fixtureNode, "weight");
+        String fixtureName = DeserializerHelperUtils.getNodeText(fixtureNode, "name");
+        int weight = DeserializerHelperUtils.getNodeInt(fixtureNode, "weight");
         Puzzle<?> puzzle = null;
 
         // parse states
@@ -83,8 +81,8 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
           states = -1; // default value
         }
 
-        String description = getNodeText(fixtureNode, "description");
-        String picture = getNodeText(fixtureNode, "picture");
+        String description = DeserializerHelperUtils.getNodeText(fixtureNode, "description");
+        String picture = DeserializerHelperUtils.getNodeText(fixtureNode, "picture");
 
         Fixture fixture = new Fixture(fixtureName, description, weight, puzzle, states, picture);
         fixtures.put(fixture.getName(), fixture);
@@ -96,20 +94,20 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     JsonNode monstersNode = rootNode.get("monsters");
     if (monstersNode != null) {
       for (JsonNode monsterNode : monstersNode) {
-        String monsterName = getNodeText(monsterNode, "name");
+        String monsterName = DeserializerHelperUtils.getNodeText(monsterNode, "name");
         Boolean active = monsterNode.get("active").asBoolean();
         Boolean affectsTarget = monsterNode.get("affects_target").asBoolean();
         Boolean affectsPlayer = monsterNode.get("affects_player").asBoolean();
 
-        int value = getNodeInt(monsterNode, "value");
-        String description = getNodeText(monsterNode, "description");
-        String effects = getNodeText(monsterNode, "effects");
-        int damage = getNodeInt(monsterNode, "damage");
-        String target = getNodeText(monsterNode, "target");
+        int value = DeserializerHelperUtils.getNodeInt(monsterNode, "value");
+        String description = DeserializerHelperUtils.getNodeText(monsterNode, "description");
+        String effects = DeserializerHelperUtils.getNodeText(monsterNode, "effects");
+        int damage = DeserializerHelperUtils.getNodeInt(monsterNode, "damage");
+        String target = DeserializerHelperUtils.getNodeText(monsterNode, "target");
         Boolean canAttack = monsterNode.get("can_attack").asBoolean();
-        String attack = getNodeText(monsterNode, "attack");
-        String pictureName = getNodeText(monsterNode, "picture");
-        String solutionText = getNodeText(monsterNode, "solution");
+        String attack = DeserializerHelperUtils.getNodeText(monsterNode, "attack");
+        String pictureName = DeserializerHelperUtils.getNodeText(monsterNode, "picture");
+        String solutionText = DeserializerHelperUtils.getNodeText(monsterNode, "solution");
         Object solution;
 
         if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
@@ -136,18 +134,18 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     JsonNode puzzlesNode = rootNode.get("puzzles");
     if (puzzlesNode != null) {
       for (JsonNode puzzleNode : puzzlesNode) {
-        String puzzleName = getNodeText(puzzleNode, "name");
+        String puzzleName = DeserializerHelperUtils.getNodeText(puzzleNode, "name");
         Boolean active = puzzleNode.get("active").asBoolean();
         Boolean affectsTarget = puzzleNode.get("affects_target").asBoolean();
         Boolean affectsPlayer = puzzleNode.get("affects_player").asBoolean();
 
-        int value = getNodeInt(puzzleNode, "value");
-        String description = getNodeText(puzzleNode, "description");
-        String effects = getNodeText(puzzleNode, "effects");
-        String target = getNodeText(puzzleNode, "target");
-        String pictureName = getNodeText(puzzleNode, "picture");
+        int value = DeserializerHelperUtils.getNodeInt(puzzleNode, "value");
+        String description = DeserializerHelperUtils.getNodeText(puzzleNode, "description");
+        String effects = DeserializerHelperUtils.getNodeText(puzzleNode, "effects");
+        String target = DeserializerHelperUtils.getNodeText(puzzleNode, "target");
+        String pictureName = DeserializerHelperUtils.getNodeText(puzzleNode, "picture");
 
-        String solutionText = getNodeText(puzzleNode, "solution");
+        String solutionText = DeserializerHelperUtils.getNodeText(puzzleNode, "solution");
         Object solution;
         if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
           String solutionString = solutionText.substring(1, solutionText.length() - 1);
@@ -171,26 +169,26 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     JsonNode roomsNode = rootNode.get("rooms");
     if (roomsNode != null) {
       for (JsonNode roomNode : roomsNode) {
-        final String roomName = getNodeText(roomNode, "room_name");
-        final int id = getNodeInt(roomNode, "room_number");
-        final String description = getNodeText(roomNode, "description");
+        final String roomName = DeserializerHelperUtils.getNodeText(roomNode, "room_name");
+        final int id = DeserializerHelperUtils.getNodeInt(roomNode, "room_number");
+        final String description = DeserializerHelperUtils.getNodeText(roomNode, "description");
 
         Map<String, Integer> exits = new HashMap<>();
-        exits.put("N", getNodeInt(roomNode, "N"));
-        exits.put("S", getNodeInt(roomNode, "S"));
-        exits.put("E", getNodeInt(roomNode, "E"));
-        exits.put("W", getNodeInt(roomNode, "W"));
+        exits.put("N", DeserializerHelperUtils.getNodeInt(roomNode, "N"));
+        exits.put("S", DeserializerHelperUtils.getNodeInt(roomNode, "S"));
+        exits.put("E", DeserializerHelperUtils.getNodeInt(roomNode, "E"));
+        exits.put("W", DeserializerHelperUtils.getNodeInt(roomNode, "W"));
 
         // parse items and fixtures
         Map<String, IdentifiableEntity> itemEntities = new HashMap<>();
-        String itemsText = getNodeText(roomNode, "items");
+        String itemsText = DeserializerHelperUtils.getNodeText(roomNode, "items");
         if (!itemsText.isEmpty()) {
           for (String itemName : itemsText.split(", ")) {
             itemEntities.put(itemName, items.get(itemName));
           }
         }
         Map<String, IdentifiableEntity> fixtureEntities = new HashMap<>();
-        String fixturesText = getNodeText(roomNode, "fixtures");
+        String fixturesText = DeserializerHelperUtils.getNodeText(roomNode, "fixtures");
         if (!fixturesText.isEmpty()) {
           for (String fixtureName : fixturesText.split(", ")) {
             fixtureEntities.put(fixtureName, fixtures.get(fixtureName));
@@ -204,13 +202,13 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
         // parse problem (monster or puzzle)
         IProblem<?> problem = null;
         if (roomNode.has("puzzle") && !roomNode.get("puzzle").isNull()) {
-          problem = puzzles.get(getNodeText(roomNode, "puzzle"));
+          problem = puzzles.get(DeserializerHelperUtils.getNodeText(roomNode, "puzzle"));
         } else if (roomNode.has("monster") && !roomNode.get("monster").isNull()) {
-          problem = monsters.get(getNodeText(roomNode, "monster"));
+          problem = monsters.get(DeserializerHelperUtils.getNodeText(roomNode, "monster"));
         }
 
         // parse picture (not used)
-        String pictureName = getNodeText(roomNode, "picture");
+        String pictureName = DeserializerHelperUtils.getNodeText(roomNode, "picture");
 
         Room room = new Room(id, roomName, description, exits, entityNames, problem, pictureName);
         rooms.put(id, room);
@@ -220,27 +218,4 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     return new GameWorld(name, version, rooms);
   }
 
-  /**
-   * Helper method to get a text value from a JsonNode.
-
-   * @param node the JsonNode
-   * @param fieldName the field name
-   * @return the text value, or an empty string if not found
-   */
-  private String getNodeText(JsonNode node, String fieldName) {
-    JsonNode fieldNode = node.get(fieldName);
-    return fieldNode != null ? fieldNode.asText() : "";
-  }
-
-  /**
-   * Helper method to get an integer value from a JsonNode.
-
-   * @param node the JsonNode
-   * @param fieldName the field name
-   * @return the integer value, or 0 if not found
-   */
-  private int getNodeInt(JsonNode node, String fieldName) {
-    JsonNode fieldNode = node.get(fieldName);
-    return fieldNode != null ? fieldNode.asInt() : 0;
-  }
 }

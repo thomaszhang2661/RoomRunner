@@ -231,19 +231,6 @@ public class Player extends EntityContainer<Item> {
     return false;
   }
 
-
-  /**
-   * get the String list of items in the room.
-
-   * @param clazz the class of the entity
-   *  @return the string list of items
-   */
-  public <U extends IdentifiableEntity> String getElementNames(Class<U> clazz) {
-    return String.join(", ", getEntitiesByType(clazz).stream()
-            .map(U::getName)
-            .toList());
-  }
-
   /**
    * Sets the room number.
 
@@ -251,19 +238,6 @@ public class Player extends EntityContainer<Item> {
    */
   public void setRoomNumber(int roomNumber) {
     this.roomNumber = roomNumber;
-  }
-
-  @Override
-  public String toString() {
-    return "{\n"
-            + "\"name\":\"" + getName() + "\",\n"
-            + "\"health\":\"" + getHealth() + "\",\n"
-            + "\"inventory\":\"" + String.join(", ", getEntities().keySet()) + "\",\n"
-            + "\"max_weight\":\"" + getMaxWeight() + "\",\n"
-            + "\"current_weight\":\"" + getCurrentWeight() + "\",\n"
-            + "\"room_number\":\"" + getRoomNumber() + "\",\n"
-            + "\"score\":\"" + getScore() + "\"\n"
-            + "}";
   }
 
 }

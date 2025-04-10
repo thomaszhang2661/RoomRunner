@@ -1,5 +1,5 @@
 {
-  "name": "Simple Scenarios",
+  "name": "TestGameWorld",
   "version": "0.0.1",
 
   "rooms": [
@@ -28,15 +28,5 @@
   "puzzles": [
     { "name": "Broken Staircase", "active": "true", "affects_target": "true", "affects_player": "true", "solution": "Repair Tool", "value": "150", "description": "The staircase is broken and you cannot go back! ...maybe you can fix it with something in the dungeon?", "effects": "You cannot go back to the ground until you fix the staircase.", "target": "2:First Layer", "picture": "broken_staircase.png" },
     { "name": "Nobleman's Commission", "active": "true", "affects_target": "true", "affects_player": "true", "solution": "Necklace", "value": "500", "description": "The nobleman was moving back and forth from side to side in the Guild with an anxious look, as if he had lost something very important. You can't come back to the Guild empty-handed!", "effects": "You cannot go back to the guild until you find the nobleman's necklace.", "target": "5:Guild", "picture": "nobleman.png" }
-  ],
-
-  "player":{
-      "name": "Avatar",
-      "health": "100",
-      "inventory": "",
-      "max_weight": "20",
-      "current_weight": "0",
-      "room_number": "1",
-      "score": "0"
-  }
+  ]
 }

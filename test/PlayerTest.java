@@ -243,22 +243,5 @@ public class PlayerTest {
             + "unchanged when adding an item exceeds the weight limit.");
   }
 
-  /**
-   * Test toString method.
-   */
-  @Test
-  public void testToString() {
-    String expected = "{\n"
-            + "\"name\":\"Hero\",\n"
-            + "\"health\":\"100\",\n"
-            + "\"inventory\":\"Thumb Drive, Lamp\",\n"
-            + "\"max_weight\":\"50\",\n"
-            + "\"current_weight\":\"4\",\n"
-            + "\"room_number\":\"0\",\n"
-            + "\"score\":\"0\"\n"
-            + "}";
-    assertEquals(expected, player.toString());
-  }
-
 }
 
