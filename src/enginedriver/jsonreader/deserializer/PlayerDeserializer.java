@@ -18,11 +18,13 @@ import java.util.Map;
  */
 public class PlayerDeserializer extends JsonDeserializer<Player> {
 
-  // Initialize gameWorld for reference
+  // Initialize gameWorld for reference (should be discarded now)
   private final GameWorld gameWorld;
 
   /**
    * Constructor for PlayerDeserializer.
+   *  should be discarded now
+
    * @param gameWorld the GameWorld instance
    */
   public PlayerDeserializer(GameWorld gameWorld) {

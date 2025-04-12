@@ -27,26 +27,9 @@ public class PlayerSerializer extends JsonSerializer<Player> {
 
     // Serialize items
     jsonGenerator.writeArrayFieldStart("items");
-
     for (Item item : player.getEntitiesByType(Item.class)) {
-      jsonGenerator.writeStartObject();
-
-      jsonGenerator.writeStringField("name", item.getName());
-      jsonGenerator.writeStringField("weight", String.valueOf(item.getWeight()));
-      jsonGenerator.writeStringField("max_uses", String.valueOf(item.getUseMax()));
-      jsonGenerator.writeStringField("uses_remaining", String.valueOf(item.getRemainingUses()));
-      jsonGenerator.writeStringField("value", String.valueOf(item.getValue()));
-      jsonGenerator.writeStringField("when_used", item.getWhenUsed()
-              .replace("\"", "\\\"")
-              .replace("\n", "\\n"));
-      jsonGenerator.writeStringField("description", item.getDescription()
-              .replace("\"", "\\\"")
-              .replace("\n", "\\n"));
-      jsonGenerator.writeStringField("picture", item.getPictureName());
-
-      jsonGenerator.writeEndObject();
+      SerializerHelperUtils.serializeItems(jsonGenerator, item);
     }
-
     jsonGenerator.writeEndArray();
 
     jsonGenerator.writeEndObject();
