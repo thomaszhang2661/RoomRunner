@@ -57,7 +57,7 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
 
     // Parse inventory
     Map<String, Item> inventory = new HashMap<>();
-    JsonNode inventoryNode = rootNode.get("inventory");
+    JsonNode inventoryNode = rootNode.get("items");
     DeserializerHelperUtils.parseItem(inventory, inventoryNode);
 
     // if (inventoryNode != null && !inventoryNode.asText().isEmpty()) {
