@@ -1,3 +1,4 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -6,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import enginedriver.GameController;
+import enginedriver.jsonreader.GameDataLoader;
+import enginedriver.jsonreader.GameDataSaver;
 import enginedriver.model.GameWorld;
 import enginedriver.model.entitycontainer.Player;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import enginedriver.jsonreader.GameDataLoader;
-import enginedriver.jsonreader.GameDataSaver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -109,6 +110,19 @@ class GameDataLoaderSaverTest {
       assertTrue(playerJsonNode.has("current_weight"), "JSON should contain 'current_weight' field");
       assertTrue(playerJsonNode.has("room_number"), "JSON should contain 'room_number' field");
       assertTrue(playerJsonNode.has("score"), "JSON should contain 'score' field");
+
+      // verify the number of elements in the JSON
+      int roomCount = gameJsonNode.get("rooms").size();
+      assertEquals(5, roomCount, "There should be at least one room");
+      int itemCount = gameJsonNode.get("items").size();
+      assertEquals(4, itemCount, "There should be at least one item");
+      int fixtureCount = gameJsonNode.get("fixtures").size();
+      assertEquals(1, fixtureCount, "There should be at least one fixture");
+      int monsterCount = gameJsonNode.get("monsters").size();
+      assertEquals(1, monsterCount, "There should be at least one monster");
+      int puzzleCount = gameJsonNode.get("puzzles").size();
+      assertEquals(2, puzzleCount, "There should be at least one puzzle");
+
     } catch (IOException e) {
       fail("IOException was thrown: " + e.getMessage());
     }
