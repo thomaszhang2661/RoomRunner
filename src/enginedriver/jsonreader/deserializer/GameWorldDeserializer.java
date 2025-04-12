@@ -46,22 +46,7 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     // parse items
     Map<String, Item> items = new HashMap<>();
     JsonNode itemsNode = rootNode.get("items");
-    if (itemsNode != null) {
-      for (JsonNode itemNode : itemsNode) {
-        String itemName = DeserializerHelperUtils.getNodeText(itemNode, "name");
-        int weight = DeserializerHelperUtils.getNodeInt(itemNode, "weight");
-        int maxUses = DeserializerHelperUtils.getNodeInt(itemNode, "max_uses");
-        int remainingUses = DeserializerHelperUtils.getNodeInt(itemNode, "uses_remaining");
-        int value = DeserializerHelperUtils.getNodeInt(itemNode, "value");
-        String whenUsed = DeserializerHelperUtils.getNodeText(itemNode, "when_used");
-        String description = DeserializerHelperUtils.getNodeText(itemNode, "description");
-        String pictureName = DeserializerHelperUtils.getNodeText(itemNode, "picture"); // not used
-
-        Item item = new Item(itemName, description, maxUses, remainingUses,
-                value, weight, whenUsed, pictureName);
-        items.put(item.getName(), item);
-      }
-    }
+    DeserializerHelperUtils.parseItem(items, itemsNode);
 
     // parse fixtures
     Map<String, Fixture> fixtures = new HashMap<>();
@@ -90,77 +75,22 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     }
 
     // parse monsters
-    Map<String, Monster<?>> monsters = new HashMap<>();
     JsonNode monstersNode = rootNode.get("monsters");
+    Map<String, Monster<?>> monsters = new HashMap<>();
     if (monstersNode != null) {
-      for (JsonNode monsterNode : monstersNode) {
-        String monsterName = DeserializerHelperUtils.getNodeText(monsterNode, "name");
-        Boolean active = monsterNode.get("active").asBoolean();
-        Boolean affectsTarget = monsterNode.get("affects_target").asBoolean();
-        Boolean affectsPlayer = monsterNode.get("affects_player").asBoolean();
-
-        int value = DeserializerHelperUtils.getNodeInt(monsterNode, "value");
-        String description = DeserializerHelperUtils.getNodeText(monsterNode, "description");
-        String effects = DeserializerHelperUtils.getNodeText(monsterNode, "effects");
-        int damage = DeserializerHelperUtils.getNodeInt(monsterNode, "damage");
-        String target = DeserializerHelperUtils.getNodeText(monsterNode, "target");
-        Boolean canAttack = monsterNode.get("can_attack").asBoolean();
-        String attack = DeserializerHelperUtils.getNodeText(monsterNode, "attack");
-        String pictureName = DeserializerHelperUtils.getNodeText(monsterNode, "picture");
-        String solutionText = DeserializerHelperUtils.getNodeText(monsterNode, "solution");
-        Object solution;
-
-        if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
-          String solutionString = solutionText.substring(1, solutionText.length() - 1);
-          SolutionValidator<String> validator = new StringSolutionValidator();
-          Monster<String> monster = new Monster<String>(monsterName, description, active,
-                  affectsTarget, canAttack, affectsPlayer, solutionString, value,
-                  damage, effects, target, pictureName, attack, validator);
-          monsters.put(monster.getName(), monster);
-        } else {
-          Item solutionItem = items.getOrDefault(solutionText, null);
-          SolutionValidator<Item> validator = new ItemSolutionValidator();
-          Monster<Item> monster = new Monster<Item>(monsterName, description, active,
-                  affectsTarget, canAttack, affectsPlayer, solutionItem, value,
-                  damage, effects, target, pictureName, attack, validator);
-          monsters.put(monster.getName(), monster);
-        }
-
+      Map<String, Object> raw = parseProblem(monstersNode, items, true);
+      for (Map.Entry<String, Object> entry : raw.entrySet()) {
+        monsters.put(entry.getKey(), (Monster<?>) entry.getValue());
       }
     }
 
     // parse puzzles
-    Map<String, Puzzle<?>> puzzles = new HashMap<>();
     JsonNode puzzlesNode = rootNode.get("puzzles");
+    Map<String, Puzzle<?>> puzzles = new HashMap<>();
     if (puzzlesNode != null) {
-      for (JsonNode puzzleNode : puzzlesNode) {
-        String puzzleName = DeserializerHelperUtils.getNodeText(puzzleNode, "name");
-        Boolean active = puzzleNode.get("active").asBoolean();
-        Boolean affectsTarget = puzzleNode.get("affects_target").asBoolean();
-        Boolean affectsPlayer = puzzleNode.get("affects_player").asBoolean();
-
-        int value = DeserializerHelperUtils.getNodeInt(puzzleNode, "value");
-        String description = DeserializerHelperUtils.getNodeText(puzzleNode, "description");
-        String effects = DeserializerHelperUtils.getNodeText(puzzleNode, "effects");
-        String target = DeserializerHelperUtils.getNodeText(puzzleNode, "target");
-        String pictureName = DeserializerHelperUtils.getNodeText(puzzleNode, "picture");
-
-        String solutionText = DeserializerHelperUtils.getNodeText(puzzleNode, "solution");
-        Object solution;
-        if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
-          String solutionString = solutionText.substring(1, solutionText.length() - 1);
-          SolutionValidator<String> validator = new StringSolutionValidator();
-          Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
-                  affectsPlayer, solutionString, value, effects, target, pictureName, validator);
-          puzzles.put(puzzle.getName(), puzzle);
-
-        } else {
-          Item solutionItem = items.getOrDefault(solutionText, null);
-          SolutionValidator<Item> validator = new ItemSolutionValidator();
-          Puzzle<?> puzzle = new Puzzle<>(puzzleName, description, active, affectsTarget,
-                  affectsPlayer, solutionItem, value, effects, target, pictureName, validator);
-          puzzles.put(puzzle.getName(), puzzle);
-        }
+      Map<String, Object> raw = parseProblem(puzzlesNode, items, false);
+      for (Map.Entry<String, Object> entry : raw.entrySet()) {
+        puzzles.put(entry.getKey(), (Puzzle<?>) entry.getValue());
       }
     }
 
@@ -216,6 +146,68 @@ public class GameWorldDeserializer extends JsonDeserializer<GameWorld> {
     }
 
     return new GameWorld(name, version, rooms);
+  }
+
+  /**
+   * Parse the problem (monster or puzzle) from the JSON node.
+
+   * @param nodeArray the JSON node array
+   * @param items the map of items
+   * @param isMonster true if the problem is a monster, false if it's a puzzle
+   * @return a map of problem names to their corresponding objects
+   */
+  private static Map<String, Object> parseProblem(JsonNode nodeArray, Map<String, Item> items, boolean isMonster) {
+    Map<String, Object> result = new HashMap<>();
+    for (JsonNode node : nodeArray) {
+      String name = DeserializerHelperUtils.getNodeText(node, "name");
+      Boolean active = node.get("active").asBoolean();
+      Boolean affectsTarget = node.get("affects_target").asBoolean();
+      Boolean affectsPlayer = node.get("affects_player").asBoolean();
+      int value = DeserializerHelperUtils.getNodeInt(node, "value");
+      String description = DeserializerHelperUtils.getNodeText(node, "description");
+      String effects = DeserializerHelperUtils.getNodeText(node, "effects");
+      String target = DeserializerHelperUtils.getNodeText(node, "target");
+      String picture = DeserializerHelperUtils.getNodeText(node, "picture");
+      String solutionText = DeserializerHelperUtils.getNodeText(node, "solution");
+
+      Object solution;
+      SolutionValidator<?> validator;
+      if (solutionText.startsWith("'") && solutionText.endsWith("'")) {
+        String solStr = solutionText.substring(1, solutionText.length() - 1);
+        solution = solStr;
+        validator = new StringSolutionValidator();
+      } else {
+        solution = items.getOrDefault(solutionText, null);
+        validator = new ItemSolutionValidator();
+      }
+
+      if (isMonster) {
+        int damage = DeserializerHelperUtils.getNodeInt(node, "damage");
+        Boolean canAttack = node.get("can_attack").asBoolean();
+        String attack = DeserializerHelperUtils.getNodeText(node, "attack");
+
+        if (solution instanceof String) {
+          result.put(name, new Monster<>(name, description, active, affectsTarget, canAttack,
+                  affectsPlayer, (String) solution, value, damage, effects, target,
+                  picture, attack, (SolutionValidator<String>) validator));
+        } else {
+          result.put(name, new Monster<>(name, description, active, affectsTarget, canAttack,
+                  affectsPlayer, (Item) solution, value, damage, effects, target,
+                  picture, attack, (SolutionValidator<Item>) validator));
+        }
+      } else {
+        if (solution instanceof String) {
+          result.put(name, new Puzzle<>(name, description, active, affectsTarget,
+                  affectsPlayer, (String) solution, value, effects, target,
+                  picture, (SolutionValidator<String>) validator));
+        } else {
+          result.put(name, new Puzzle<>(name, description, active, affectsTarget,
+                  affectsPlayer, (Item) solution, value, effects, target,
+                  picture, (SolutionValidator<Item>) validator));
+        }
+      }
+    }
+    return result;
   }
 
 }

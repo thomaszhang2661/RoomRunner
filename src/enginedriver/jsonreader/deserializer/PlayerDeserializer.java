@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import enginedriver.model.GameWorld;
 import enginedriver.model.entity.Item;
 import enginedriver.model.entitycontainer.Player;
-import enginedriver.model.entitycontainer.Room;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,12 +39,12 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
     Player player = null;
 
     // Parse all items from the JSON first
-    Map<String, Item> allItems = new HashMap<>();
-    for (Room<?> room : gameWorld.getRooms().values()) {
-      for (Item obj : room.getEntitiesByType(Item.class)) {
-        allItems.put(obj.getName(), obj);
-      }
-    }
+    // Map<String, Item> allItems = new HashMap<>();
+    // for (Room<?> room : gameWorld.getRooms().values()) {
+    //   for (Item obj : room.getEntitiesByType(Item.class)) {
+    //     allItems.put(obj.getName(), obj);
+    //   }
+    // }
 
     String name = rootNode.get("name").asText();
     int health = rootNode.get("health").asInt();
@@ -54,21 +53,23 @@ public class PlayerDeserializer extends JsonDeserializer<Player> {
     int roomNumber = rootNode.get("room_number").asInt();
     int score = rootNode.get("score").asInt();
 
-    // Parse inventory string and lookup items from allItems map
+    // Parse inventory
     Map<String, Item> inventory = new HashMap<>();
     JsonNode inventoryNode = rootNode.get("inventory");
+    DeserializerHelperUtils.parseItem(inventory, inventoryNode);
 
-    if (inventoryNode != null && !inventoryNode.asText().isEmpty()) {
-      String[] itemNames = inventoryNode.asText().split(",\\s*");
-      for (String itemName : itemNames) {
-        if (!itemName.isEmpty() && allItems.containsKey(itemName)) {
-          inventory.put(itemName, allItems.get(itemName));
-        }
-      }
-    }
+    // if (inventoryNode != null && !inventoryNode.asText().isEmpty()) {
+    //   String[] itemNames = inventoryNode.asText().split(",\\s*");
+    //   for (String itemName : itemNames) {
+    //     if (!itemName.isEmpty() && allItems.containsKey(itemName)) {
+    //       inventory.put(itemName, allItems.get(itemName));
+    //     }
+    //   }
+    // }
 
     player = new Player(name, health, maxWeight, currentWeight, roomNumber, inventory, score);
 
     return player;
   }
+
 }
