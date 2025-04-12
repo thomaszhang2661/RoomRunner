@@ -2,11 +2,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import enginedriver.Item;
-import enginedriver.problems.Puzzle;
-import enginedriver.problems.validator.ItemSolutionValidator;
-import enginedriver.problems.validator.SolutionValidator;
-import enginedriver.problems.validator.StringSolutionValidator;
+import enginedriver.model.entity.Item;
+import enginedriver.model.problems.Puzzle;
+import enginedriver.model.problems.validator.ItemSolutionValidator;
+import enginedriver.model.problems.validator.SolutionValidator;
+import enginedriver.model.problems.validator.StringSolutionValidator;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -73,7 +73,7 @@ public class PuzzleTest {
   @Test
   public void testPuzzleSolveItem() {
     // create item
-    enginedriver.Item lamp = new enginedriver.Item("Lamp", "A lamp", 1, 1, 1, 1, "Bright light");
+    Item lamp = new Item("Lamp", "A lamp", 1, 1, 1, 1, "Bright light");
 
     Puzzle<Item> puzzle = new Puzzle<>("Darkness",
             "It's dark!", true, true,

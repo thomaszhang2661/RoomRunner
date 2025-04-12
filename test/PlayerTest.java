@@ -2,10 +2,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import enginedriver.HEALTH_STATUS;
-import enginedriver.IdentifiableEntity;
-import enginedriver.Item;
-import enginedriver.Player;
+import enginedriver.model.entitycontainer.HEALTH_STATUS;
+import enginedriver.model.entity.IdentifiableEntity;
+import enginedriver.model.entity.Item;
+import enginedriver.model.entitycontainer.Player;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;

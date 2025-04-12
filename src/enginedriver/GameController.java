@@ -1,16 +1,24 @@
 package enginedriver;
 
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import enginedriver.problems.Monster;
-import enginedriver.problems.Problem;
-import enginedriver.problems.Puzzle;
-import enginedriver.problems.IProblem;
-import jsonreader.GameDataLoader;
-import jsonreader.GameDataSaver;
-import viewer.IView;
+import enginedriver.model.entity.Fixture;
+import enginedriver.model.GameWorld;
+import enginedriver.model.entitycontainer.HEALTH_STATUS;
+import enginedriver.model.entity.IdentifiableEntity;
+import enginedriver.model.entity.Item;
+import enginedriver.model.entitycontainer.Player;
+import enginedriver.model.entitycontainer.Room;
+import enginedriver.model.problems.Monster;
+import enginedriver.model.problems.Problem;
+import enginedriver.model.problems.Puzzle;
+import enginedriver.model.problems.IProblem;
+import enginedriver.jsonreader.GameDataLoader;
+import enginedriver.jsonreader.GameDataSaver;
+import enginedriver.view.IView;
 
 /**
  * GameController class to handle game logic and player commands.
@@ -58,8 +66,9 @@ public class GameController {
    * Process the command entered by the player.
    *
    * @param command The command entered by the player
+   * @return
    */
-  public void processCommand(String command) {
+  public ActionListener processCommand(String command) {
     // Standardize the command
     String[] commandParts = standardizeCommand(command);
 
@@ -117,6 +126,7 @@ public class GameController {
 
     // Update the view after processing command
     view.update();
+    return null;
   }
 
   /**
@@ -231,8 +241,12 @@ public class GameController {
         if (problem != null && problem.getActive()) {
           // Show the problem effect on entering
           view.showText(problem.getEffects());
+          view.showProblem(problem);
           // Deal with monster attack
           handleMonsterAttack(problem);
+        } else {
+          view.showProblem(null);
+
         }
       }
     } else {
@@ -466,14 +480,18 @@ public class GameController {
   private void examine(String entityName) {
     // Get current room
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
-    IIdentifiableEntity entity = currentRoom.getEntity(entityName, Item.class);
+    Map<String, IdentifiableEntity> roomEntities = currentRoom.getEntities();
+    Map<String, Item> playerEntities = player.getEntities();
+    roomEntities.putAll(playerEntities);
+    // Check if the entity is in the room or in the player's inventory
+    IdentifiableEntity entity = roomEntities.get(entityName);
+
+
     if (entity == null) {
-      entity = currentRoom.getEntity(entityName, Fixture.class);
-    }
-    if (entity == null) {
-      view.showText(entityName + " is not in the room.");
+      view.showText(entityName + " is not in the room or in your inventory.");
     } else {
       view.showText(entity.getDescription());
+      view.showEntity(entity);
     }
   }
 
@@ -545,6 +563,7 @@ public class GameController {
             + (problem instanceof Puzzle<?> ? " solved " : " defeated ")
            + problem.getName());
     problem.setActive(false); // Set problem to inactive
+    view.showProblem(null);
 
     // Update score
     int points = problem.getValue();
@@ -574,6 +593,9 @@ public class GameController {
         view.showText(monster.getAttack());
         view.showText("Player takes " + monster.getDamage() + " damage!");
         view.showText(player.checkStatus().getMessage());
+        view.showProblem(monster);
+      } else {
+        view.showProblem(null);
       }
     }
 

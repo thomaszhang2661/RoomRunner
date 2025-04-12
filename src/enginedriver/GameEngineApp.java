@@ -1,5 +1,6 @@
 package enginedriver;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -8,10 +9,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import jsonreader.GameDataLoader;
-import viewer.TextView;
-import viewer.GraphicView;
-import viewer.IView;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+import enginedriver.jsonreader.GameDataLoader;
+import enginedriver.model.GameWorld;
+import enginedriver.model.entitycontainer.Player;
+import enginedriver.view.TextView;
+import enginedriver.view.GraphicView;
+import enginedriver.view.IView;
 
 /**
  * The GameEngineApp class is the main entry point for the game engine application.
@@ -40,7 +46,7 @@ public class GameEngineApp {
     GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
 
     // Get player name and load or create player
-    String playerName = getPlayerName();
+    String playerName = graphicsMode ? getPlayerNameWithDialog() : getPlayerNameFromConsole();
     String playerFileName = playerName + ".json";
     File playerFile = new File(playerFileName);
     Player player = playerFile.exists()
@@ -60,6 +66,9 @@ public class GameEngineApp {
     // Set view in controller
     gameController.setView(this.viewer);
   }
+
+
+
 
   /**
    * Starts the game engine application.
@@ -171,7 +180,7 @@ public class GameEngineApp {
    *
    * @return the player's name
    */
-  private String getPlayerName() {
+  private String getPlayerNameFromConsole() {
     Scanner scanner = new Scanner(System.in);
 
     System.out.print("Enter your name: ");
@@ -180,4 +189,30 @@ public class GameEngineApp {
 
     return playerName;
   }
+
+  /**
+   * Gets the player's name from input, using a dialog box.
+   *
+   * @return the player's name
+   */
+  private String getPlayerNameWithDialog() {
+    String playerName;
+    do {
+      // 加载自定义图标
+      BufferedImage image = null;
+      try {
+        image = ImageIO.read(new File("data/images/game_engine.png"));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      ImageIcon icon = new ImageIcon(image);
+      playerName = JOptionPane.showInputDialog(null, "Enter your name:", "Player Name",
+              JOptionPane.QUESTION_MESSAGE, icon, null, null).toString();
+      if (playerName == null || playerName.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Name cannot be empty. Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    } while (playerName == null || playerName.trim().isEmpty());
+    return playerName.trim();
+  }
+
 }

@@ -2,9 +2,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import enginedriver.Player;
-import enginedriver.problems.Monster;
-import enginedriver.problems.validator.StringSolutionValidator;
+import enginedriver.model.entitycontainer.Player;
+import enginedriver.model.problems.Monster;
+import enginedriver.model.problems.validator.StringSolutionValidator;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;

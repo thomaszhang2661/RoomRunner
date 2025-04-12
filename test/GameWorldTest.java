@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import enginedriver.GameWorld;
-import enginedriver.Room;
+import enginedriver.model.GameWorld;
+import enginedriver.model.entitycontainer.Room;
 
 
 /**

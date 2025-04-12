@@ -1,9 +1,9 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import enginedriver.Fixture;
-import enginedriver.IdentifiableEntity;
-import enginedriver.problems.Puzzle;
-import enginedriver.problems.validator.StringSolutionValidator;
+import enginedriver.model.entity.Fixture;
+import enginedriver.model.entity.IdentifiableEntity;
+import enginedriver.model.problems.Puzzle;
+import enginedriver.model.problems.validator.StringSolutionValidator;
 import org.junit.jupiter.api.Test;
 
 /**

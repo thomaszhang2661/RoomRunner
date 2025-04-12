@@ -7,3 +7,10 @@ In the "enginedriver" package, There are 3 major classes controlling the gamepla
 In the "jsonreader" package, we developed GameDataLoader to invoke all kinds of game initializer including GameControllerDeserializer, GameWorldDeserializer, and PlayerDeserializer. These deserializers focus on initializing specific parts of the game play by decoding data from json file.
 
 Compared our current implementation with our idea for the last homework, one major difference is that we added several more interfaces and abstract classes like IProblem, IValuable, and EntityCotainer. These interfaces and abstract classes makes it easier to make different objects with the some same basic characteristics to be generic types. Besides, abstract classes can also reduce code duplecation and increase the conciseness. Apart from that, our current implementation is more specifc and concrete about how to read and load json data, while before we only had a very vague and simple idea about realizing this functionality. All these differences show our progross in forming a more clear vision of the whole project.
+
+Menu:
+Key Features
+MenuBar: Contains "File" and "Help" menus.
+Quit Menu Item: Closes the application.
+About Menu Item: Displays an informational dialog about the game.
+This implementation integrates the MenuBar into the graphical view and provides basic functionality for the menu items.

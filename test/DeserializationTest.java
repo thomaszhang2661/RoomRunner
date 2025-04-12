@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import enginedriver.GameWorld;
-import enginedriver.Player;
+import enginedriver.model.GameWorld;
+import enginedriver.model.entitycontainer.Player;
 import java.io.File;
 import java.io.IOException;
-import jsonreader.deserializer.GameWorldDeserializer;
-import jsonreader.deserializer.PlayerDeserializer;
+import enginedriver.jsonreader.deserializer.GameWorldDeserializer;
+import enginedriver.jsonreader.deserializer.PlayerDeserializer;
 import org.junit.jupiter.api.Test;
 
 /**
