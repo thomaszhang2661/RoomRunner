@@ -107,7 +107,7 @@ public class GameDeserializer extends JsonDeserializer<GameController> {
     if (monstersNode != null) {
       Map<String, Object> raw = parseProblem(monstersNode, items, true);
       for (Map.Entry<String, Object> entry : raw.entrySet()) {
-        monsters.put(entry.getKey(), (Monster<?>) entry.getValue());
+        monsters.put(entry.getKey().toUpperCase(), (Monster<?>) entry.getValue());
       }
     }
 
@@ -117,7 +117,7 @@ public class GameDeserializer extends JsonDeserializer<GameController> {
     if (puzzlesNode != null) {
       Map<String, Object> raw = parseProblem(puzzlesNode, items, false);
       for (Map.Entry<String, Object> entry : raw.entrySet()) {
-        puzzles.put(entry.getKey(), (Puzzle<?>) entry.getValue());
+        puzzles.put(entry.getKey().toUpperCase(), (Puzzle<?>) entry.getValue());
       }
     }
 
@@ -159,9 +159,11 @@ public class GameDeserializer extends JsonDeserializer<GameController> {
         // parse problem (monster or puzzle)
         IProblem<?> problem = null;
         if (roomNode.has("puzzle") && !getCaseInsensitive(roomNode, "puzzle").isNull()) {
-          problem = puzzles.get(DeserializerHelperUtils.getNodeText(roomNode, "puzzle"));
+          String puzzleUppercase = DeserializerHelperUtils.getNodeText(roomNode, "puzzle").toUpperCase();
+          problem = puzzles.get(puzzleUppercase);
         } else if (roomNode.has("monster") && !getCaseInsensitive(roomNode, "monster").isNull()) {
-          problem = monsters.get(DeserializerHelperUtils.getNodeText(roomNode, "monster"));
+          String monsterUppercase = DeserializerHelperUtils.getNodeText(roomNode, "monster").toUpperCase();
+          problem = monsters.get(monsterUppercase);
         }
 
         // parse picture

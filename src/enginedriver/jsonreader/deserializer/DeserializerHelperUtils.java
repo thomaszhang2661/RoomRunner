@@ -79,9 +79,9 @@ class DeserializerHelperUtils {
     Map<String, Object> result = new HashMap<>();
     for (JsonNode node : nodeArray) {
       String name = getNodeText(node, "name");
-      Boolean active = node.get("active").asBoolean();
-      Boolean affectsTarget = node.get("affects_target").asBoolean();
-      Boolean affectsPlayer = node.get("affects_player").asBoolean();
+      Boolean active = getCaseInsensitive(node, "active").asBoolean();
+      Boolean affectsTarget = getCaseInsensitive(node, "affects_target").asBoolean();
+      Boolean affectsPlayer = getCaseInsensitive(node, "affects_player").asBoolean();
       int value = getNodeInt(node, "value");
       String description = getNodeText(node, "description");
       String effects = getNodeText(node, "effects");
@@ -102,7 +102,7 @@ class DeserializerHelperUtils {
 
       if (isMonster) {
         int damage = getNodeInt(node, "damage");
-        Boolean canAttack = node.get("can_attack").asBoolean();
+        Boolean canAttack = getCaseInsensitive(node, "can_attack").asBoolean();
         String attack = getNodeText(node, "attack");
 
         if (solution instanceof String) {
