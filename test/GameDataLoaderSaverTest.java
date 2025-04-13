@@ -1,152 +1,119 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import enginedriver.GameController;
 import enginedriver.jsonreader.GameDataLoader;
 import enginedriver.jsonreader.GameDataSaver;
-import enginedriver.model.GameWorld;
-import enginedriver.model.entitycontainer.Player;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for GameDataSaver.
+ * Test class for GameDataLoader and GameDataSaver functionality.
  */
 class GameDataLoaderSaverTest {
 
-  private GameController controller;
-  private static String TEST_GAME_FILE_NAME;
-  private static String TEST_PLAYER_FILE_NAME;
+  private static final String TEST_RAW_FILE = "test/TestGameWorld.json";
+  private static final String TEST_COMBINED_FILE = "test/TestGame.json";
+  private static final String TEST_OUTPUT_FILE = "test/TestOutput.json";
 
   /**
-   * Set up the test environment.
-   * Load the game world and player from a JSON file.
-   */
-  @BeforeEach
-  public void setUp() {
-    String setupGameFileName = "test/TestGameWorld.json";
-    String setupPlayerFileName = "test/TestPlayer.json";
-    try {
-      GameWorld gameWorld = GameDataLoader.loadGameWorld(setupGameFileName);
-      Player player = GameDataLoader.loadPlayer(setupPlayerFileName, gameWorld);
-      controller = new GameController(gameWorld, player);
-
-      TEST_GAME_FILE_NAME = controller.getGameWorld().getName() + ".json";
-      TEST_PLAYER_FILE_NAME = controller.getPlayer().getName() + ".json";
-    } catch (IOException e) {
-      fail("IOException was thrown during setup: " + e.getMessage());
-    }
-
-    // ensure the test file does not exist before the test
-    new File(TEST_GAME_FILE_NAME).delete();
-    new File(TEST_PLAYER_FILE_NAME).delete();
-  }
-
-  /**
-   * Test the saveGameJson method.
-   * It should create a JSON file with the game data.
+   * Test loading from raw GameWorld file and saving to combined format.
    */
   @Test
-  void testGameDataSaver() {
+  void testLoadRawAndSave() {
     try {
-      // save the game data to a JSON file
-      GameDataSaver.saveGameJson(TEST_GAME_FILE_NAME, controller.getGameWorld());
+      GameController controller = GameDataLoader.loadGame(TEST_RAW_FILE);
+      assertNotNull(controller);
 
-      GameDataSaver.savePlayerJson(TEST_PLAYER_FILE_NAME, controller.getPlayer());
+      GameDataSaver.saveGameJson(TEST_OUTPUT_FILE, controller);
+      verifyOutputFile();
 
-      // verify if the file was created
-      File gameFile = new File(TEST_GAME_FILE_NAME);
-      assertTrue(gameFile.exists(), "File should be created");
-
-      File playerFile = new File(TEST_PLAYER_FILE_NAME);
-      assertTrue(playerFile.exists(), "File should be created");
-
-      // verify if the file is not empty
-      String gameContent = Files.readString(Paths.get(TEST_GAME_FILE_NAME));
-      assertNotNull(gameContent, "Content should not be null");
-      assertFalse(gameContent.isEmpty(), "Content should not be empty");
-
-      String playerContent = Files.readString(Paths.get(TEST_PLAYER_FILE_NAME));
-      assertNotNull(playerContent, "Content should not be null");
-      assertFalse(playerContent.isEmpty(), "Content should not be empty");
-
-      // verify if the content conforms to expected JSON structure
-      assertTrue(gameContent.contains("\"name\":"), "Should contain 'name' field");
-
-      assertTrue(playerContent.contains("\"name\":"), "Should contain 'name' field");
-
-      // use Jackson to parse the content and validate JSON format
-      ObjectMapper gameObjectMapper = new ObjectMapper();
-      JsonNode gameJsonNode = gameObjectMapper.readTree(gameContent); // Try parsing the content as JSON
-      assertNotNull(gameJsonNode, "Parsed JSON should not be null");
-
-      ObjectMapper playerObjectMapper = new ObjectMapper();
-      JsonNode playerJsonNode = playerObjectMapper.readTree(playerContent); // Try parsing the content as JSON
-      assertNotNull(playerJsonNode, "Parsed JSON should not be null");
-
-      // verify expected fields are present in the JSON
-      assertTrue(gameJsonNode.has("name"), "JSON should contain 'name' field");
-      assertTrue(gameJsonNode.has("version"), "JSON should contain 'gameWorld' field");
-      assertTrue(gameJsonNode.has("rooms"), "JSON should contain 'rooms' field");
-      assertTrue(gameJsonNode.has("items"), "JSON should contain 'items' field");
-      assertTrue(gameJsonNode.has("fixtures"), "JSON should contain 'fixtures' field");
-      assertTrue(gameJsonNode.has("monsters"), "JSON should contain 'monsters' field");
-      assertTrue(gameJsonNode.has("puzzles"), "JSON should contain 'puzzles' field");
-
-      assertTrue(playerJsonNode.has("name"), "JSON should contain 'name' field");
-      assertTrue(playerJsonNode.has("health"), "JSON should contain 'health' field");
-      assertTrue(playerJsonNode.has("inventory"), "JSON should contain 'inventory' field");
-      assertTrue(playerJsonNode.has("max_weight"), "JSON should contain 'max_weight' field");
-      assertTrue(playerJsonNode.has("current_weight"), "JSON should contain 'current_weight' field");
-      assertTrue(playerJsonNode.has("room_number"), "JSON should contain 'room_number' field");
-      assertTrue(playerJsonNode.has("score"), "JSON should contain 'score' field");
-
-      // verify the number of elements in the JSON
-      int roomCount = gameJsonNode.get("rooms").size();
-      assertEquals(5, roomCount, "There should be at least one room");
-      int itemCount = gameJsonNode.get("items").size();
-      assertEquals(4, itemCount, "There should be at least one item");
-      int fixtureCount = gameJsonNode.get("fixtures").size();
-      assertEquals(1, fixtureCount, "There should be at least one fixture");
-      int monsterCount = gameJsonNode.get("monsters").size();
-      assertEquals(1, monsterCount, "There should be at least one monster");
-      int puzzleCount = gameJsonNode.get("puzzles").size();
-      assertEquals(2, puzzleCount, "There should be at least one puzzle");
-
+      // load the saved file and check
+      GameController loadedController = GameDataLoader.loadGame(TEST_OUTPUT_FILE);
+      assertEquals("DefaultPlayer", loadedController.getPlayer().getName());
+      assertEquals("Simple Scenarios", loadedController.getGameWorld().getName());
     } catch (IOException e) {
       fail("IOException was thrown: " + e.getMessage());
     }
   }
 
   /**
-   * Delete the test file after each test.
+   * Test loading from combined format file and saving to combined format.
+   */
+  @Test
+  void testLoadCombinedAndSave() {
+    try {
+      GameController controller = GameDataLoader.loadGame(TEST_COMBINED_FILE);
+      assertNotNull(controller);
+
+      // check the player name
+      assertEquals("Avatar", controller.getPlayer().getName());
+
+      GameDataSaver.saveGameJson(TEST_OUTPUT_FILE, controller);
+      verifyOutputFile();
+
+      // load the saved file and check
+      GameController loadedController = GameDataLoader.loadGame(TEST_OUTPUT_FILE);
+      assertEquals("Avatar", loadedController.getPlayer().getName());
+      assertEquals("Simple Scenarios", loadedController.getGameWorld().getName());
+    } catch (IOException e) {
+      fail("IOException was thrown: " + e.getMessage());
+    }
+  }
+
+  /**
+   * Helper method to verify the output file.
+   */
+  private void verifyOutputFile() throws IOException {
+    // check if the file exists
+    File outputFile = new File(TEST_OUTPUT_FILE);
+    assertTrue(outputFile.exists(), "Output file should be created");
+
+    // check if the file is not empty
+    String content = Files.readString(Paths.get(TEST_OUTPUT_FILE));
+    assertNotNull(content, "Content should not be null");
+    assertFalse(content.isEmpty(), "Content should not be empty");
+
+    // check if the content contains expected fields
+    assertTrue(content.contains("\"world\":"), "Should contain 'world' field");
+    assertTrue(content.contains("\"player\":"), "Should contain 'player' field");
+
+    // parse the JSON content
+    ObjectMapper objectMapper = new ObjectMapper();
+    JsonNode jsonNode = objectMapper.readTree(content);
+
+    // check if the JSON structure is correct
+    assertTrue(jsonNode.has("world"), "JSON should contain 'world' field");
+    assertTrue(jsonNode.has("player"), "JSON should contain 'player' field");
+
+    // check the world name
+    JsonNode worldNode = jsonNode.get("world");
+    assertTrue(worldNode.has("name"), "World JSON should contain 'name' field");
+    assertEquals("Simple Scenarios", worldNode.get("name").asText());
+
+    // check the number of rooms, items, fixtures, monsters, and puzzles
+    assertEquals(5, worldNode.get("rooms").size(), "There should be 5 rooms");
+    assertEquals(4, worldNode.get("items").size(), "There should be 4 items");
+    assertEquals(1, worldNode.get("fixtures").size(), "There should be 1 fixture");
+    assertEquals(1, worldNode.get("monsters").size(), "There should be 1 monster");
+    assertEquals(2, worldNode.get("puzzles").size(), "There should be 2 puzzles");
+  }
+
+  /**
+   * Delete the test output file after each test.
    */
   @AfterEach
   public void tearDown() {
-    // delete the test file after each test
-    File gameFile = new File(TEST_GAME_FILE_NAME);
-    if (gameFile.exists()) {
-      boolean deleted = gameFile.delete();
+    File outputFile = new File(TEST_OUTPUT_FILE);
+    if (outputFile.exists()) {
+      boolean deleted = outputFile.delete();
       if (!deleted) {
-        System.err.println("Failed to delete test file: " + TEST_GAME_FILE_NAME);
-      }
-    }
-
-    File playerFile = new File(TEST_PLAYER_FILE_NAME);
-    if (playerFile.exists()) {
-      boolean deleted = playerFile.delete();
-      if (!deleted) {
-        System.err.println("Failed to delete test file: " + TEST_PLAYER_FILE_NAME);
+        System.err.println("Failed to delete test file: " + TEST_OUTPUT_FILE);
       }
     }
   }

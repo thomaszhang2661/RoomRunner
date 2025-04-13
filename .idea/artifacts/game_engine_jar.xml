@@ -3,9 +3,9 @@
     <output-path>$PROJECT_DIR$/out/artifacts/game_engine_jar</output-path>
     <root id="archive" name="hw7.jar">
       <element id="module-output" name="hw7" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackson-annotations-2.18.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackson-databind-2.18.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackson-core-2.18.3.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackson-annotations-2.18.3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
