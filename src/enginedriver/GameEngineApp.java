@@ -344,22 +344,32 @@ public class GameEngineApp {
         }
       }
     } else {
-      // In interactive mode, we prompt for the name
-      Scanner scanner = new Scanner(this.source);
+      // In interactive mode, we prompt for the name directly from the BufferedReader
+      // DO NOT create a new Scanner as it can close the underlying stream
+      try {
+        if (output instanceof PrintWriter) {
+          ((PrintWriter) output).print("Enter your name: ");
+          ((PrintWriter) output).flush();
+        } else {
+          System.out.print("Enter your name: ");
+        }
 
-      if (output instanceof PrintWriter) {
-        ((PrintWriter) output).print("Enter your name: ");
-        ((PrintWriter) output).flush();
-      } else {
-        System.out.print("Enter your name: ");
-      }
+        // Read directly from the BufferedReader
+        playerName = source.readLine();
+        if (playerName == null || playerName.trim().isEmpty()) {
+          playerName = "Player"; // Default name if input is empty
+        }
 
-      playerName = scanner.nextLine();
-
-      if (output instanceof PrintWriter) {
-        ((PrintWriter) output).println("Welcome, " + playerName + "!");
-      } else {
-        System.out.println("Welcome, " + playerName + "!");
+        if (output instanceof PrintWriter) {
+          ((PrintWriter) output).println("Welcome, " + playerName + "!");
+        } else {
+          System.out.println("Welcome, " + playerName + "!");
+        }
+      } catch (IOException e) {
+        // If there's an error reading the name, use a default
+        playerName = "Player";
+        System.out.println("Error reading player name: " + e.getMessage());
+        System.out.println("Using default name: " + playerName);
       }
     }
 

@@ -11,14 +11,27 @@ import java.io.IOException;
  */
 class SerializerHelperUtils {
 
+  /**
+   * Helper method to get a string representation of the solution from a problem.
+   *
+   * @param problem the problem to get the solution from
+   * @return the string representation of the solution
+   */
   static String getSolutionString(IProblem<?> problem) {
     Object solution = problem.getSolution();
     if (solution instanceof Item) {
       return ((Item) solution).getName();
     }
-    return solution.toString();
+    return "'" + solution.toString() + "'";
   }
 
+  /**
+   * Helper method to serialize items into JSON.
+   *
+   * @param jsonGenerator the JsonGenerator to write JSON data
+   * @param item the item to serialize
+   * @throws IOException if an error occurs during serialization
+   */
   static void serializeItems(JsonGenerator jsonGenerator, Item item) throws IOException {
     jsonGenerator.writeStartObject();
 
