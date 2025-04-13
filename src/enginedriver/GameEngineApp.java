@@ -154,7 +154,7 @@ public class GameEngineApp {
         // Batch mode: input from file
         String sourceFile = args[2];
         try {
-          inputSource = new BufferedReader(new StringReader(sourceFile));
+          inputSource = new BufferedReader(new FileReader(sourceFile));
 
           // If a target file is specified, redirect output there
           if (args.length >= 4) {
