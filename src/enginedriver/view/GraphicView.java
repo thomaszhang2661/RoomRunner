@@ -511,6 +511,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
   public void update() {
     displayRoom();
     displayPlayerStatus();
+    showProblem(problem);
     updateLists();
 
     // Update direction button states
@@ -578,6 +579,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
   @Override
   public void displayRoom() {
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    this.problem = currentRoom.getProblem();
     roomDescription.setText("Current location: " + currentRoom.getName() + "\n\n" +
             currentRoom.getDescription());
   }

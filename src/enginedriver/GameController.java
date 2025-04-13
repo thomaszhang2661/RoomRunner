@@ -54,6 +54,7 @@ public class GameController {
     actionMap.put("USE", "U");
     actionMap.put("INVENTORY", "I");
     actionMap.put("ANSWER", "A");
+
   }
 
   public void setRawFileName(String rawFileName) {
