@@ -370,6 +370,14 @@ public class GameController {
       return;
     }
 
+    Object solution = problem.getSolution();
+
+    if (solution == null) {
+      // 根据你的业务逻辑，可以抛异常、给提示、跳过处理等：
+      System.out.println("Warning: problem solution is null!");
+      return;
+    }
+
     // Check solution type
     Class<?> solutionClass = problem.getSolution().getClass();
     // Check if the problem is an IProblem<Item>
@@ -553,6 +561,8 @@ public class GameController {
 
       this.gameWorld = restoredWorld;
       this.player = restoredPlayer;
+
+      view.update();
 
       view.showText("Game restored successfully from " + gameFileName);
     } catch (Exception e) {

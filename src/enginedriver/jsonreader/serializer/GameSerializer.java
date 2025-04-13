@@ -26,7 +26,7 @@ public class GameSerializer extends JsonSerializer<GameController> {
 
     // serialize game world
     jsonGenerator.writeObjectFieldStart("world");
-    serializeWorld(game.getGameWorld(), jsonGenerator);
+    serializeWorld(game.getGameWorld(), game.getPlayer(), jsonGenerator);
     jsonGenerator.writeEndObject();
 
     // serialize player
@@ -40,7 +40,7 @@ public class GameSerializer extends JsonSerializer<GameController> {
   /**
    * Serialize a GameWorld object into JSON.
    */
-  private void serializeWorld(GameWorld gameWorld, JsonGenerator jsonGenerator) throws IOException {
+  private void serializeWorld(GameWorld gameWorld, Player player, JsonGenerator jsonGenerator) throws IOException {
     jsonGenerator.writeStringField("name", gameWorld.getName());
     jsonGenerator.writeStringField("version", gameWorld.getVersion());
 
@@ -91,15 +91,22 @@ public class GameSerializer extends JsonSerializer<GameController> {
     jsonGenerator.writeEndArray();
 
     // Serialize items
+    jsonGenerator.writeArrayFieldStart("items");
     if (!gameWorld.getRooms().isEmpty()) {
-      jsonGenerator.writeArrayFieldStart("items");
-
+      // room items
       for (Item item : gameWorld.getItems()) {
         SerializerHelperUtils.serializeItems(jsonGenerator, item);
       }
 
-      jsonGenerator.writeEndArray();
     }
+    if (!player.getEntitiesByType(Item.class).isEmpty()) {
+      // player items
+      for (Item item : player.getEntitiesByType(Item.class)) {
+        SerializerHelperUtils.serializeItems(jsonGenerator, item);
+      }
+    }
+    jsonGenerator.writeEndArray();
+
 
     // Serialize fixtures
     if (!gameWorld.getRooms().isEmpty()) {

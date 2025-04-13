@@ -33,8 +33,8 @@ public class GraphicView extends JFrame implements IView, ActionListener {
   private static final String RESOURCE_FILE = "resources/";
 
   private final GameController controller;
-  private final GameWorld gameWorld;
-  private final Player player;
+  private GameWorld gameWorld;
+  private Player player;
 
   // UI components
   private JTextArea roomDescription;
@@ -97,6 +97,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     restoreItem.addActionListener(e -> {
       try {
         controller.processCommand("RESTORE");
+        update();
         showText("Game restored successfully.");
       } catch (Exception ex) {
         showText("Error restoring game: " + ex.getMessage());
@@ -507,8 +508,18 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     add(bottomPanel, BorderLayout.SOUTH);
   }
 
+  public void setGameWorld(GameWorld gameWorld) {
+    this.gameWorld = gameWorld;
+  }
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
   @Override
   public void update() {
+    setGameWorld(controller.getGameWorld());
+    setPlayer(controller.getPlayer());
+
     displayRoom();
     displayPlayerStatus();
     showProblem(problem);
