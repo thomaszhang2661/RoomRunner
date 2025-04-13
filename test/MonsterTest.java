@@ -160,7 +160,7 @@ class MonsterTest {
     // Validate Rabbit Picture
     // read Image from file
     String imageName = "monster-rabbit.png";
-    File imageFile = new File("data/images/" + imageName);
+    File imageFile = new File("resources/images/" + imageName);
     BufferedImage expectedImage = null;
     // show picture
     try {
@@ -176,7 +176,7 @@ class MonsterTest {
     // Validate Rabbit Picture
     // read Image from file
     imageName = "monster-teddy.png";
-    imageFile = new File("data/images/" + imageName);
+    imageFile = new File("resources/images/" + imageName);
     expectedImage = null;
     // show picture
     try {

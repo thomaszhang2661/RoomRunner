@@ -118,7 +118,7 @@ public abstract class IdentifiableEntity
       return null;
     }
     try {
-      File imageFile = new File("data/images/" + pictureName);
+      File imageFile = new File("resources/images/" + pictureName);
       return ImageIO.read(imageFile);  // return BufferedImage
     } catch (IOException e) {
       System.err.println("Failed to load picture: " + pictureName);
