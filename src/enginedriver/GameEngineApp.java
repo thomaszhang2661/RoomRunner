@@ -24,6 +24,8 @@ import enginedriver.view.IView;
  * It initializes the game world and player, and starts the game loop.
  */
 public class GameEngineApp {
+  private static final String RESOURCE_FILE = "resources/";
+
   private final GameController gameController;
 //  private final Readable source;
 //  private final Appendable output;
@@ -32,29 +34,43 @@ public class GameEngineApp {
   /**
    * Constructor for the GameEngineApp class.
    *
-   * @param gameFileName the name of the game file
+   * @param fileName the name of the game file
    * @param source the input source
    * @param output the output destination
    * @param graphicsMode whether to run in graphics mode
    * @throws IOException if an error occurs during input/output
    */
-  public GameEngineApp(String gameFileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
-  //    this.source = Objects.requireNonNull(source);
-  //    this.output = Objects.requireNonNull(output);
+  public GameEngineApp(String fileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
+    // rawFileName removing .json suffix that is used to save the game
+    String rawFileName = fileName.endsWith(".json")
+            ? fileName.substring(0, fileName.length() - 5) : fileName;
+    // fileNameWithPrefix is the name of the file that is used to load the game
+    String fileNameWithPrefix = RESOURCE_FILE + fileName;
 
-    // Load game world from file
-    GameWorld gameWorld = GameDataLoader.loadGameWorld(gameFileName);
-
-    // Get player name and load or create player
+    // Get player name first
     String playerName = graphicsMode ? getPlayerNameWithDialog() : getPlayerNameFromConsole();
-    String playerFileName = playerName + ".json";
-    File playerFile = new File(playerFileName);
-    Player player = playerFile.exists()
-            ? GameDataLoader.loadPlayer(playerFileName, gameWorld)
-            : new Player(playerName, 100, 20, 0);
+
+    // Check if combined game file exists (gameFileName_playerName.json)
+    String combinedFileName = RESOURCE_FILE + rawFileName + "_" + playerName + ".json";
+    File combinedFile = new File(combinedFileName);
+
+    GameWorld gameWorld;
+    Player player;
+
+    if (combinedFile.exists()) {
+      // Load combined game file if it exists
+      GameController gameController = GameDataLoader.loadGame(combinedFileName);
+      gameWorld = gameController.getGameWorld();
+      player = gameController.getPlayer();
+    } else {
+      // Otherwise load world from initial file and create new player
+      gameWorld = GameDataLoader.loadGameWorld(fileNameWithPrefix);
+      player = new Player(playerName, 100, 20, 0);
+    }
 
     // Create controller
     this.gameController = new GameController(gameWorld, player);
+    this.gameController.setRawFileName(rawFileName);
 
     // Initialize the appropriate view based on mode
     if (graphicsMode) {
@@ -201,7 +217,7 @@ public class GameEngineApp {
       // 加载自定义图标
       BufferedImage image = null;
       try {
-        image = ImageIO.read(new File("data/images/game_engine.png"));
+        image = ImageIO.read(new File(RESOURCE_FILE + "images/game_engine.png"));
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

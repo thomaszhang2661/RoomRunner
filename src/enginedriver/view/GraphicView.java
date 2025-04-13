@@ -30,6 +30,8 @@ import java.util.Objects;
  * This provides a GUI interface for the game using Swing.
  */
 public class GraphicView extends JFrame implements IView, ActionListener {
+  private static final String RESOURCE_FILE = "resources/";
+
   private final GameController controller;
   private final GameWorld gameWorld;
   private final Player player;
@@ -41,7 +43,8 @@ public class GraphicView extends JFrame implements IView, ActionListener {
   private JTextArea messageArea;
   private JTextField commandInput;
   private JButton northButton, southButton, eastButton, westButton;
-  private JButton inventoryButton, lookButton, useButton, takeButton, dropButton, examineButton;
+  private JButton inventoryButton, lookButton, useButton, takeButton, dropButton,
+          examineButton;
   private JLabel healthLabel, scoreLabel, weightLabel;
   private JPanel imagePanel;
   private JPanel examineImagePanel;
@@ -82,6 +85,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     JMenu fileMenu = new JMenu("Main");
     JMenuItem quitItem = new JMenuItem("Quit");
     JMenuItem saveItem = new JMenuItem("Save");
+    JMenuItem restoreItem = new JMenuItem("Restore");
     saveItem.addActionListener(e -> {
       try {
         controller.processCommand("SAVE");
@@ -90,9 +94,18 @@ public class GraphicView extends JFrame implements IView, ActionListener {
         showText("Error saving game: " + ex.getMessage());
       }
     });
+    restoreItem.addActionListener(e -> {
+      try {
+        controller.processCommand("RESTORE");
+        showText("Game restored successfully.");
+      } catch (Exception ex) {
+        showText("Error restoring game: " + ex.getMessage());
+      }
+    });
     quitItem.addActionListener(e -> System.exit(0));
     fileMenu.add(quitItem);
     fileMenu.add(saveItem);
+    fileMenu.add(restoreItem);
 
 
 
@@ -180,7 +193,6 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     takeButton = new JButton("Take (T)");
     dropButton = new JButton("Drop (D)");
     examineButton = new JButton("Examine (X)");
-
     // Status labels
     healthLabel = new JLabel("Health: " + player.getHealth());
     scoreLabel = new JLabel("Score: " + player.getScore());
@@ -316,9 +328,9 @@ public class GraphicView extends JFrame implements IView, ActionListener {
         //checkprob type
         BufferedImage probImage = null;
         if (problem instanceof Monster) {
-          probImage =  loadImage("data/images/generic-monster.png");
+          probImage =  loadImage(RESOURCE_FILE + "images/generic-monster.png");
         } else if (problem instanceof Puzzle) {
-          probImage =  loadImage("data/images/generic_puzzle.png");
+          probImage =  loadImage(RESOURCE_FILE + "images/generic_puzzle.png");
         }
 
 
@@ -384,7 +396,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     centerNorthPanel.add(probPanel, BorderLayout.EAST);
 
     JScrollPane probScrollPane = new JScrollPane(probDescription);
-    probScrollPane.setPreferredSize(new Dimension(400, 100));
+    probScrollPane.setPreferredSize(new Dimension(200, 100));
     centerNorthPanel.add(probScrollPane, BorderLayout.WEST);
 
     centerPanel.add(centerNorthPanel, BorderLayout.NORTH);
@@ -477,9 +489,9 @@ public class GraphicView extends JFrame implements IView, ActionListener {
 
     // Command input panel
     JPanel commandPanel = new JPanel(new BorderLayout());
-    commandPanel.add(new JLabel("Enter command:"), BorderLayout.WEST);
+    commandPanel.add(new JLabel("Enter Answer:"), BorderLayout.WEST);
     commandPanel.add(commandInput, BorderLayout.CENTER);
-    JButton sendButton = new JButton("Send");
+    JButton sendButton = new JButton("Answer");
     sendButton.addActionListener(e -> {
       if (!commandInput.getText().isEmpty()) {
         processCommand(commandInput.getText());
@@ -499,6 +511,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
   public void update() {
     displayRoom();
     displayPlayerStatus();
+    showProblem(problem);
     updateLists();
 
     // Update direction button states
@@ -566,6 +579,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
   @Override
   public void displayRoom() {
     Room<?> currentRoom = gameWorld.getRoom(player.getRoomNumber());
+    this.problem = currentRoom.getProblem();
     roomDescription.setText("Current location: " + currentRoom.getName() + "\n\n" +
             currentRoom.getDescription());
   }
@@ -662,7 +676,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
 
     commandInput.addActionListener(e -> {
       if (!commandInput.getText().isEmpty()) {
-        processCommand(commandInput.getText());
+        processCommand("Answer " + commandInput.getText());
         commandInput.setText("");
       }
     });

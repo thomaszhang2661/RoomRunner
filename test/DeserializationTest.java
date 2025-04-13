@@ -1,70 +1,78 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import enginedriver.model.GameWorld;
-import enginedriver.model.entitycontainer.Player;
+import enginedriver.GameController;
+import enginedriver.jsonreader.deserializer.GameDeserializer;
 import java.io.File;
 import java.io.IOException;
-import enginedriver.jsonreader.deserializer.GameWorldDeserializer;
-import enginedriver.jsonreader.deserializer.PlayerDeserializer;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for deserialization of GameWorld and Player objects.
- * This test class also works as GameDataLoaderTest.
+ * Test class for deserialization of GameController objects.
+ * This test class tests the combined deserializer that handles both raw and combined JSON formats.
  */
 class DeserializationTest {
 
   /**
-   * Test the deserialization of GameWorld and Player objects from JSON files.
-   * The test checks if the objects are correctly deserialized and if their properties match
-   * the expected values.
+   * Test the deserialization of GameController object from raw GameWorld JSON file.
+   * The test checks if the GameController object is correctly deserialized and if its
+   * GameWorld and default Player properties match the expected values.
 
    * @throws IOException if an error occurs during deserialization
    */
   @Test
-  void testDeserializeGameWorld() throws IOException {
+  void testDeserializeRawGameWorld() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new SimpleModule().addDeserializer(GameWorld.class,
-            new GameWorldDeserializer()));
+    mapper.registerModule(new SimpleModule().addDeserializer(GameController.class,
+            new GameDeserializer()));
 
-    GameWorld gameWorld = mapper.readValue(new File("test/TestGameWorld.json"), GameWorld.class);
+    GameController controller = mapper.readValue(new File("test/TestGameWorld.json"), GameController.class);
 
-    assertNotNull(gameWorld);
-    assertEquals("Simple Scenarios", gameWorld.getName());
-    assertEquals("0.0.1", gameWorld.getVersion());
-    assertEquals(5, gameWorld.getRooms().size());
-    assertTrue(gameWorld.getRooms().containsKey(1));
-    assertTrue(gameWorld.getRooms().containsKey(5));
-    assertNotNull(gameWorld.getRooms().get(1).getProblem());
+    // test game world that exists in the file
+    assertNotNull(controller);
+    assertNotNull(controller.getGameWorld());
+    assertEquals("Simple Scenarios", controller.getGameWorld().getName());
+    assertEquals("0.0.1", controller.getGameWorld().getVersion());
+    assertEquals(5, controller.getGameWorld().getRooms().size());
+    assertTrue(controller.getGameWorld().getRooms().containsKey(1));
+    assertTrue(controller.getGameWorld().getRooms().containsKey(5));
+    assertNotNull(controller.getGameWorld().getRooms().get(1).getProblem());
+
+    // test default player
+    assertNotNull(controller.getPlayer());
+    assertEquals("DefaultPlayer", controller.getPlayer().getName());
   }
 
   /**
-   * Test the deserialization of Player object from JSON file.
-   * The test checks if the Player object is correctly deserialized and if its properties match
-   * the expected values.
+   * Test the deserialization of GameController object from combined JSON file.
+   * The test checks if the GameController object is correctly deserialized and if its
+   * GameWorld and Player properties match the expected values.
 
    * @throws IOException if an error occurs during deserialization
    */
   @Test
-  void testDeserializePlayer() throws IOException {
+  void testDeserializeCombinedGame() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
+    mapper.registerModule(new SimpleModule().addDeserializer(GameController.class,
+            new GameDeserializer()));
 
-    module.addDeserializer(GameWorld.class, new GameWorldDeserializer());
-    mapper.registerModule(module);
-    GameWorld gameWorld = mapper.readValue(new File("test/TestGameWorld.json"), GameWorld.class);
+    GameController controller = mapper.readValue(new File("test/TestGame.json"), GameController.class);
 
-    module.addDeserializer(Player.class, new PlayerDeserializer(gameWorld));
-    Player player = mapper.readValue(new File("test/TestPlayer.json"), Player.class);
+    // check the game world
+    assertNotNull(controller);
+    assertNotNull(controller.getGameWorld());
+    assertEquals("Simple Scenarios", controller.getGameWorld().getName());
+    assertEquals("0.0.1", controller.getGameWorld().getVersion());
+    assertEquals(5, controller.getGameWorld().getRooms().size());
 
-    assertNotNull(player);
-    assertEquals("Avatar", player.getName());
-    assertEquals(100, player.getHealth());
-    assertEquals(20, player.getMaxWeight());
-    assertEquals(0, player.getScore());
+    // check the player
+    assertNotNull(controller.getPlayer());
+    assertEquals("Avatar", controller.getPlayer().getName());
+    assertEquals(100, controller.getPlayer().getHealth());
+    assertEquals(20, controller.getPlayer().getMaxWeight());
+    assertEquals(0, controller.getPlayer().getCurrentWeight());
+    assertEquals(1, controller.getPlayer().getRoomNumber());
+    assertEquals(0, controller.getPlayer().getScore());
   }
 }

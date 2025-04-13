@@ -25,6 +25,9 @@ import enginedriver.view.IView;
  * This is the Controller component in the MVC architecture.
  */
 public class GameController {
+  private static final String RESOURCE_FILE = "resources/";
+  private String rawFileName = null;
+
   private Player player;
   private GameWorld gameWorld;
   private IView view;
@@ -51,6 +54,11 @@ public class GameController {
     actionMap.put("USE", "U");
     actionMap.put("INVENTORY", "I");
     actionMap.put("ANSWER", "A");
+
+  }
+
+  public void setRawFileName(String rawFileName) {
+    this.rawFileName = rawFileName;
   }
 
   /**
@@ -522,13 +530,11 @@ public class GameController {
    */
   private void save() {
     try {
-      String gameFileName = gameWorld.getName() + ".json";
-      String playerFileName = player.getName() + ".json";
+      String gameFileName = RESOURCE_FILE + rawFileName + "_" + player.getName() + ".json";
 
-      GameDataSaver.saveGameJson(gameFileName, gameWorld);
-      GameDataSaver.savePlayerJson(playerFileName, player);
+      GameDataSaver.saveGameJson(gameFileName, new GameController(gameWorld, player));
 
-      view.showText("Game saved successfully as " + gameFileName + " and " + playerFileName);
+      view.showText("Game saved successfully as " + gameFileName);
     } catch (Exception e) {
       view.showText("Failed to save game: " + e.getMessage());
     }
@@ -539,16 +545,16 @@ public class GameController {
    */
   private void restore() {
     try {
-      String gameFileName = gameWorld.getName() + ".json";
-      String playerFileName = player.getName() + ".json";
+      String gameFileName = RESOURCE_FILE + rawFileName + "_" + player.getName() + ".json";
 
-      GameWorld newGameWorld = GameDataLoader.loadGameWorld(gameFileName);
-      Player newPlayer = GameDataLoader.loadPlayer(playerFileName, newGameWorld);
+      GameController restoredGame = GameDataLoader.loadGame(gameFileName);
+      GameWorld restoredWorld = restoredGame.getGameWorld();
+      Player restoredPlayer = restoredGame.getPlayer();
 
-      this.gameWorld = newGameWorld;
-      this.player = newPlayer;
+      this.gameWorld = restoredWorld;
+      this.player = restoredPlayer;
 
-      view.showText("Game restored successfully from " + gameFileName + " and " + playerFileName);
+      view.showText("Game restored successfully from " + gameFileName);
     } catch (Exception e) {
       view.showText("Failed to restore game: " + e.getMessage());
     }

@@ -1,9 +1,0 @@
-{
-  "name": "Avatar",
-  "health": "100",
-  "inventory": "",
-  "max_weight": "20",
-  "current_weight": "0",
-  "room_number": "1",
-  "score": "0"
-}
