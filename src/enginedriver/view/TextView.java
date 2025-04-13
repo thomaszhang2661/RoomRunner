@@ -42,6 +42,15 @@ public class TextView implements IView {
     this.isRunning = false;
   }
 
+  /**
+   * Sets the input source for reading commands.
+   *
+   * @param source The input source
+   */
+  public void setInputSource(BufferedReader source) {
+    this.reader = source;
+  }
+
   @Override
   public void initialize() {
     try {
