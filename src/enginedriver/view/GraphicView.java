@@ -487,9 +487,9 @@ public class GraphicView extends JFrame implements IView, ActionListener {
 
     // Command input panel
     JPanel commandPanel = new JPanel(new BorderLayout());
-    commandPanel.add(new JLabel("Enter command:"), BorderLayout.WEST);
+    commandPanel.add(new JLabel("Enter Answer:"), BorderLayout.WEST);
     commandPanel.add(commandInput, BorderLayout.CENTER);
-    JButton sendButton = new JButton("Send");
+    JButton sendButton = new JButton("Answer");
     sendButton.addActionListener(e -> {
       if (!commandInput.getText().isEmpty()) {
         processCommand(commandInput.getText());
@@ -672,7 +672,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
 
     commandInput.addActionListener(e -> {
       if (!commandInput.getText().isEmpty()) {
-        processCommand(commandInput.getText());
+        processCommand("Answer " + commandInput.getText());
         commandInput.setText("");
       }
     });
