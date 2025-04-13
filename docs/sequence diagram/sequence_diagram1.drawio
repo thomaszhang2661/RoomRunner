@@ -1,0 +1,245 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36" version="26.2.12">
+  <diagram name="第 1 页" id="Ms3w1I7j1L3ukOxXHqwr">
+    <mxGraphModel dx="2098" dy="1148" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2336" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-2" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" parent="1" vertex="1">
+          <mxGeometry y="60" width="50" height="780" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-3" value="GameController" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="230" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-4" value="GameWorld" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="650" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-5" value="Room:&lt;div&gt;Guild&lt;/div&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="900" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-6" value="User" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry y="20" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-10" value="TextView&lt;br&gt;/GraphicView" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="100" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-21" value="Player" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="380" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-26" value="Room:&lt;div&gt;Dungeon Entrance&lt;/div&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="520" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-34" value="Fixture:&lt;br&gt;BillBoard" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="777" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-38" value="Input Command &quot;X billboard&quot;" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="0.0127" width="60" relative="1" as="geometry">
+            <mxPoint x="26" y="120" as="sourcePoint" />
+            <mxPoint x="150.5" y="120" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-39" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;processCommand(&quot;X billboard&quot;)&lt;/font&gt;" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="-0.0121" width="60" relative="1" as="geometry">
+            <mxPoint x="150.5" y="150" as="sourcePoint" />
+            <mxPoint x="281" y="150" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-43" value="Puzzle:&lt;br&gt;Nobleman&#39;s Commission" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="1030" y="40" width="100" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="InxY2Z15q-nkg9lSu2-P-49" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;processCommand(&quot;E&quot;)&lt;/font&gt;" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="150" y="430" as="sourcePoint" />
+            <mxPoint x="280" y="430" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-2" value="standardizeCommand(&quot;X Billboard&quot;)" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="281" y="170" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="311" y="170" />
+              <mxPoint x="311" y="200" />
+            </Array>
+            <mxPoint x="286" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-3" value="getRoomNumber()" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="281" y="230" as="sourcePoint" />
+            <mxPoint x="430.5" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-4" value="return currentRoom" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430.5" y="250" as="sourcePoint" />
+            <mxPoint x="281" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-5" value="getRoom(currentRoom)" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="281" y="264.5" as="sourcePoint" />
+            <mxPoint x="700.5" y="264.5" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-6" value="returns Room object" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700.5" y="283" as="sourcePoint" />
+            <mxPoint x="281" y="283" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-7" value="getEntity(&quot;Billboard&quot;, Fixture.class)" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280.5" y="300" as="sourcePoint" />
+            <mxPoint x="570.5" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-8" value="returns Billboard fixture" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="570.5" y="320" as="sourcePoint" />
+            <mxPoint x="280.5" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-9" value="getDescription()" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="281" y="340" as="sourcePoint" />
+            <mxPoint x="827.5" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-10" value="returns description text" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="827.5" y="360" as="sourcePoint" />
+            <mxPoint x="281" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-11" value="showText(description)" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280.5" y="380" as="sourcePoint" />
+            <mxPoint x="150.5" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-12" value="display billboard message" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150.5" y="400" as="sourcePoint" />
+            <mxPoint x="21" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-13" value="Input Command &quot;E&quot;" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.0127" width="60" relative="1" as="geometry">
+            <mxPoint x="30" y="420" as="sourcePoint" />
+            <mxPoint x="154.5" y="420" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-15" value="standardizeCommand(&quot;E&quot;)" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="440" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="310" y="440" />
+              <mxPoint x="310" y="470" />
+            </Array>
+            <mxPoint x="285" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-16" value="move(&quot;E&quot;)" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="281" y="490" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="310" y="490" />
+              <mxPoint x="310" y="520" />
+            </Array>
+            <mxPoint x="286" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-19" value="getRoomNumber()" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280" y="540" as="sourcePoint" />
+            <mxPoint x="429.5" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-20" value="return currentRoom" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="429.5" y="560" as="sourcePoint" />
+            <mxPoint x="280" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-21" value="getRoom(currentRoom)" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280.5" y="580" as="sourcePoint" />
+            <mxPoint x="700" y="580" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-22" value="returns Room object" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="598.5" as="sourcePoint" />
+            <mxPoint x="280.5" y="598.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-23" value="getExits()" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1" target="InxY2Z15q-nkg9lSu2-P-26">
+          <mxGeometry x="0.004" width="60" relative="1" as="geometry">
+            <mxPoint x="280" y="620" as="sourcePoint" />
+            <mxPoint x="466.5" y="620" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-24" value="returns Map with exits" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="569.5" y="640" as="sourcePoint" />
+            <mxPoint x="279.16666666666674" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-25" value="getProblem()" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1" target="InxY2Z15q-nkg9lSu2-P-5">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280" y="660" as="sourcePoint" />
+            <mxPoint x="340" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-26" value="returns Puzzle (Nobleman&#39;s Commission)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1" source="InxY2Z15q-nkg9lSu2-P-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="680" as="sourcePoint" />
+            <mxPoint x="280" y="680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-27" value="getActive()" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1" target="InxY2Z15q-nkg9lSu2-P-43">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280" y="700" as="sourcePoint" />
+            <mxPoint x="386.5" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-28" value="returns true" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1" source="InxY2Z15q-nkg9lSu2-P-43">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="720" as="sourcePoint" />
+            <mxPoint x="280" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-30" value="getEffects()" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280" y="738.67" as="sourcePoint" />
+            <mxPoint x="1080" y="738.67" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-31" value="returns effects text" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1080" y="758.67" as="sourcePoint" />
+            <mxPoint x="280" y="758.67" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-32" value="showText(effects)" style="html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="60" relative="1" as="geometry">
+            <mxPoint x="280" y="780" as="sourcePoint" />
+            <mxPoint x="150" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ylWZOxGNIKq-lC4LAi5z-33" value="Display puzzle effects" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="149.5" y="800" as="sourcePoint" />
+            <mxPoint x="20" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
