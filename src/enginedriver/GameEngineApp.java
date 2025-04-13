@@ -85,11 +85,19 @@ public class GameEngineApp {
       this.viewer = new GraphicView(gameController, gameWorld, player);
     } else {
       this.viewer = new TextView(gameController, gameWorld, player, output);
+      // 如果是文本模式，不要让TextView创建新的BufferedReader
+      if (viewer instanceof TextView) {
+        ((TextView) viewer).setInputSource(source);
+      }
     }
 
     // Set view in controller
     gameController.setView(this.viewer);
+
+    // Set batch mode in controller
+    gameController.setBatchMode(isBatchMode);
   }
+
 
 
 
