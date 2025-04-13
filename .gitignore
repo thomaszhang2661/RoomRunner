@@ -1,3 +1,8 @@
+/out/
 */.DS_Store
 /data/.DS_Store
 
+/data/
+/resources/
+/out/production/
+/out/test/
