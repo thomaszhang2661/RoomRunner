@@ -185,4 +185,15 @@ public class TextView implements IView {
     // Pass the command to the controller
     controller.processCommand(command);
   }
+
+  /**
+   * Waits for the input handling thread to complete.
+   *
+   * @throws InterruptedException if the thread is interrupted
+   */
+  public void waitForCompletion() throws InterruptedException {
+    if (inputThread != null && inputThread.isAlive()) {
+      inputThread.join();
+    }
+  }
 }

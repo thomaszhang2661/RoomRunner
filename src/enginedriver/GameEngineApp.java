@@ -111,16 +111,20 @@ public class GameEngineApp {
     // Initialize the view
     viewer.initialize();
 
-    // Set batch mode in controller
-    if (gameController != null) {
-      gameController.setBatchMode(isBatchMode);
-    }
-
     if (isBatchMode) {
       processBatchCommands();
     } else {
       // Start handling user input in the view
       viewer.startInputHandling();
+
+      // For non-batch modes, wait for the view to finish
+      if (viewer instanceof TextView) {
+        try {
+          ((TextView) viewer).waitForCompletion();
+        } catch (InterruptedException e) {
+          System.err.println("Game interrupted: " + e.getMessage());
+        }
+      }
     }
   }
 
@@ -205,6 +209,7 @@ public class GameEngineApp {
     Appendable outputDest = null;
     boolean isGraphicsMode = false;
     boolean isBatchMode = false;
+    PrintWriter outputWriter = null;
 
     try {
       // Modes are mutually exclusive - only one can be active
@@ -243,7 +248,8 @@ public class GameEngineApp {
             // If a target file is specified, redirect output there
             if (args.length >= 4) {
               String targetFile = args[3];
-              outputDest = new PrintWriter(new FileWriter(targetFile));
+              outputWriter = new PrintWriter(new FileWriter(targetFile));
+              outputDest = outputWriter;
             } else {
               // Otherwise, output to console
               outputDest = System.out;
@@ -286,31 +292,26 @@ public class GameEngineApp {
 
       gameEngineApp.start();
 
-      // Close file resources if we opened any (for non-batch mode)
-      if (!isBatchMode && inputSource != null) {
-        inputSource.close();
-      }
-
-    } catch (IOException e) {
+    } catch (Exception e) {
       // Choose the output destination based on the mode
       if (isBatchMode && outputDest instanceof PrintWriter) {
         ((PrintWriter) outputDest).println("Error running game: " + e.getMessage());
-      } else if (outputDest != null) {
-        System.out.println("Error running game: " + e.getMessage());
       } else {
         System.out.println("Error running game: " + e.getMessage());
       }
     } finally {
-      // Ensure all resources are closed in case of exception
-      try {
-        if (inputSource != null) {
-          inputSource.close();
+      // only close the input source and output writer in batch mode
+      if (isBatchMode) {
+        try {
+          if (inputSource != null) {
+            inputSource.close();
+          }
+          if (outputWriter != null) {
+            outputWriter.close();
+          }
+        } catch (IOException e) {
+          System.out.println("Error closing resources: " + e.getMessage());
         }
-        if (outputDest instanceof PrintWriter) {
-          ((PrintWriter) outputDest).close();
-        }
-      } catch (IOException e) {
-        System.out.println("Error closing resources: " + e.getMessage());
       }
     }
   }
