@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -32,22 +31,23 @@ public class GameEngineApp {
   private Appendable output;
 
   private final GameController gameController;
-//  private final Readable source;
-//  private final Appendable output;
   private final IView viewer;
+  private boolean isBatchMode = false;
 
   /**
    * Constructor for the GameEngineApp class.
    *
-   * @param fileName the name of the game file
-   * @param source the input source
-   * @param output the output destination
+   * @param fileName     the name of the game file
+   * @param source       the input source
+   * @param output       the output destination
    * @param graphicsMode whether to run in graphics mode
+   * @param batchMode   whether to run in batch mode
    * @throws IOException if an error occurs during input/output
    */
-  public GameEngineApp(String fileName, BufferedReader source, Appendable output, boolean graphicsMode) throws IOException {
+  public GameEngineApp(String fileName, BufferedReader source, Appendable output, boolean graphicsMode, boolean batchMode) throws IOException {
     this.source = source;
     this.output = output;
+    this.isBatchMode = batchMode;
 
     // rawFileName removing .json suffix that is used to save the game
     String rawFileName = fileName.endsWith(".json")
@@ -103,9 +103,75 @@ public class GameEngineApp {
     // Initialize the view
     viewer.initialize();
 
-    // Start handling user input in the view
-    viewer.startInputHandling();
+    // Set batch mode in controller
+    if (gameController != null) {
+      gameController.setBatchMode(isBatchMode);
+    }
+
+    if (isBatchMode) {
+      processBatchCommands();
+    } else {
+      // Start handling user input in the view
+      viewer.startInputHandling();
+    }
   }
+
+  /**
+   * Process all commands in batch mode.
+   *
+   * @throws IOException if an error occurs during input/output
+   */
+  private void processBatchCommands() throws IOException {
+    String line;
+    try {
+      // Read all lines from the input file after the player name has been read
+      while ((line = source.readLine()) != null) {
+        if (line.trim().isEmpty()) {
+          continue; // Skip empty lines
+        }
+
+        // Process each command
+        if (output instanceof PrintWriter) {
+          ((PrintWriter) output).println("Command: " + line);
+          ((PrintWriter) output).flush();
+        } else {
+          System.out.println("Command: " + line);
+        }
+
+        // Process the command and update the view
+        gameController.processCommand(line);
+
+        // Check for quit command
+        if (line.trim().equalsIgnoreCase("Q") || line.trim().equalsIgnoreCase("QUIT")) {
+          if (output instanceof PrintWriter) {
+            ((PrintWriter) output).println("Quitting game...");
+            ((PrintWriter) output).flush();
+          } else {
+            System.out.println("Quitting game...");
+          }
+          break;
+        }
+      }
+
+      // Close resources when batch processing is complete
+      if (output instanceof PrintWriter) {
+        ((PrintWriter) output).println("Batch processing complete.");
+        ((PrintWriter) output).flush();
+      } else {
+        System.out.println("Batch processing complete.");
+      }
+
+    } catch (IOException e) {
+      if (output instanceof PrintWriter) {
+        ((PrintWriter) output).println("Error processing batch commands: " + e.getMessage());
+        ((PrintWriter) output).flush();
+      } else {
+        System.out.println("Error processing batch commands: " + e.getMessage());
+      }
+      throw e;
+    }
+  }
+
 
   /**
    * Main method to start the game.
@@ -127,91 +193,116 @@ public class GameEngineApp {
     String gameFileName = args[0];
     String mode = args[1];
 
-    BufferedReader inputSource;
-    Appendable outputDest;
+    BufferedReader inputSource = null;
+    Appendable outputDest = null;
     boolean isGraphicsMode = false;
     boolean isBatchMode = false;
 
-    switch (mode) {
-      case "-text":
-        // Text mode: interactive with console I/O
-        inputSource = new BufferedReader(new InputStreamReader(System.in));
-        outputDest = System.out;
-        break;
-
-      case "-graphics":
-        // Graphics mode: GUI interface
-        inputSource = new BufferedReader(new InputStreamReader(System.in));
-        outputDest = System.out;
-        isGraphicsMode = true;
-        break;
-
-      case "-batch":
-        isBatchMode = true;
-        if (args.length < 3) {
-          System.out.println("Error: Batch mode requires a source file.");
-          return;
-        }
-
-        // Batch mode: input from file
-        String sourceFile = args[2];
-        try {
-          inputSource = new BufferedReader(new FileReader(sourceFile));
-
-          // If a target file is specified, redirect output there
-          if (args.length >= 4) {
-            String targetFile = args[3];
-            outputDest = new PrintWriter(new FileWriter(targetFile));
-          } else {
-            // Otherwise, output to console
-            outputDest = System.out;
-          }
-        } catch (IOException e) {
-          // Write error message to target file
-          if (args.length >= 4) {
-            try {
-              PrintWriter writer = new PrintWriter(new FileWriter(args[3]));
-              writer.println("Error: Could not open source file: " + e.getMessage());
-              writer.close();
-            } catch (IOException writeErr) {
-              System.out.println("Error writing to target file: " + writeErr.getMessage());
-            }
-          } else {
-            System.out.println("Error: Could not open source file: " + e.getMessage());
-          }
-          return;
-        }
-        break;
-
-      default:
-        System.out.println("Error: Unknown mode '" + mode + "'");
-        return;
-    }
-
     try {
+      // Modes are mutually exclusive - only one can be active
+      switch (mode) {
+        case "-text":
+          // Text mode: interactive with console I/O
+          inputSource = new BufferedReader(new InputStreamReader(System.in));
+          outputDest = System.out;
+          isGraphicsMode = false;
+          isBatchMode = false;
+          break;
+
+        case "-graphics":
+          // Graphics mode: GUI interface
+          inputSource = new BufferedReader(new InputStreamReader(System.in));
+          outputDest = System.out;
+          isGraphicsMode = true;
+          isBatchMode = false;
+          break;
+
+        case "-batch":
+          // Batch mode is incompatible with graphics mode
+          isBatchMode = true;
+          isGraphicsMode = false;
+
+          if (args.length < 3) {
+            System.out.println("Error: Batch mode requires a source file.");
+            return;
+          }
+
+          // Batch mode: input from file
+          String sourceFile = args[2];
+          try {
+            inputSource = new BufferedReader(new FileReader(sourceFile));
+
+            // If a target file is specified, redirect output there
+            if (args.length >= 4) {
+              String targetFile = args[3];
+              outputDest = new PrintWriter(new FileWriter(targetFile));
+            } else {
+              // Otherwise, output to console
+              outputDest = System.out;
+            }
+          } catch (IOException e) {
+            // Write error message to target file
+            if (args.length >= 4) {
+              try {
+                PrintWriter writer = new PrintWriter(new FileWriter(args[3]));
+                writer.println("Error: Could not open source file: " + e.getMessage());
+                writer.close();
+              } catch (IOException writeErr) {
+                System.out.println("Error writing to target file: " + writeErr.getMessage());
+              }
+            } else {
+              System.out.println("Error: Could not open source file: " + e.getMessage());
+            }
+            return;
+          }
+          break;
+
+        default:
+          System.out.println("Error: Unknown mode '" + mode + "'");
+          return;
+      }
+
+      // Verify that graphics mode and batch mode are not both enabled
+      if (isGraphicsMode && isBatchMode) {
+        System.out.println("Error: Graphics mode and batch mode cannot be used together.");
+        return;
+      }
+
       // Create and start the game engine
       GameEngineApp gameEngineApp = new GameEngineApp(
               gameFileName,
               inputSource,
               outputDest,
-              isGraphicsMode);
+              isGraphicsMode,
+              isBatchMode);
 
       gameEngineApp.start();
 
-      // Close file resources if we opened any
-      inputSource.close();
-
-      if (outputDest instanceof PrintWriter) {
-        ((PrintWriter) outputDest).close();
+      // Close file resources if we opened any (for non-batch mode)
+      if (!isBatchMode && inputSource != null) {
+        inputSource.close();
       }
 
     } catch (IOException e) {
       // Choose the output destination based on the mode
       if (isBatchMode && outputDest instanceof PrintWriter) {
         ((PrintWriter) outputDest).println("Error running game: " + e.getMessage());
-        ((PrintWriter) outputDest).close();
+      } else if (outputDest != null) {
+        System.out.println("Error running game: " + e.getMessage());
       } else {
         System.out.println("Error running game: " + e.getMessage());
+      }
+    } finally {
+      // Ensure all resources are closed in case of exception
+      try {
+        if (inputSource != null) {
+          inputSource.close();
+        }
+        if (outputDest instanceof PrintWriter) {
+          ((PrintWriter) outputDest).close();
+        }
+      } catch (IOException e) {
+        System.out.println("Error closing resources: " + e.getMessage());
       }
     }
   }
@@ -222,21 +313,54 @@ public class GameEngineApp {
    * @return the player's name
    */
   private String getPlayerNameFromConsole() {
-    Scanner scanner = new Scanner(this.source);
+    String playerName;
 
-    if (output instanceof PrintWriter) {
-      ((PrintWriter) output).print("Enter your name: ");
-      ((PrintWriter) output).flush();
+    if (isBatchMode) {
+      // In batch mode, we read the name from the first line of the file
+      try {
+        playerName = source.readLine();
+        if (playerName == null || playerName.trim().isEmpty()) {
+          playerName = "Player"; // Default name if file is empty
+        }
+
+        if (output instanceof PrintWriter) {
+          ((PrintWriter) output).println("Player name: " + playerName);
+          ((PrintWriter) output).println("Welcome, " + playerName + "!");
+          ((PrintWriter) output).flush();
+        } else {
+          System.out.println("Player name: " + playerName);
+          System.out.println("Welcome, " + playerName + "!");
+        }
+      } catch (IOException e) {
+        // If there's an error reading the name, use a default
+        playerName = "Player";
+        if (output instanceof PrintWriter) {
+          ((PrintWriter) output).println("Error reading player name: " + e.getMessage());
+          ((PrintWriter) output).println("Using default name: " + playerName);
+          ((PrintWriter) output).flush();
+        } else {
+          System.out.println("Error reading player name: " + e.getMessage());
+          System.out.println("Using default name: " + playerName);
+        }
+      }
     } else {
-      System.out.print("Enter your name: ");
-    }
+      // In interactive mode, we prompt for the name
+      Scanner scanner = new Scanner(this.source);
 
-    String playerName = scanner.nextLine();
+      if (output instanceof PrintWriter) {
+        ((PrintWriter) output).print("Enter your name: ");
+        ((PrintWriter) output).flush();
+      } else {
+        System.out.print("Enter your name: ");
+      }
 
-    if (output instanceof PrintWriter) {
-      ((PrintWriter) output).println("Welcome, " + playerName + "!");
-    } else {
-      System.out.println("Welcome, " + playerName + "!");
+      playerName = scanner.nextLine();
+
+      if (output instanceof PrintWriter) {
+        ((PrintWriter) output).println("Welcome, " + playerName + "!");
+      } else {
+        System.out.println("Welcome, " + playerName + "!");
+      }
     }
 
     return playerName;
@@ -266,5 +390,4 @@ public class GameEngineApp {
     } while (playerName == null || playerName.trim().isEmpty());
     return playerName.trim();
   }
-
 }

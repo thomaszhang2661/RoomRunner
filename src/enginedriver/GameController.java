@@ -27,6 +27,7 @@ import enginedriver.view.IView;
 public class GameController {
   private static final String RESOURCE_FILE = "resources/";
   private String rawFileName = null;
+  private boolean isBatchMode = false;
 
   private Player player;
   private GameWorld gameWorld;
@@ -68,6 +69,16 @@ public class GameController {
    */
   public void setView(IView viewer) {
     this.view = viewer;
+  }
+
+
+  /**
+   * Set whether the controller is running in batch mode
+   *
+   * @param batchMode Whether in batch mode
+   */
+  public void setBatchMode(boolean batchMode) {
+    this.isBatchMode = batchMode;
   }
 
   /**
@@ -530,7 +541,13 @@ public class GameController {
    */
   private void quit() {
     view.showText("Quitting...");
-    System.exit(0);
+
+    // In batch mode, we don't want to call System.exit() as we want to complete processing
+    // This allows the batch file to be fully processed
+    if (!isBatchMode) {
+      System.exit(0);
+    }
+    // In batch mode, the method just returns, allowing processing to continue
   }
 
   /**
