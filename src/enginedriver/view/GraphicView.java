@@ -30,6 +30,8 @@ import java.util.Objects;
  * This provides a GUI interface for the game using Swing.
  */
 public class GraphicView extends JFrame implements IView, ActionListener {
+  private static final String RESOURCE_FILE = "resources/";
+
   private final GameController controller;
   private final GameWorld gameWorld;
   private final Player player;
@@ -316,9 +318,9 @@ public class GraphicView extends JFrame implements IView, ActionListener {
         //checkprob type
         BufferedImage probImage = null;
         if (problem instanceof Monster) {
-          probImage =  loadImage("resources/images/generic-monster.png");
+          probImage =  loadImage(RESOURCE_FILE + "images/generic-monster.png");
         } else if (problem instanceof Puzzle) {
-          probImage =  loadImage("resources/images/generic_puzzle.png");
+          probImage =  loadImage(RESOURCE_FILE + "images/generic_puzzle.png");
         }
 
 
