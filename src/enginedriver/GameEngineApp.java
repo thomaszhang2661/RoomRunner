@@ -130,6 +130,7 @@ public class GameEngineApp {
     BufferedReader inputSource;
     Appendable outputDest;
     boolean isGraphicsMode = false;
+    boolean isBatchMode = false;
 
     switch (mode) {
       case "-text":
@@ -146,6 +147,7 @@ public class GameEngineApp {
         break;
 
       case "-batch":
+        isBatchMode = true;
         if (args.length < 3) {
           System.out.println("Error: Batch mode requires a source file.");
           return;
@@ -165,7 +167,18 @@ public class GameEngineApp {
             outputDest = System.out;
           }
         } catch (IOException e) {
-          System.out.println("Error: Could not open source file: " + e.getMessage());
+          // Write error message to target file
+          if (args.length >= 4) {
+            try {
+              PrintWriter writer = new PrintWriter(new FileWriter(args[3]));
+              writer.println("Error: Could not open source file: " + e.getMessage());
+              writer.close();
+            } catch (IOException writeErr) {
+              System.out.println("Error writing to target file: " + writeErr.getMessage());
+            }
+          } else {
+            System.out.println("Error: Could not open source file: " + e.getMessage());
+          }
           return;
         }
         break;
@@ -193,7 +206,13 @@ public class GameEngineApp {
       }
 
     } catch (IOException e) {
-      System.out.println("Error running game: " + e.getMessage());
+      // Choose the output destination based on the mode
+      if (isBatchMode && outputDest instanceof PrintWriter) {
+        ((PrintWriter) outputDest).println("Error running game: " + e.getMessage());
+        ((PrintWriter) outputDest).close();
+      } else {
+        System.out.println("Error running game: " + e.getMessage());
+      }
     }
   }
 
@@ -205,9 +224,20 @@ public class GameEngineApp {
   private String getPlayerNameFromConsole() {
     Scanner scanner = new Scanner(this.source);
 
-    System.out.print("Enter your name: ");
+    if (output instanceof PrintWriter) {
+      ((PrintWriter) output).print("Enter your name: ");
+      ((PrintWriter) output).flush();
+    } else {
+      System.out.print("Enter your name: ");
+    }
+
     String playerName = scanner.nextLine();
-    System.out.println("Welcome, " + playerName + "!");
+
+    if (output instanceof PrintWriter) {
+      ((PrintWriter) output).println("Welcome, " + playerName + "!");
+    } else {
+      System.out.println("Welcome, " + playerName + "!");
+    }
 
     return playerName;
   }
@@ -220,7 +250,7 @@ public class GameEngineApp {
   private String getPlayerNameWithDialog() {
     String playerName;
     do {
-      // 加载自定义图标
+      // load image
       BufferedImage image = null;
       try {
         image = ImageIO.read(new File(RESOURCE_FILE + "images/game_engine.png"));
