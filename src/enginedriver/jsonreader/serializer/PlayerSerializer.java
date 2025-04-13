@@ -3,6 +3,7 @@ package enginedriver.jsonreader.serializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import enginedriver.model.entity.Item;
 import enginedriver.model.entitycontainer.Player;
 import java.io.IOException;
 
@@ -23,6 +24,13 @@ public class PlayerSerializer extends JsonSerializer<Player> {
     jsonGenerator.writeStringField("current_weight", String.valueOf(player.getCurrentWeight()));
     jsonGenerator.writeStringField("room_number", String.valueOf(player.getRoomNumber()));
     jsonGenerator.writeStringField("score", String.valueOf(player.getScore()));
+
+    // Serialize items
+    jsonGenerator.writeArrayFieldStart("items");
+    for (Item item : player.getEntitiesByType(Item.class)) {
+      SerializerHelperUtils.serializeItems(jsonGenerator, item);
+    }
+    jsonGenerator.writeEndArray();
 
     jsonGenerator.writeEndObject();
   }
