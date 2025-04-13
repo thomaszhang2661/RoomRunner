@@ -1,12 +1,14 @@
 package enginedriver;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -40,7 +42,7 @@ public class GameEngineApp {
    * @param graphicsMode whether to run in graphics mode
    * @throws IOException if an error occurs during input/output
    */
-  public GameEngineApp(String fileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
+  public GameEngineApp(String fileName, BufferedReader source, Appendable output, boolean graphicsMode) throws IOException {
     // rawFileName removing .json suffix that is used to save the game
     String rawFileName = fileName.endsWith(".json")
             ? fileName.substring(0, fileName.length() - 5) : fileName;
@@ -119,20 +121,20 @@ public class GameEngineApp {
     String gameFileName = args[0];
     String mode = args[1];
 
-    Readable inputSource;
+    BufferedReader inputSource;
     Appendable outputDest;
     boolean isGraphicsMode = false;
 
     switch (mode) {
       case "-text":
         // Text mode: interactive with console I/O
-        inputSource = new InputStreamReader(System.in);
+        inputSource = new BufferedReader(new InputStreamReader(System.in));
         outputDest = System.out;
         break;
 
       case "-graphics":
         // Graphics mode: GUI interface
-        inputSource = new InputStreamReader(System.in);
+        inputSource = new BufferedReader(new InputStreamReader(System.in));
         outputDest = System.out;
         isGraphicsMode = true;
         break;
@@ -146,7 +148,7 @@ public class GameEngineApp {
         // Batch mode: input from file
         String sourceFile = args[2];
         try {
-          inputSource = new FileReader(sourceFile);
+          inputSource = new BufferedReader(new StringReader(sourceFile));
 
           // If a target file is specified, redirect output there
           if (args.length >= 4) {
@@ -178,9 +180,7 @@ public class GameEngineApp {
       gameEngineApp.start();
 
       // Close file resources if we opened any
-      if (inputSource instanceof FileReader) {
-        ((FileReader) inputSource).close();
-      }
+      inputSource.close();
 
       if (outputDest instanceof PrintWriter) {
         ((PrintWriter) outputDest).close();
