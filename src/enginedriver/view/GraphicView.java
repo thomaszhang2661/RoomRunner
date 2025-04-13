@@ -41,7 +41,8 @@ public class GraphicView extends JFrame implements IView, ActionListener {
   private JTextArea messageArea;
   private JTextField commandInput;
   private JButton northButton, southButton, eastButton, westButton;
-  private JButton inventoryButton, lookButton, useButton, takeButton, dropButton, examineButton;
+  private JButton inventoryButton, lookButton, useButton, takeButton, dropButton,
+          examineButton;
   private JLabel healthLabel, scoreLabel, weightLabel;
   private JPanel imagePanel;
   private JPanel examineImagePanel;
@@ -82,6 +83,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     JMenu fileMenu = new JMenu("Main");
     JMenuItem quitItem = new JMenuItem("Quit");
     JMenuItem saveItem = new JMenuItem("Save");
+    JMenuItem restoreItem = new JMenuItem("Restore");
     saveItem.addActionListener(e -> {
       try {
         controller.processCommand("SAVE");
@@ -90,9 +92,18 @@ public class GraphicView extends JFrame implements IView, ActionListener {
         showText("Error saving game: " + ex.getMessage());
       }
     });
+    restoreItem.addActionListener(e -> {
+      try {
+        controller.processCommand("RESTORE");
+        showText("Game restored successfully.");
+      } catch (Exception ex) {
+        showText("Error restoring game: " + ex.getMessage());
+      }
+    });
     quitItem.addActionListener(e -> System.exit(0));
     fileMenu.add(quitItem);
     fileMenu.add(saveItem);
+    fileMenu.add(restoreItem);
 
 
 
@@ -180,7 +191,6 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     takeButton = new JButton("Take (T)");
     dropButton = new JButton("Drop (D)");
     examineButton = new JButton("Examine (X)");
-
     // Status labels
     healthLabel = new JLabel("Health: " + player.getHealth());
     scoreLabel = new JLabel("Score: " + player.getScore());
@@ -384,7 +394,7 @@ public class GraphicView extends JFrame implements IView, ActionListener {
     centerNorthPanel.add(probPanel, BorderLayout.EAST);
 
     JScrollPane probScrollPane = new JScrollPane(probDescription);
-    probScrollPane.setPreferredSize(new Dimension(400, 100));
+    probScrollPane.setPreferredSize(new Dimension(200, 100));
     centerNorthPanel.add(probScrollPane, BorderLayout.WEST);
 
     centerPanel.add(centerNorthPanel, BorderLayout.NORTH);
