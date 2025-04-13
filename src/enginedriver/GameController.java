@@ -8,8 +8,8 @@ import enginedriver.problems.Monster;
 import enginedriver.problems.Problem;
 import enginedriver.problems.Puzzle;
 import enginedriver.problems.IProblem;
-import jsonreader.GameDataLoader;
-import jsonreader.GameDataSaver;
+import jsonio.GameDataLoader;
+import jsonio.GameDataSaver;
 import viewer.IView;
 
 /**
