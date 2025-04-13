@@ -34,18 +34,24 @@ public class GameEngineApp {
   /**
    * Constructor for the GameEngineApp class.
    *
-   * @param rawFileName the original name of the game file
+   * @param fileName the name of the game file
    * @param source the input source
    * @param output the output destination
    * @param graphicsMode whether to run in graphics mode
    * @throws IOException if an error occurs during input/output
    */
-  public GameEngineApp(String rawFileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
+  public GameEngineApp(String fileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
+    // rawFileName removing .json suffix that is used to save the game
+    String rawFileName = fileName.endsWith(".json")
+            ? fileName.substring(0, fileName.length() - 5) : fileName;
+    // fileNameWithPrefix is the name of the file that is used to load the game
+    String fileNameWithPrefix = RESOURCE_FILE + fileName;
+
     // Get player name first
     String playerName = graphicsMode ? getPlayerNameWithDialog() : getPlayerNameFromConsole();
 
     // Check if combined game file exists (gameFileName_playerName.json)
-    String combinedFileName = rawFileName + "_" + playerName + ".json";
+    String combinedFileName = RESOURCE_FILE + rawFileName + "_" + playerName + ".json";
     File combinedFile = new File(combinedFileName);
 
     GameWorld gameWorld;
@@ -58,12 +64,13 @@ public class GameEngineApp {
       player = gameController.getPlayer();
     } else {
       // Otherwise load world from initial file and create new player
-      gameWorld = GameDataLoader.loadGameWorld(rawFileName);
+      gameWorld = GameDataLoader.loadGameWorld(fileNameWithPrefix);
       player = new Player(playerName, 100, 20, 0);
     }
 
     // Create controller
     this.gameController = new GameController(gameWorld, player);
+    this.gameController.setRawFileName(rawFileName);
 
     // Initialize the appropriate view based on mode
     if (graphicsMode) {

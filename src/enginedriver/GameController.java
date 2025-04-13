@@ -26,6 +26,7 @@ import enginedriver.view.IView;
  */
 public class GameController {
   private static final String RESOURCE_FILE = "resources/";
+  private String rawFileName = null;
 
   private Player player;
   private GameWorld gameWorld;
@@ -53,6 +54,10 @@ public class GameController {
     actionMap.put("USE", "U");
     actionMap.put("INVENTORY", "I");
     actionMap.put("ANSWER", "A");
+  }
+
+  public void setRawFileName(String rawFileName) {
+    this.rawFileName = rawFileName;
   }
 
   /**
@@ -524,7 +529,7 @@ public class GameController {
    */
   private void save() {
     try {
-      String gameFileName = RESOURCE_FILE + gameWorld.getName() + "_" + player.getName() + ".json";
+      String gameFileName = RESOURCE_FILE + rawFileName + "_" + player.getName() + ".json";
 
       GameDataSaver.saveGameJson(gameFileName, new GameController(gameWorld, player));
 
@@ -539,7 +544,7 @@ public class GameController {
    */
   private void restore() {
     try {
-      String gameFileName = gameWorld.getName() + "_" + player.getName() + ".json";
+      String gameFileName = RESOURCE_FILE + rawFileName + "_" + player.getName() + ".json";
 
       GameController restoredGame = GameDataLoader.loadGame(gameFileName);
       GameWorld restoredWorld = restoredGame.getGameWorld();
