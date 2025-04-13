@@ -28,6 +28,9 @@ import enginedriver.view.IView;
 public class GameEngineApp {
   private static final String RESOURCE_FILE = "resources/";
 
+  private BufferedReader source;
+  private Appendable output;
+
   private final GameController gameController;
 //  private final Readable source;
 //  private final Appendable output;
@@ -43,6 +46,9 @@ public class GameEngineApp {
    * @throws IOException if an error occurs during input/output
    */
   public GameEngineApp(String fileName, BufferedReader source, Appendable output, boolean graphicsMode) throws IOException {
+    this.source = source;
+    this.output = output;
+
     // rawFileName removing .json suffix that is used to save the game
     String rawFileName = fileName.endsWith(".json")
             ? fileName.substring(0, fileName.length() - 5) : fileName;
@@ -197,7 +203,7 @@ public class GameEngineApp {
    * @return the player's name
    */
   private String getPlayerNameFromConsole() {
-    Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(this.source);
 
     System.out.print("Enter your name: ");
     String playerName = scanner.nextLine();
