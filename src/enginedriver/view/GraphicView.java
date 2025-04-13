@@ -316,9 +316,9 @@ public class GraphicView extends JFrame implements IView, ActionListener {
         //checkprob type
         BufferedImage probImage = null;
         if (problem instanceof Monster) {
-          probImage =  loadImage("data/images/generic-monster.png");
+          probImage =  loadImage("resources/images/generic-monster.png");
         } else if (problem instanceof Puzzle) {
-          probImage =  loadImage("data/images/generic_puzzle.png");
+          probImage =  loadImage("resources/images/generic_puzzle.png");
         }
 
 
