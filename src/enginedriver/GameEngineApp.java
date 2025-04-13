@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import jsonreader.GameDataLoader;
+import jsonio.GameDataLoader;
 import viewer.TextView;
 import viewer.GraphicView;
 import viewer.IView;
