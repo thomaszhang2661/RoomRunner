@@ -34,18 +34,18 @@ public class GameEngineApp {
   /**
    * Constructor for the GameEngineApp class.
    *
-   * @param gameFileName the name of the game file
+   * @param rawFileName the original name of the game file
    * @param source the input source
    * @param output the output destination
    * @param graphicsMode whether to run in graphics mode
    * @throws IOException if an error occurs during input/output
    */
-  public GameEngineApp(String gameFileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
+  public GameEngineApp(String rawFileName, Readable source, Appendable output, boolean graphicsMode) throws IOException {
     // Get player name first
     String playerName = graphicsMode ? getPlayerNameWithDialog() : getPlayerNameFromConsole();
 
     // Check if combined game file exists (gameFileName_playerName.json)
-    String combinedFileName = gameFileName + "_" + playerName + ".json";
+    String combinedFileName = rawFileName + "_" + playerName + ".json";
     File combinedFile = new File(combinedFileName);
 
     GameWorld gameWorld;
@@ -58,7 +58,7 @@ public class GameEngineApp {
       player = gameController.getPlayer();
     } else {
       // Otherwise load world from initial file and create new player
-      gameWorld = GameDataLoader.loadGameWorld(gameFileName);
+      gameWorld = GameDataLoader.loadGameWorld(rawFileName);
       player = new Player(playerName, 100, 20, 0);
     }
 
