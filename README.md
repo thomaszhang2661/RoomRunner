@@ -1,6 +1,10 @@
 # cs5004_game
 
-To run the game, you need to include game.json at the top level with the jar, and include all images in the ./resources/images folder.
+To run the game, you need to include game.json at the top level with the jar, then run "java -jar game_engine.jar game.json -text".
+  - Or you can put game.json in any other folder like "./resources", then run "java -jar game_engine.jar /resources/game.json -text".
+  - For batch mode, source and target files are handled similarly.
+
+To include images, put them in the ./resources/images folder.
 
 In the source folder, We use two packages to organize this project. One is "enginedriver", which contains the controller and major compositions of the whole gameplay, the other one is "jsonreader", which is responsible for initializing, saving, and restoring the game world by reading and modifying the json file.
 
