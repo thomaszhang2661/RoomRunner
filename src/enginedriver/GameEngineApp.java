@@ -25,7 +25,9 @@ import enginedriver.view.IView;
  * It initializes the game world and player, and starts the game loop.
  */
 public class GameEngineApp {
-  private static final String RESOURCE_FILE = "resources/";
+  private static final String ROOT_PATH = "";
+  private static final String RESOURCE_PATH = ROOT_PATH + "resources/";
+  private static final String IMAGE_PATH = RESOURCE_PATH + "images/";
 
   private BufferedReader source;
   private Appendable output;
@@ -53,13 +55,13 @@ public class GameEngineApp {
     String rawFileName = fileName.endsWith(".json")
             ? fileName.substring(0, fileName.length() - 5) : fileName;
     // fileNameWithPrefix is the name of the file that is used to load the game
-    String fileNameWithPrefix = RESOURCE_FILE + fileName;
+    String fileNameWithPrefix = ROOT_PATH + fileName;
 
     // Get player name first
     String playerName = graphicsMode ? getPlayerNameWithDialog() : getPlayerNameFromConsole();
 
     // Check if combined game file exists (gameFileName_playerName.json)
-    String combinedFileName = RESOURCE_FILE + rawFileName + "_" + playerName + ".json";
+    String combinedFileName = ROOT_PATH + rawFileName + "_" + playerName + ".json";
     File combinedFile = new File(combinedFileName);
 
     GameWorld gameWorld;
@@ -396,7 +398,7 @@ public class GameEngineApp {
       // load image
       BufferedImage image = null;
       try {
-        image = ImageIO.read(new File(RESOURCE_FILE + "images/game_engine.png"));
+        image = ImageIO.read(new File(IMAGE_PATH + "game_engine.png"));
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

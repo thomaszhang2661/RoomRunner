@@ -21,16 +21,16 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Graphical implementation of the GameView interface.
  * This provides a GUI interface for the game using Swing.
  */
 public class GraphicView extends JFrame implements IView, ActionListener {
-  private static final String RESOURCE_FILE = "resources/";
+  private static final String ROOT_PATH = "";
+  private static final String RESOURCE_PATH = ROOT_PATH + "resources/";
+  private static final String IMAGE_PATH = RESOURCE_PATH + "images/";
 
   private final GameController controller;
   private GameWorld gameWorld;
@@ -329,9 +329,9 @@ public class GraphicView extends JFrame implements IView, ActionListener {
         //checkprob type
         BufferedImage probImage = null;
         if (problem instanceof Monster) {
-          probImage =  loadImage(RESOURCE_FILE + "images/generic-monster.png");
+          probImage =  loadImage(IMAGE_PATH + "generic-monster.png");
         } else if (problem instanceof Puzzle) {
-          probImage =  loadImage(RESOURCE_FILE + "images/generic_puzzle.png");
+          probImage =  loadImage(IMAGE_PATH + "generic_puzzle.png");
         }
 
 

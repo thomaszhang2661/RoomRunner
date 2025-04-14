@@ -25,7 +25,10 @@ import enginedriver.view.IView;
  * This is the Controller component in the MVC architecture.
  */
 public class GameController {
-  private static final String RESOURCE_FILE = "resources/";
+  private static final String ROOT_PATH = "";
+  private static final String RESOURCE_PATH = ROOT_PATH + "resources/";
+  private static final String IMAGE_PATH = RESOURCE_PATH + "images/";
+
   private String rawFileName = null;
   private boolean isBatchMode = false;
 
@@ -555,7 +558,7 @@ public class GameController {
    */
   private void save() {
     try {
-      String gameFileName = RESOURCE_FILE + rawFileName + "_" + player.getName() + ".json";
+      String gameFileName = ROOT_PATH + rawFileName + "_" + player.getName() + ".json";
 
       GameDataSaver.saveGameJson(gameFileName, new GameController(gameWorld, player));
 
@@ -570,7 +573,7 @@ public class GameController {
    */
   private void restore() {
     try {
-      String gameFileName = RESOURCE_FILE + rawFileName + "_" + player.getName() + ".json";
+      String gameFileName = ROOT_PATH + rawFileName + "_" + player.getName() + ".json";
 
       GameController restoredGame = GameDataLoader.loadGame(gameFileName);
       GameWorld restoredWorld = restoredGame.getGameWorld();
