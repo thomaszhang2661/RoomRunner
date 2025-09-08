@@ -1,4 +1,4 @@
-# cs5004_game
+# RoomRunner
 
 In the source folder, We use two packages to organize this project. One is "enginedriver", which contains the controller and major compositions of the whole gameplay, the other one is "jsonio", which is responsible for initializing, saving, and restoring the game world by reading and modifying the json file.
 
