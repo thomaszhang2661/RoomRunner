@@ -1,11 +1,144 @@
-# RoomRunner
+# 🏃 RoomRunner
 
-In the source folder, We use two packages to organize this project. One is "enginedriver", which contains the controller and major compositions of the whole gameplay, the other one is "jsonio", which is responsible for initializing, saving, and restoring the game world by reading and modifying the json file.
+[![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)](https://www.json.org/)
+[![JUnit](https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white)](https://junit.org/)
 
-In the "enginedriver" package, There are 3 major classes controlling the gameplay process. We have GameEngineApp to start the game play, GameController to process the command from the user, and GameWorld to store all the room informations. In the game compositions, we designed four interfaces: IIdentifiableEntity, IValuable, IWeightable, and IProblem. Among them, IIdentifiableEntity is the highest interface, representing all objects with id, name, description, and picture, and we designed abstract class IIdentifiableEntity and EntityContainer to implement this interface. Abstract class IIdentifiableEntity is composed by getter methods of the basic instance variables to reduce code duplication, and EntityContainer defines a high level of abstraction by providing many generic methods that can be reused across different subclasses, allowing them to get all kinds of elements they contained either by string form of name or by type. IValuable represents things with value which can increase the player's final score after they solving it or picking it up, like puzzles, monsters, and items, and we wrote IProblem to extend IValuable, which particularly inherited by puzzle and monster. IWeightable is used to represent elements with a weight, including item and fixture. For the concrete class, we defined basic game elements including Fixturem, Item, Player, Monster, Problem and Puzzle.
+A sophisticated **text-based adventure game engine** built with Java, featuring dynamic content loading, comprehensive game state management, and extensible architecture. This project demonstrates advanced software engineering principles including **design patterns**, **JSON serialization**, and **modular architecture**.
 
-In the "jsonio" package, we developed GameDataLoader to invoke all kinds of game initializer including GameControllerDeserializer, GameWorldDeserializer, and PlayerDeserializer. These deserializers focus on initializing specific parts of the game play by decoding data from json file.
+## 🌟 Key Features
 
-Compared our current implementation with our idea for the last homework, one major difference is that we added several more interfaces and abstract classes like IProblem, IValuable, and EntityCotainer. These interfaces and abstract classes makes it easier to make different objects with the some same basic characteristics to be generic types. Besides, abstract classes can also reduce code duplecation and increase the conciseness. Apart from that, our current implementation is more specifc and concrete about how to read and load json data, while before we only had a very vague and simple idea about realizing this functionality. All these differences show our progross in forming a more clear vision of the whole project.
+- **🎮 Interactive Gameplay Engine**: Command-driven text adventure with room navigation, item management, and puzzle solving
+- **📁 Dynamic Content Loading**: JSON-based game world configuration enabling easy content creation and modification
+- **💾 Save/Load System**: Complete game state persistence with separate player and world data management
+- **🏗️ Modular Architecture**: Clean separation of concerns with well-defined interfaces and abstract classes
+- **🎨 Multiple View Support**: Both graphical and text-based user interfaces
+- **⚡ Extensible Design**: Interface-driven architecture supporting easy feature additions
 
-In the viewer package, we've implemented an interface called IView, and it serves as the foundation for all user interfaces. We then have two classes representing the graphic layout and the text layout of the game: GraphicView and TextView, respectively. Both classes extend from the IView interface, implementing main functions such as input handling and displaying player status. This integrates with our model allowing players to navigate through different rooms and interact with puzzle and monsters as mentioned earlier. The JSON files load the game dynamically making the game and the GUI interface customizable. To be specific, our GameController processes player commands through processCommand() method and updates the graphic and text view as the player navigates the game. Players will be able to see several things, including but not limited to a picture representing the room they're in, buttons for moving between rooms, a narrator, and the status of the game.
+## 🛠️ Technical Architecture
+
+### Core Components
+
+| Component         | Description                          | Key Classes                                       |
+| ----------------- | ------------------------------------ | ------------------------------------------------- |
+| **Engine Driver** | Core game logic and state management | `GameEngineApp`, `GameController`, `GameWorld`    |
+| **JSON I/O**      | Serialization and data persistence   | `GameDataLoader`, Custom deserializers            |
+| **Entity System** | Game object hierarchy and interfaces | `IIdentifiableEntity`, `IValuable`, `IWeightable` |
+| **View Layer**    | User interface abstraction           | `IView`, `GraphicView`, `TextView`                |
+
+### Design Patterns Implemented
+
+- **🏭 Factory Pattern**: Dynamic entity creation from JSON data
+- **🔄 Command Pattern**: User input processing and game actions
+- **📦 Container Pattern**: Generic entity management and retrieval
+- **🎯 Strategy Pattern**: Multiple serialization and view strategies
+- **🏛️ MVC Architecture**: Clear separation of model, view, and controller
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Java 11** or higher
+- **JUnit 5** (included in `lib/` directory)
+- **Jackson JSON Library** (included in `lib/` directory)
+
+### Installation & Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/thomaszhang2661/RoomRunner.git
+cd RoomRunner
+
+# Compile the project
+javac -cp "lib/*:src" src/enginedriver/GameEngineApp.java
+
+# Run the game
+java -cp "lib/*:src" enginedriver.GameEngineApp
+```
+
+### Project Structure
+
+```
+RoomRunner/
+├── src/
+│   ├── enginedriver/     # Core game engine
+│   ├── jsonio/          # JSON serialization
+│   └── viewer/          # UI components
+├── resources/           # Game data and assets
+│   ├── players/         # Player save files
+│   └── worlds/          # Game world definitions
+├── data/               # Sample game scenarios
+├── lib/                # External dependencies
+└── test/               # Unit tests
+```
+
+## 🎯 Game Features
+
+### Core Gameplay Elements
+
+- **🏠 Room Navigation**: Move between interconnected rooms with directional commands
+- **🎒 Inventory Management**: Collect, use, and manage items with weight constraints
+- **🧩 Puzzle Solving**: Solve puzzles to unlock new areas and progress
+- **👹 Monster Encounters**: Combat system with health and damage mechanics
+- **🏆 Scoring System**: Point-based progression with valuable items and achievements
+
+### Supported Commands
+
+| Command            | Description                | Example        |
+| ------------------ | -------------------------- | -------------- |
+| `move <direction>` | Navigate between rooms     | `move north`   |
+| `take <item>`      | Pick up items              | `take sword`   |
+| `use <item>`       | Use items to solve puzzles | `use key`      |
+| `solve <puzzle>`   | Attempt to solve puzzles   | `solve riddle` |
+| `look`             | Examine current room       | `look`         |
+| `inventory`        | View carried items         | `inventory`    |
+
+## 🔧 Technical Highlights
+
+### Advanced Features
+
+- **🔄 Custom JSON Serialization**: Efficient game state persistence using Jackson annotations
+- **🎭 Interface-Driven Design**: Flexible entity system supporting easy extension
+- **🧪 Comprehensive Testing**: JUnit test suite covering core functionality
+- **📊 UML Documentation**: Complete system design with class and sequence diagrams
+- **🎨 Multi-View Architecture**: Support for both graphical and text interfaces
+
+### Code Quality
+
+- **📋 Design Patterns**: Implementation of multiple software engineering patterns
+- **🧹 Clean Architecture**: Well-organized codebase with clear separation of concerns
+- **📝 Documentation**: Comprehensive JavaDoc and system documentation
+- **✅ Testing**: Unit tests for critical components and functionality
+
+## 📈 Development Journey
+
+This project evolved through multiple iterations, incorporating advanced software engineering concepts:
+
+1. **Initial Design**: Basic room navigation and entity management
+2. **Interface Integration**: Added `IValuable`, `IWeightable`, and `IProblem` interfaces
+3. **Serialization Enhancement**: Implemented custom Jackson serializers/deserializers
+4. **Architecture Refinement**: Introduced `EntityContainer` for generic type management
+5. **View Layer Addition**: Multi-interface support for different user experiences
+
+## 🎮 Sample Game Scenario
+
+Experience the "Align Quest" adventure:
+
+- Start in the **Dungeon Entrance** with multiple path choices
+- Navigate through **layered dungeon** with interconnected rooms
+- Solve the **Nobleman's Commission** puzzle to access the Guild
+- Battle the **Goblin Monster** to reach the treasure room
+- Use strategic item management to overcome obstacles
+- Complete objectives to achieve victory!
+
+## 🔮 Future Enhancements
+
+- **🌐 Network Multiplayer**: Support for multiple concurrent players
+- **🎨 Enhanced Graphics**: Advanced GUI with animations and effects
+- **🔊 Audio System**: Sound effects and background music
+- **📱 Mobile Support**: Cross-platform compatibility
+- **🛠️ Level Editor**: Visual tool for creating custom game worlds
+
+---
+
+**🎓 Educational Project**: This repository showcases advanced Java programming concepts, software design patterns, and system architecture principles suitable for computer science portfolios and academic demonstration.
